@@ -1,63 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Digital Library - Sign Up</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Registerscript.js"></script>
 </head>
 <body>
-    <div class = "signup-main-container">
+    <div class="signup-main-container">
         <h1>Digital Library</h1>
-    <div class="signup-container">
-        <h2>Sign Up</h2>
-        <form class="signup-form-container" action="submitRegistration" method="post" modelAttribute="user">
-            <div class="form-group">
-                <label path="name">Your name:</label>
-                <input path="name" type="text" id="name" name="name" required>
-                <errors path="name" cssClass="error" />
-            </div>
-            <div class="form-group">
-                <label path="role" for="role">Role:</label>
-                <select path="role" id="role" name="role" required>
-                    <option path="role" value="student">Student</option>
-                    <option path="role" value="teacher">Teacher</option>
-                    <option path="role" value="librarian">Librarian</option>
-                </select>
-                <errors path="name" cssClass="error" />
-            </div>
-            <div class="form-group">
-                <label path="id" for="id">ID Number:</label>
-                <input path="id" type="text" id="id" name="id" required>
-                <errors path="name" cssClass="error" />
-            </div>
-            <div class="form-group">
-                <label path="password" for="password">Password:</label>
-                <input path="password" type="password" id="password" name="password" required>
-                <errors path="name" cssClass="error" />
-            </div>
-            <div class="form-group">
-                <label path="confirm_password" for="confirm_password">Confirm Password:</label>
-                <input path="confirm_password" type="password" id="confirm_password" name="confirm_password" required>
-                <errors path="name" cssClass="error" />
-            </div>
-            <div>
-                <button type="submit">Sign Up</button>
-            </div>
-            <div>
-                <p>Already have an account? <a href="/login">Sign in</a></p>
-            </div>
-            <!-- <c:if test="${not empty errors}">
-            <div style="color: red;">
-            <c:forEach items="${errors.allErrors}" var="error">
-                ${error.defaultMessage}<br>
-            </c:forEach> -->
+        <div class="signup-container">
+            <h2>Sign Up</h2>
+            <form:form class="signup-form-container" action="${pageContext.request.contextPath}/submitRegistration" method="post" modelAttribute="user">
+                <div class="form-group">
+                    <form:label path="name">Your name:</form:label>
+                    <form:input path="name" id="name" required="true"/>
+                    <form:errors path="name" cssClass="error"/>
+                </div>
+                <div class="form-group">
+                    <form:label path="role" for="role">Role:</form:label>
+                    <form:select path="role" id="role" required="true">
+                        <form:option value="student">Student</form:option>
+                        <form:option value="teacher">Teacher</form:option>
+                        <form:option value="librarian">Librarian</form:option>
+                    </form:select>
+                    <form:errors path="role" cssClass="error"/>
+                </div>
+                <div class="form-group">
+                    <form:label path="id" for="id">ID Number:</form:label>
+                    <form:input path="id" id="id" required="true"/>
+                    <form:errors path="id" cssClass="error"/>
+                </div>
+                <div class="form-group">
+                    <form:label path="password" for="password">Password:</form:label>
+                    <form:password path="password" id="password" required="true"/>
+                    <form:errors path="password" cssClass="error"/>
+                </div>
+                <div class="form-group">
+                    <form:label path="confirmPassword" for="confirmPassword">Confirm Password:</form:label>
+                    <form:password path="confirmPassword" id="confirmPassword" required="true"/>
+                    <form:errors path="confirmPassword" cssClass="error"/>
+                </div>
+                <div>
+                    <button type="submit">Sign Up</button>
+                </div>
+                <div>
+                    <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in</a></p>
+                </div>
+                
+            </form:form>
         </div>
-    </c:if>
-        </form>
     </div>
-</div>
 </body>
 </html>

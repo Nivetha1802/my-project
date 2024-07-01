@@ -1,4 +1,4 @@
-package com.example;
+package com.example.model;
 
 public class Lend {
     private String book_name;
@@ -38,5 +38,10 @@ public class Lend {
     }
     public void setFine_amount_left(int fine_amount_left) {
         this.fine_amount_left = fine_amount_left;
+    }
+    @Override
+    public String toString() {
+        return "Lend [book_name=" + book_name + ", id=" + id + ", date_of_lending=" + date_of_lending
+                + ", date_of_return=" + date_of_return + ", fine_amount_left=" + fine_amount_left + "]";
     }
 }

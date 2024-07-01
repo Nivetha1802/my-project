@@ -17,7 +17,7 @@
     </div> 
     <div class="form-container">
         <h2>Book Lending</h2>
-        <form action="submitLendBook" method="post">
+        <form action="submitLendBook" method="post" modelAttribute="lend">
             <label path="book_name" for="book_name">Book name</label>
             <input path="book_name" type="text" id="book_name" name="book_name">
             
@@ -26,6 +26,8 @@
             
             <label path="id" for="id">ID number</label>
             <input path="id" type="text" id="id" name="id">
+            </br>
+            <button type="submit">Enter</button>
             
             <label path="date_of_lending" for="date_of_lending">Date Of Lending</label>
             <input path="date_of_lending" type="text" id="date_of_lending" name="date_of_lending" readonly>
@@ -34,7 +36,7 @@
             <input path="date_of_return" type="text" id="date_of_return" name="date_of_return" readonly>
 
             <label path="fine_amount_left" for="fine_amount_left">Fine Amount left</label>
-            <input path="fine_amount_left" type="text" id="fine_amount_left" name="fine_amount_left" readonly></br>
+            <input path="fine_amount_left" type="text" id="fine_amount_left" name="fine_amount_left" value="100" readonly></br>
               
             <p class="fine-warning">! If Book is returned after due date ₹10 will be charged as fine for each day after return date</p>
             
