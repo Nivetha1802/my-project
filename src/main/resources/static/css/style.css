@@ -36,8 +36,10 @@ select {
 }
 
 .login-container input[type="text"],
+.login-container input[type="int"],
 .login-container input[type="password"],
 .signup-container input[type="text"],
+.signup-container input[type="int"],
 .signup-container input[type="password"] {
     width: 50%;
     padding: 10px;
@@ -171,10 +173,6 @@ body {
     background-color: #ddd;
 }
 
-.button-container button:nth-child(3) {
-    grid-column: span 2;
-}
-
 .form-container {
     background-color: white;
     color: black;
@@ -194,6 +192,7 @@ body {
 }
 
 .form-container input[type="text"],
+.form-container input[type="int"],
 .form-container input[type="date"] {
     width: 50%;
     padding: 10px;
@@ -269,7 +268,7 @@ body {
     text-decoration: underline;
 }
 
-.content {
+/* .content {
     flex-grow: 1;
     padding: 20px;
     box-sizing: border-box;
@@ -279,7 +278,7 @@ body {
 .content h2 {
     margin-top: 0;
     color: black;
-}
+} */
 
 .return-book-container{
     background-image: url("./../librarybook.jpeg");

@@ -23,7 +23,6 @@
         <button onclick="window.location.href='/lendBook'">Lend a book</button>
         <button onclick="window.location.href='/returnBook'">Return a book</button>
         <button onclick="window.location.href='/renewbook'">Renew a book</button>
-        <button onclick="window.location.href='/bookManagement'">Manage Books</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
     </div>
 </body>

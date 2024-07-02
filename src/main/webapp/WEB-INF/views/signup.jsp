@@ -50,7 +50,6 @@
                 <div>
                     <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in</a></p>
                 </div>
-                
             </form:form>
         </div>
     </div>

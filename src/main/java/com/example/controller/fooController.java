@@ -18,7 +18,7 @@ import com.example.*;
 import com.example.model.*;
 
 import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class fooController {
@@ -28,7 +28,16 @@ public class fooController {
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     String getHomePage(){
-    return "/home";
+    return "/login";
+    }
+
+    @GetMapping("/home")
+    public String getHomePage(@RequestParam("role") String role, Model model) {
+        if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
+            return "studentHomePage";
+        } else {
+            return "librarianHomePage";
+        } 
     }
 
     @GetMapping("/login")
@@ -44,12 +53,12 @@ public class fooController {
         model.addAttribute(user);
         return "signup";
     }
-    @GetMapping("/home")
-    public String showHomePage(Model model) {
-        Search search = new Search();
-        model.addAttribute(search);
-        return "home";
-    }
+    // @GetMapping("/home")
+    // public String showHomePage(Model model) {
+    //     Search search = new Search();
+    //     model.addAttribute(search);
+    //     return "home";
+    // }
     @GetMapping("/lendBook")
     public String showLendBookPage(Model model) {
         Lend lend = new Lend();
@@ -65,6 +74,18 @@ public class fooController {
     @GetMapping("/bookManagement")
     public String showBookManagementPage() {
         return "bookManagement";
+    }
+    @GetMapping("/addBook")
+    public String showAddBookPage() {
+        return "bookManagement";
+    }
+    @GetMapping("/updateBook")
+    public String showUpdateBookPage() {
+        return "updateBook";
+    }
+    @GetMapping("/deleteBook")
+    public String showDeleteBookPage() {
+        return "deleteBook";
     }
     @GetMapping("/returnBook")
     public String showReturnBookPage(Model model) {
@@ -86,7 +107,8 @@ public class fooController {
         else{
         System.out.println(user);
         model.addAttribute("message", "Registration successful!");
-        return "redirect:/home";}
+        String role = user.getRole(); // Assume User has a getRole() method
+        return "redirect:/home?role=" + role;}
     }
     @PostMapping("/submitLogin")
     public String submitLogin(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult, Model model){
@@ -95,8 +117,9 @@ public class fooController {
         }
         else{
         System.out.println(loginuser);
-        model.addAttribute("message", "Registration successful!");
-        return "redirect:/home";}
+        model.addAttribute("message", "Login successful!");
+        String role = loginuser.getRole(); // Assume LoginUser has a getRole() method
+        return "redirect:/home?role=" + role;}
     }  
 
     @PostMapping("/submitReturnBook")
@@ -107,7 +130,7 @@ public class fooController {
         else{
         System.out.println(returnbook);
         model.addAttribute("message", "Registration successful!");
-        return "redirect:/home";}
+        return "redirect:/studentHomePage";}
     } 
 
     @PostMapping("/submitRenewBook")
@@ -118,7 +141,7 @@ public class fooController {
         else{
         System.out.println(renew);
         model.addAttribute("message", "Registration successful!");
-        return "redirect:/home";}
+        return "redirect:/studentHomePage";}
 }    
 
     @PostMapping("/submitLendBook")
@@ -129,7 +152,7 @@ public class fooController {
         else{
         System.out.println(lend);
         model.addAttribute("message", "Registration successful!");
-        return "redirect:/home";}
+        return "redirect:/studentHomePage";}
     }
 
 

@@ -19,9 +19,11 @@
         <div class="sidebar">
             <h2>Book Management</h2>
             <ul>
-                <li><a href="/bookManagement">Add Book</a></li>
-                <li><a href="/updateBook">Update book</a></li>
-                <li><a href="/deleteBook">Delete Book</a></li>
+                <li><a href="bookManagement.jsp">Add Book</a></li>
+                <li><a href="updateBook.jsp">Update book</a></li>
+                <li><a href="deleteBook.jsp">Delete Book</a></li>
+            
+            </ul>
         </div>
         <div class="form-container">
             <h2>Enter Book Details</h2>
@@ -37,7 +39,7 @@
             <label for="info">Book info</label>
             <input type="text" id="info" name="info">
         </br>
-            <button type="submit">Add</button>
+            <button type="submit">Update</button>
             
         </div>
     </div>

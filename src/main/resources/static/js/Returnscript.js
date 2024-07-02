@@ -36,7 +36,7 @@ function setDates() {
     console.log("success");
 }
 
-window.onload = function() {
-    setDates();
-    calculateFine();
-};
+// window.onload = function() {
+//     setDates();
+//     calculateFine();
+// };

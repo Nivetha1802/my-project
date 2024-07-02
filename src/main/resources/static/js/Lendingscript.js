@@ -47,7 +47,7 @@ function setDates() {
 //     console.log("Fine calculated successfully");
 // }
 
-window.onload = function() {
-    setDates();
-    // calculateFine();
-};
+// window.onload = function() {
+//     setDates();
+//     // calculateFine();
+// };

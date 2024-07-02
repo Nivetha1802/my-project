@@ -47,7 +47,7 @@ function setExtendedReturnDate() {
     console.log("Extended return date set successfully");
 }
 
-window.onload = function() {
-    setExtendedReturnDate();
-    calculateFine();
-};
+// window.onload = function() {
+//     setExtendedReturnDate();
+//     calculateFine();
+// };

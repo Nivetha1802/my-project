@@ -8,10 +8,15 @@
     <script type="text/javascript" src="./script.js"></script>
 </head>
 <body>
-    <div class="popup">
-        <h2>Fine Amount</h2>
-        <p>Your fine amount is: <span id="fineAmount">₹10</span></p>
-        <button onclick="closePopup()">Close</button>
+    <div class="form-container">
+        <h2>Fine Details</h2>
+        <form action="submitFine" method="post" modelAttribute="fine">
+
+            <label path="id" for="id">ID number</label>
+            <input path="id" type="text" id="id" name="id">
+            </br>
+            <button type="submit">Enter</button>
+        </form>
     </div>
 </body>
 </html>
