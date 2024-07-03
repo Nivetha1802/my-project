@@ -1,13 +1,20 @@
 package com.example.model;
 import java.util.Date;
 
-public class Renew{
+import javax.validation.constraints.*;
 
+public class Renew{
+    
+    @NotNull(message = "Id is required")
+    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
     private int id;
-    private String bookname;
+
+    @NotNull(message = "Book Id is required")
+    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")    
+    private int bookid;
     private Date date_of_lending;
     private Date date_of_return;
-    private Date actual_date_of_returning;
+    private Date extended_return_date;
     private int fine;
     private int fine_amount_left;
     
@@ -17,11 +24,11 @@ public class Renew{
     public void setId(int id) {
         this.id = id;
     }
-    public String getBookname() {
-        return bookname;
+    public int getBookid() {
+        return bookid;
     }
-    public void setBookname(String bookname) {
-        this.bookname = bookname;
+    public void setBookid(int bookid) {
+        this.bookid = bookid;
     }
     public Date getDate_of_lending() {
         return date_of_lending;
@@ -35,11 +42,11 @@ public class Renew{
     public void setDate_of_return(Date date_of_return) {
         this.date_of_return = date_of_return;
     }
-    public Date getActual_date_of_returning() {
-        return actual_date_of_returning;
+    public Date getExtended_return_date() {
+        return extended_return_date;
     }
-    public void setActual_date_of_returning(Date actual_date_of_returning) {
-        this.actual_date_of_returning = actual_date_of_returning;
+    public void setExtended_return_date(Date extended_return_date) {
+        this.extended_return_date = extended_return_date;
     }
     public int getFine() {
         return fine;
@@ -55,8 +62,8 @@ public class Renew{
     }
     @Override
     public String toString() {
-        return "Renew [id=" + id + ", bookname=" + bookname + ", date_of_lending=" + date_of_lending
-                + ", date_of_return=" + date_of_return + ", actual_date_of_returning=" + actual_date_of_returning
+        return "Renew [id=" + id + ", bookid=" + bookid + ", date_of_lending=" + date_of_lending
+                + ", date_of_return=" + date_of_return + ", extended_return_date=" + extended_return_date
                 + ", fine=" + fine + ", fine_amount_left=" + fine_amount_left + "]";
     }
     

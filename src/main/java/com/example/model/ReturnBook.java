@@ -1,10 +1,17 @@
 package com.example.model;
 import java.util.Date;
 
+import javax.validation.constraints.*;
+
 public class ReturnBook {
     
+    @NotNull(message = "Id is required")
+    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
     private int id;
-    private String bookname;
+
+    @NotNull(message = "Book Id is required")
+    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")    
+    private int bookid;
     private Date date_of_lending;
     private Date date_of_return;
     private Date actual_date_of_returning;
@@ -17,11 +24,11 @@ public class ReturnBook {
     public void setId(int id) {
         this.id = id;
     }
-    public String getBookname() {
-        return bookname;
+    public int getbookid() {
+        return bookid;
     }
-    public void setBookname(String bookname) {
-        this.bookname = bookname;
+    public void setBookid(int bookid) {
+        this.bookid = bookid;
     }
     public Date getDate_of_lending() {
         return date_of_lending;
@@ -55,7 +62,7 @@ public class ReturnBook {
     }
     @Override
     public String toString() {
-        return "Return [id=" + id + ", bookname=" + bookname + ", date_of_lending=" + date_of_lending
+        return "Return [id=" + id + ", bookid=" + bookid + ", date_of_lending=" + date_of_lending
                 + ", date_of_return=" + date_of_return + ", actual_date_of_returning=" + actual_date_of_returning
                 + ", fine=" + fine + ", fine_amount_left=" + fine_amount_left + "]";
     }

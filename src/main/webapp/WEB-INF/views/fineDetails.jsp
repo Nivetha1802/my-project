@@ -3,11 +3,18 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Fine Amount</title>
+    <title>Fine Details</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="./script.js"></script>
 </head>
 <body>
+    <div class="header">
+        <h1>Digital Library</h1>
+        <div class="nav">
+            <a href="/login">Signin</a>/<a href="/signup">Signup</a>
+            <a href="#">Logout</a>
+        </div>
+    </div> 
     <div class="form-container">
         <h2>Fine Details</h2>
         <form action="submitFine" method="post" modelAttribute="fine">

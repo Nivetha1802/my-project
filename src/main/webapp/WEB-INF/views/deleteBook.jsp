@@ -19,9 +19,9 @@
         <div class="sidebar">
             <h2>Book Management</h2>
             <ul>
-                <li><a href="bookManagement.jsp">Add Book</a></li>
-                <li><a href="updateBook.jsp">Update book</a></li>
-                <li><a href="deleteBook.jsp">Delete Book</a></li>
+                <li><a href="/bookManagement">Add Book</a></li>
+                <li><a href="/updateBook">Update book</a></li>
+                <li><a href="/deleteBook">Delete Book</a></li>
                 
             </ul>
         </div>

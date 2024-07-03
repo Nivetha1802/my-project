@@ -1,18 +1,26 @@
 package com.example.model;
 
+import javax.validation.constraints.*;
+
 public class Lend {
-    private String book_name;
+    @NotNull(message = "Book Id is required")
+    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")
+    private int bookid;
+
+    @NotNull(message = "ID is required")
+    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
     private int id;
+    
     private String date_of_lending;
     private String date_of_return;
     private int fine_amount_left;
 
     // Getters and Setters
-    public String getBook_name() {
-        return book_name;
+    public int getBookid() {
+        return bookid;
     }
-    public void setBook_name(String book_name) {
-        this.book_name = book_name;
+    public void setBookid(int bookid) {
+        this.bookid = bookid;
     }
 
     public int getId() {
@@ -41,7 +49,7 @@ public class Lend {
     }
     @Override
     public String toString() {
-        return "Lend [book_name=" + book_name + ", id=" + id + ", date_of_lending=" + date_of_lending
+        return "Lend [bookid=" + bookid + ", id=" + id + ", date_of_lending=" + date_of_lending
                 + ", date_of_return=" + date_of_return + ", fine_amount_left=" + fine_amount_left + "]";
     }
 }

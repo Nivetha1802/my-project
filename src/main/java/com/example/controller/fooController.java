@@ -4,7 +4,7 @@ import java.util.*;
 
 import javax.validation.Valid;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.*;
-// import com.example.repository.UserRepository;
+
+import com.example.repository.UserRepository;
+import com.example.service.UserService;
+import com.example.Student;
+import com.example.entity.*;
 import com.example.model.*;
+
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,13 +27,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class fooController {
 
-    // @Autowired
-    // private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+    private UserService userService;
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     String getHomePage(){
     return "/login";
     }
+
+    @RequestMapping(value="/GetAllUsers", method=RequestMethod.GET)
+    public List<UserEntity> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    
 
     @GetMapping("/home")
     public String getHomePage(@RequestParam("role") String role, Model model) {
@@ -41,15 +53,13 @@ public class fooController {
     }
 
     @GetMapping("/login")
-    public String showLoginPage(Model model) {
-        LoginUser loginuser = new LoginUser();
-        model.addAttribute(loginuser);
+    public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginUser, Model model) {
+        model.addAttribute(loginUser);
         return "login";
     }
 
     @GetMapping("/signup")
-    public String showSignupPage(Model model) {
-        User user = new User();
+    public String showSignupPage(@ModelAttribute("user") User user, Model model) {
         model.addAttribute(user);
         return "signup";
     }
@@ -106,12 +116,15 @@ public class fooController {
         }
         else{
         System.out.println(user);
+        userService.saveUser(user);
         model.addAttribute("message", "Registration successful!");
         String role = user.getRole(); // Assume User has a getRole() method
         return "redirect:/home?role=" + role;}
+
+
     }
     @PostMapping("/submitLogin")
-    public String submitLogin(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult, Model model){
+    public String submitLogin(@Valid @ModelAttribute("loginuser") UserEntity loginuser, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -123,36 +136,36 @@ public class fooController {
     }  
 
     @PostMapping("/submitReturnBook")
-    public String submitReturnBook(@ModelAttribute("returnbook") ReturnBook returnbook, BindingResult bindingResult, Model model){
+    public String submitReturnBook(@Valid @ModelAttribute("returnbook") ReturnBook returnbook, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "returnBook";
         }
         else{
         System.out.println(returnbook);
-        model.addAttribute("message", "Registration successful!");
+        model.addAttribute("message", "Return successful!");
         return "redirect:/studentHomePage";}
     } 
 
     @PostMapping("/submitRenewBook")
-    public String submitRenewBook(@ModelAttribute("renew") Renew renew, BindingResult bindingResult, Model model){
+    public String submitRenewBook(@Valid @ModelAttribute("renew") Renew renew, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "renewBook";
         }
         else{
         System.out.println(renew);
-        model.addAttribute("message", "Registration successful!");
+        model.addAttribute("message", "Renew successful!");
         return "redirect:/studentHomePage";}
 }    
 
     @PostMapping("/submitLendBook")
-    public String submitLendBook(@ModelAttribute("lend") Lend lend, BindingResult bindingResult, Model model){
+    public String submitLendBook(@Valid @ModelAttribute("lend") Lend lend, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "lendBook";
         }
         else{
         System.out.println(lend);
-        model.addAttribute("message", "Registration successful!");
-        return "redirect:/studentHomePage";}
+        model.addAttribute("message", "Lending successful!");
+        return "studentHomePage";}
     }
 
 
