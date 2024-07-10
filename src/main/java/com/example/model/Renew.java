@@ -6,11 +6,11 @@ import javax.validation.constraints.*;
 public class Renew{
     
     @NotNull(message = "Id is required")
-    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
+    // @Digits(integer = 10, fraction = 0, message = "ID must be a number")
     private int id;
 
     @NotNull(message = "Book Id is required")
-    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")    
+    // @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")    
     private int bookid;
     private Date date_of_lending;
     private Date date_of_return;

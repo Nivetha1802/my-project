@@ -10,8 +10,8 @@
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">
-            <a href="/login">Sign</a>/<a href = "/signup">Signup</a>
-            <a href="#">Logout</a>
+            <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
+            <a href="/login">Logout</a>
         </div>
     </div>
     <div class="bookManagement-container">
@@ -28,7 +28,7 @@
         <div class="form-container">
             <h2>Enter Book Details</h2>
             <label for="bookid">Book ID</label>
-            <input type="number" id="bookid" name="bookid">
+            <input type="text" id="bookid" name="bookid">
             </br>
             <button type="submit">Delete</button>
             

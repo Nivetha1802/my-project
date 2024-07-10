@@ -11,13 +11,13 @@
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">
-            <a href="/login">Signin</a>/<a href="/signup">Signup</a>
-            <a href="#">Logout</a>
+            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/login">Logout</a>
         </div>
     </div> 
     <div class="form-container">
         <h2>Fine Details</h2>
-        <form action="submitFine" method="post" modelAttribute="fine">
+        <form action="submitFineDetails" method="post" modelAttribute="finedet">
 
             <label path="id" for="id">ID number</label>
             <input path="id" type="text" id="id" name="id">

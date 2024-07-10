@@ -9,8 +9,8 @@
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">
-            <a href="/login">Signin</a>/<a href="/signup">Signup</a>
-            <a href="#">Logout</a>
+            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/login">Logout</a>
         </div>
     </div>
     <div class="search-container">

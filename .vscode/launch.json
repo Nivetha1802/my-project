@@ -9,6 +9,20 @@
       "name": "Main",
       "request": "launch",
       "mainClass": "com.example.Main",
+      "projectName": "my-project"
+    },
+    {
+      "type": "java",
+      "name": "DemoGradleApplication",
+      "request": "launch",
+      "mainClass": "com.example.DemoGradleApplication",
+      "projectName": "my-project"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "com.example.Main",
       "projectName": "spring-boot-my-project"
     },
     {
