@@ -19,7 +19,7 @@
     <div class="form-container">
         <h2>Book Lending</h2>
         <form:form action="${pageContext.request.contextPath}/submitLendBook" method="post" modelAttribute="lend">
-            <form:label path="bookid" for="book_name">Book ID</form:label>
+            <form:label path="bookid" for="bookid">Book ID</form:label>
             <form:input path="bookid" id="bookid" required="true"/>
             <form:errors path="bookid" cssClass="error"/>
            

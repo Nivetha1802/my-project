@@ -1,48 +1,36 @@
 package com.example.controller;
 
-import java.util.*;
-
-import javax.validation.Valid;
-
-// import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import java.util.*;
+import javax.validation.Valid;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
 
-
-// import com.example.repository.UserRepository;
-// import com.example.service.UserService;
-import com.example.Student;
-// import com.example.entity.*;
+import com.example.entity.*;
 import com.example.model.*;
-
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.example.service.*;
 
 @Controller
 public class fooController {
 
-    // @Autowired
-    // private UserRepository userRepository;
-    // private UserService userService;
+    private UserService userService;
 
-    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+    private BooksService booksService;
+    
+    private LendDetailsService lendDetailsService;
+
+    public fooController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService){
+        this.userService = userService;
+        this.lendDetailsService = lendDetailsService;
+        this.booksService = booksService;
+    }
+
+    @GetMapping({"/", "/logout"})
     public String getHomePage(){
         return "login"; 
     }
-
-
-    // @RequestMapping(value="/GetAllUsers", method=RequestMethod.GET)
-    // public List<UserEntity> getAllUsers(){
-    //     return userRepository.findAll();
-    // }
-
-    
 
     @GetMapping("/home")
     public String getHomePage(@RequestParam("role") String role, Model model) {
@@ -54,8 +42,8 @@ public class fooController {
     }
 
     @GetMapping("/login")
-    public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginUser, Model model) {
-        model.addAttribute(loginUser);
+    public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginuser, Model model) {
+        model.addAttribute(loginuser);
         return "login";
     }
 
@@ -64,45 +52,7 @@ public class fooController {
         model.addAttribute(user);
         return "signup";
     }
-    @GetMapping("/returnBook")
-    public String showHomePage(Model model) {
-        ReturnBook returnBook = new ReturnBook();
-        model.addAttribute(returnBook);
-        return "returnBook";
-    }
-    @GetMapping("/lendBook")
-    public String showLendBookPage(Model model) {
-        Lend lend = new Lend();
-        model.addAttribute(lend);
-        return "lendBook";
-    }
-    @GetMapping("/renewbook")
-    public String showRenewBookPage(Model model) {
-        Renew renew = new Renew();
-        model.addAttribute(renew);
-        return "renewBook";
-    }
-    @GetMapping("/bookManagement")
-    public String showBookManagementPage() {
-        return "bookManagement";
-    }
-    @GetMapping("/addBook")
-    public String showAddBookPage() {
-        return "bookManagement";
-    }
-    @GetMapping("/updateBook")
-    public String showUpdateBookPage() {
-        return "updateBook";
-    }
-    @GetMapping("/deleteBook")
-    public String showDeleteBookPage() {
-        return "deleteBook";
-    }
-    
-    @GetMapping("/fineDetails")
-    public String showFineDetailsPage() {
-        return "fineDetails";
-    }
+
 
 
     @PostMapping("/submitRegistration")
@@ -112,7 +62,7 @@ public class fooController {
         }
         else{
         System.out.println(user);
-        // userService.saveUser(user);
+        userService.saveUser(user);
         model.addAttribute("message", "Registration successful!");
         String role = user.getRole(); // Assume User has a getRole() method
         return "redirect:/home?role=" + role;}
@@ -125,19 +75,79 @@ public class fooController {
             return "login";
         }
         else{
-        System.out.println(loginuser);
-        model.addAttribute("message", "Login successful!");
-        String role = loginuser.getRole(); // Assume LoginUser has a getRole() method
-        return "redirect:/home?role=" + role;}
-    }  
+            System.out.println(loginuser);
+            userService.getUserById(loginuser.getId());
+            model.addAttribute("message", "Login successful!");
+            String role = loginuser.getRole(); 
+            return "redirect:/home?role=" + role;
+        }
+    }
 
+
+    // @GetMapping("/GetAllUsers")
+    // public List<UserEntity> getAllUsers(){
+    //     System.out.println("req sent");
+    //     return userService.getAllUsers();
+    // }
+
+    // @GetMapping("/{id}")
+    // public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
+    //     Optional<UserEntity> user = Optional.ofNullable(userService.getUserById(id));
+    //     return user.map(ResponseEntity::ok)
+    //                .orElseGet(() -> ResponseEntity.notFound().build());
+    // }
+
+    // @PostMapping("/users")
+    // public ResponseEntity<UserEntity> createUser(UserEntity user) {
+    //     UserEntity savedUser = userService.createUser(user);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(savedUser);
+    // }
+
+    // @GetMapping("/{id}")
+    // public ResponseEntity<UserEntity> getUserByIdMethod(@PathVariable Integer id) {
+    //     UserEntity user = userService.getUserById(id);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(user);
+    // }
+
+
+    @GetMapping("/returnbook")
+    public String showHomePage(Model model) {
+        Returning returning = new Returning();
+        model.addAttribute(returning);
+        return "returnBook";
+    }
+
+    @GetMapping("/lendBook")
+    public String showLendBookPage(Model model) {
+        Lend lend = new Lend();
+        model.addAttribute(lend);
+        return "lendBook";
+    }
+
+    @GetMapping("/renewbook")
+    public String showRenewBookPage(Model model) {
+        Renew renew = new Renew();
+        model.addAttribute(renew);
+        return "renewBook";
+    }
+    
+    @GetMapping("/fineDetails")
+    public String showFineDetailsPage() {
+        return "fineDetails";
+    }
+
+
+    
     @PostMapping("/submitReturnBook")
-    public String submitReturnBook(@Valid @ModelAttribute("returnbook") ReturnBook returnbook, BindingResult bindingResult, Model model){
+    public String submitReturnBook(@Valid @ModelAttribute("returning") Returning returning, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
+            System.out.println(returning);
             return "returnBook";
         }
         else{
-        System.out.println(returnbook);
+        System.out.println(returning);
         model.addAttribute("message", "Return successful!");
         return "studentHomePage";}
     } 
@@ -145,6 +155,7 @@ public class fooController {
     @PostMapping("/submitRenewBook")
     public String submitRenewBook(@Valid @ModelAttribute("renew") Renew renew, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
+            System.out.println(renew);
             return "renewBook";
         }
         else{
@@ -160,32 +171,10 @@ public class fooController {
         }
         else{
         System.out.println(lend);
+        // lendDetailsService.createLendDetails(lend);
         model.addAttribute("message", "Lending successful!");
         return "studentHomePage";}
     }
-
-
-    // @RequestMapping("/form")
-    // public String formPage(Model model){
-    //     Student student = new Student();
-    //     model.addAttribute("student", student);
-
-    //     List<String> branchList = Arrays.asList("Computer Engineering", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering");
-    //     model.addAttribute("branchList", branchList);
-    //     System.out.println(student);
-    //     return "student-form";
-    // }
-
-    // @PostMapping("/form")
-    // public String formSubmit(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult, Model model){
-    //     if(bindingResult.hasErrors()){
-    //         List<String> branchList = Arrays.asList("Computer Engineering", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering");
-    //         model.addAttribute("branchList", branchList);
-    //         return "student-form";
-    //     }
-    //     else
-    //         return "registration-success";
-    // }
 
     @PostMapping("/submitFineDetails")
     public String submitFineDetails(@Valid @ModelAttribute("finedet") FineDetails finedet, BindingResult bindingResult, Model model){
@@ -198,6 +187,57 @@ public class fooController {
         return "studentHomePage";}
     }
 
+   
+
+    
+    // @PostMapping("/addLendDetails")
+    // public ResponseEntity<LendDetails> addLendDetails(@RequestBody LendDetails lendDetails) {
+    //     LendDetails savedLendDetails = lendDetailsService.createLendDetails(lendDetails);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(savedLendDetails);
+    // }
+
+    // @PutMapping("/{id}")
+    // public ResponseEntity<LendDetails> updateLendDetails(@PathVariable Integer id, @RequestBody LendDetails lendDetailsDetails) {
+    //     LendDetails updatedLendDetails = lendDetailsService.updateLendDetails(id, lendDetailsDetails);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(updatedLendDetails);
+    // }
+
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteLendDetails(@PathVariable Integer id) {
+    //     lendDetailsService.deleteLendDetails(id);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.noContent().build();
+    // }
+
+
+    @GetMapping("/bookManagement")
+    public String showBookManagementPage(Model model) {
+        AddBook addBook = new AddBook();
+        model.addAttribute(addBook);
+        return "bookManagement";
+    }
+    @GetMapping("/addBook")
+    public String showAddBookPage(Model model){
+        AddBook addBook = new AddBook();
+        model.addAttribute(addBook);
+        return "bookManagement";
+    }
+    @GetMapping("/updateBook")
+    public String showUpdateBookPage(Model model) {
+        UpdateBook updateBook = new UpdateBook();
+        model.addAttribute(updateBook);
+        return "updateBook";
+    }
+    @GetMapping("/deleteBook")
+    public String showDeleteBookPage(Model model) {
+        DeleteBook deleteBook = new DeleteBook();
+        model.addAttribute(deleteBook);
+        return "deleteBook";
+    }
+
+
     @PostMapping("/submitAddBook")
     public String submitAddBook(@Valid @ModelAttribute("addBook") AddBook addBook, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
@@ -206,7 +246,59 @@ public class fooController {
         else{
         System.out.println(addBook);
         model.addAttribute("message", "successful!");
-        return "studentHomePage";}
+        return "librarianHomePage";}
     }
+
+    @PostMapping("/submitUpdateBook")
+    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") UpdateBook updateBook, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            System.out.println(updateBook);
+            return "updateBook";
+        }
+        else{
+        System.out.println(updateBook);
+        model.addAttribute("message", "successful!");
+        return "librarianHomePage";}
+    }
+
+    @PostMapping("/submitDeleteBook")
+    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") DeleteBook deleteBook, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "deleteBook";
+        }
+        else{
+        System.out.println(deleteBook);
+        model.addAttribute("message", "successful!");
+        return "librarianHomePage";}
+    }
+
+
+    // @GetMapping("/GetAllBooks")
+    // public List<Books> getAllBooks(){
+    //     System.out.println("req sent");
+    //     return booksService.getAllBooks();
+    // }
+
+    // @PostMapping("/books")
+    // public ResponseEntity<Books> createBook(Books book) {
+    //     Books savedBook = booksService.createBook(book);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(savedBook);
+    // }
+
+    // @PutMapping("/{id}")
+    // public ResponseEntity<Books> updateBook(@PathVariable Integer id, @RequestBody Books bookDetails) {
+    //     Books updatedBook = booksService.updateBook(id, bookDetails);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.ok(updatedBook);
+    // }
+
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteBook(@PathVariable Integer id) {
+    //     booksService.deleteBook(id);
+    //     System.out.println("req sent");
+    //     return ResponseEntity.noContent().build();
+    // }
+
 
 }

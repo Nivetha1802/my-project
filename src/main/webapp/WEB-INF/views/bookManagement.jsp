@@ -24,23 +24,27 @@
                 <li><a href="/deleteBook">Delete Book</a></li>
         </div>
         <div class="form-container">
-            <h2>Enter Book Details</h2>
-            <form:form action="${pageContext.request.contextPath}/submitLendBook" method="post" modelAttribute="lend">
+            <h2> Add Book</h2>
+            <h3>Enter Book Details</h3>
+            <form action="submitAddBook" method="post" modelAttribute="addBook">
 
-            <label for="bookid">Book ID</label>
-            <input type="text" id="bookid" name="bookid">
+            <label path="bookid" for="bookid">Book ID</label>
+            <input path="bookid" type="text" id="bookid" name="bookid" required>
 
-            <label for="bookName">Book name</label>
-            <input type="text" id="bookName" name="bookName">
+            <label path="bookName" for="bookName">Book name</label>
+            <input path="bookName" type="text" id="bookName" name="bookName" required>
 
-            <label for="subject">Book subject</label>
-            <input type="text" id="subject" name="subject">
+            <label path="author" for="author">Author name</label>
+            <input path="author" type="text" id="author" name="author" required>
 
-            <label for="info">Book info</label>
-            <input type="text" id="info" name="info">
-        </br>
+            <label path="subject" for="subject">Book subject</label>
+            <input path="subject" type="text" id="subject" name="subject" required>
+
+            <label path="info" for="info">Book info</label>
+            <input path="info" type="text" id="info" name="info" required>
+        <div>
             <button type="submit">Add</button>
-            
+        </div>  
         </div>
     </div>
 </div>

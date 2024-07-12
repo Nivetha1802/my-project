@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Book Management</title>
+    <title>Delete Book</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -25,19 +25,23 @@
             
             </ul>
         </div>
-        <div class="form-container">
-            <h2>Enter Book Details</h2>
+        <form class="form-container" action="submitUpdateBook" method="post" modelattribute="updateBook">
+            <h2> Update Book</h2>
+            <h3>Enter Book Details</h3>
             <label for="bookid">Book ID</label>
-            <input type="text" id="bookid" name="bookid">
+            <input type="text" id="bookid" name="bookid" required>
 
             <label for="bookName">Book name</label>
-            <input type="text" id="bookName" name="bookName">
+            <input type="text" id="bookName" name="bookName" required>
+      
+            <label path="author" for="author">Author name</label>
+            <input path="author" type="text" id="author" name="author" required>
 
             <label for="subject">Book subject</label>
-            <input type="text" id="subject" name="subject">
+            <input type="text" id="subject" name="subject" required>
 
             <label for="info">Book info</label>
-            <input type="text" id="info" name="info">
+            <input type="text" id="info" name="info" required>
         </br>
             <button type="submit">Update</button>
             

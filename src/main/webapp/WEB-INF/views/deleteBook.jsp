@@ -26,12 +26,16 @@
             </ul>
         </div>
         <div class="form-container">
-            <h2>Enter Book Details</h2>
-            <label for="bookid">Book ID</label>
-            <input type="text" id="bookid" name="bookid">
-            </br>
-            <button type="submit">Delete</button>
+        <h2> Delete Book</h2>
+        <h3>Enter Book Details</h3>
+        <form action="submitDeleteBook" method="post" modelAttribute="deleteBook">
             
+            <label for="bookid">Book ID</label>
+            <input type="text" id="bookid" name="bookid" required>
+            <div>
+            <button type="submit">Delete</button>
+            </div>
+        </div>    
         </div>
     </div>
 </div>

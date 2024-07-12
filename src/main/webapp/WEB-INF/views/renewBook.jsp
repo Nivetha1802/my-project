@@ -18,7 +18,7 @@
     </div>
     <div class="form-container">
         <h2>Renew Book</h2>
-        <form:form action="${pageContext.request.contextPath}/submitRenewBook" method="post" modelAttribute="renew">
+        <form:form action="submitRenewBook" method="post" modelAttribute="renew">
             <form:label path="id" for="id">Student id</form:label>
             <form:input path="id" id="id" required="true"/>
             <form:errors path="id" cssClass="error"/>

@@ -16,7 +16,8 @@
         </div>
     </div> 
     <div class="form-container">
-        <h2>Fine Details</h2>
+        <h2> Fine Details</h2>
+        <h3>Enter Book Details</h3>
         <form action="submitFineDetails" method="post" modelAttribute="finedet">
 
             <label path="id" for="id">ID number</label>

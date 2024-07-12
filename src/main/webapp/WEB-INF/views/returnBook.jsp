@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -18,44 +18,47 @@
     </div>
     <div class="form-container">
         <h2>Book Returning</h2>
-        <form:form action="${pageContext.request.contextPath}/submitReturnBook" method="post" modelAttribute="returnbook">
+        <form class="return-form-container" action="submitReturnBook" method="post" modelAttribute="returning">
 
-            <form:label path="id" for="id">Student/Teacher id</form:label>
-            <form:input path="id" id="id" required="true"/>
-            <form:errors path="id" cssClass="error"/>
+            <label path="id" for="id">Student/Teacher id</label>
+            <input path="id" type="text" id="id" name="id" required>
+       
+
+            <label path="bookid" for="bookid">Book ID</label>
+            <input path="bookid" type="text" id="bookid" name="bookid" required>
+         
             
-            <form:label path="bookid" for="bookid">Book ID</form:label>
-            <form:input path="bookid" id="bookid" required="true"/>
-            <form:errors path="bookid" cssClass="error"/>
-            </br>
-            <button type="button" onclick="setDates();calculateFine();">Enter</button>
+            <div>
+                <button type="button" onclick="setDates();calculateFine();">Enter</button>
+            </div>
             
-            <form:label path="date_of_lending" for="date_of_lending">Date Of Lending</form:label>
-            <form:input path="date_of_lending" id="date_of_lending" value="2024-04-20" readonly="true"/>
-            <form:errors path="date_of_lending" cssClass="error"/>
+            <label path="date_of_lending" for="date_of_lending">Date Of Lending</label>
+            <input path="date_of_lending" type="text" id="date_of_lending" name="date_of_lending" value="2024-04-20" readonly>
+         
+
+            <label path="date_of_return" for="date_of_return">Date Of Return</label>
+            <input path="date_of_return" type="text" id="date_of_return" name="date_of_return" value="2024-06-20" readonly>
+          
+            <label path="actual_date_of_return" for="actual_date_of_return">Actual date of returning</label>
+            <input path="actual_date_of_return" type="text" id="actual_date_of_return" name="actual_date_of_return" readonly>
+           
+
+            <label path="fine" for="fine">Fine</label>
+            <input path="fine" type="text" id="fine" name="fine" readonly>
             
-            <form:label path="date_of_return" for="date_of_return">Date Of Return</form:label>
-            <form:input path="date_of_return" id="date_of_return" value="2024-06-20" readonly="true"/>
-            <form:errors path="date_of_return" cssClass="error"/>
-             
-            <form:label path="actual_date_of_return" for="actual_date_of_return">Actual date of returning</form:label>
-            <form:input path="actual_date_of_return" id="actual_date_of_return" readonly="true"/>
-            <form:errors path="actual_date_of_return" cssClass="error"/>
-            
-            <form:label path="fine" for="fine">Fine</form:label>
-            <form:input path="fine" id="fine" readonly="true"/>
-            <form:errors path="fine" cssClass="error"/>
-            
-            <form:label path="fine_amount_left" for="fine_amount_left">Fine Amount left</form:label>
-            <form:input path="fine_amount_left" id="fine_amount_left" value="100" readonly="true"/>
-            <form:errors path="fine_amount_left" cssClass="error"/>
-        </br>
-            <button type="button">Pay</button>
-        </br> 
-            <button type="submit">Paid / Return</button>
-        </form:form>
+
+            <label path="fine_amount_left" for="fine_amount_left">Fine Amount left</label>
+            <input path="fine_amount_left" type="text" id="fine_amount_left" name="fine_amount_left" value="100" readonly>
+           
+
+            <div>
+                <button type="button">Pay</button>
+            </div>
+            <div> 
+                <button type="submit">Paid / Return</button>
+            </div>
+        </form>
     </div>
 
 </body>
 </html>
-
