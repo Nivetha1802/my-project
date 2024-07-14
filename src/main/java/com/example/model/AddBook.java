@@ -12,11 +12,14 @@ public class AddBook {
 
     @NotEmpty(message = "Book name is required")
     private String bookName;
+    
+    @NotEmpty(message = "Author name is required")
+    private String author;
 
     @NotEmpty(message = "Subject is required")
     private String subject;
 
-    @NotEmpty(message = "Info is required")
+	@NotEmpty(message = "Info is required")
     private String info;
 
     public Integer getBookid() {
@@ -35,6 +38,14 @@ public class AddBook {
         this.bookName = bookName;
     }
 
+    public String getAuthor() {
+ 		return author;
+ 	}
+
+ 	public void setAuthor(String author) {
+ 		this.author = author;
+ 	}
+ 	
     public String getSubject() {
         return subject;
     }
@@ -53,7 +64,7 @@ public class AddBook {
 
     @Override
     public String toString() {
-        return "AddBook [bookid=" + bookid + ", bookName=" + bookName + ", subject=" + subject + ", info=" + info + "]";
+        return "AddBook [bookid=" + bookid + ", bookName=" + bookName +",author=" + author + ", subject=" + subject + ", info=" + info + "]";
     }
 
 }

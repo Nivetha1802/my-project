@@ -125,6 +125,40 @@ public class fooController {
         model.addAttribute(lend);
         return "lendBook";
     }
+    
+    @GetMapping("/lendtable")
+    public String showLendtablePage(Model model) {
+   
+        List<Books> availableBooks = booksService.getAllBooks();
+        System.out.println(booksService.getAllBooks());
+        if (availableBooks != null) {
+            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
+        }
+        model.addAttribute("books", availableBooks);
+        return "lend_table";
+    }
+    
+    @PostMapping("/lendtable")
+    public String submitLendtable(@RequestParam("bookIds") List<Integer> bookIds,
+                            @RequestParam("bookNames") List<String> bookNames,
+                            @RequestParam("bookAuthors") List<String> bookAuthors,
+                            @RequestParam("bookSubject") List<String> bookSubjects,
+                            @RequestParam("bookInfo") List<String> bookInfos,
+                            Model model) {
+        List<Books> lendedBooks = new ArrayList<>();
+        for (int i = 0; i < bookIds.size(); i++) {
+            Books book = new Books();
+            book.setBookid(bookIds.get(i));
+            book.setBookname(bookNames.get(i));
+            book.setAuthor(bookAuthors.get(i));
+            book.setAuthor(bookSubjects.get(i));
+            book.setAuthor(bookInfos.get(i));
+            lendedBooks.add(book);
+        }
+        model.addAttribute("lendedBooks", lendedBooks);
+        System.out.println(lendedBooks);
+        return "lendDetails";
+    }
 
     @GetMapping("/renewbook")
     public String showRenewBookPage(Model model) {
@@ -175,6 +209,12 @@ public class fooController {
         model.addAttribute("message", "Lending successful!");
         return "studentHomePage";}
     }
+    
+//    @PostMapping("/lendtable/{id}")
+//    public String lendBook(@PathVariable Integer id) {
+//        booksService.createBook(id);
+//        return "redirect:/studentHomePage";
+//    }
 
     @PostMapping("/submitFineDetails")
     public String submitFineDetails(@Valid @ModelAttribute("finedet") FineDetails finedet, BindingResult bindingResult, Model model){

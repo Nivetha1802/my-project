@@ -15,8 +15,17 @@ public class Books {
     private String author;
     private String subject;
     private String info;
+    private Integer bookcount;
 
-    public Integer getBookid() {
+    public Integer getBookcount() {
+		return bookcount;
+	}
+
+	public void setBookcount(Integer bookcount) {
+		this.bookcount = bookcount;
+	}
+
+	public Integer getBookid() {
         return bookid;
     }
 
