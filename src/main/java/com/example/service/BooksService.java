@@ -65,9 +65,9 @@ public class BooksService {
     }
 
     // public List<Books> searchBooks(List<String> filters, String searchValue) {
-    //     // Implement logic to search books based on the selected filters and search value
+        
     //     if (filters == null || filters.isEmpty()) {
-    //         // Handle case where no filters are selected
+            
     //         return Collections.emptyList();
     //     }
     
@@ -76,16 +76,13 @@ public class BooksService {
     //     for (String filter : filters) {
     //         switch (filter) {
     //             case "bookname":
-    //                 books.addAll(booksRepository.findByBookNameContaining(searchValue));
+    //                 books.addAll(booksRepository.findByBooknameContaining(searchValue));
     //                 break;
     //             case "subject":
-    //                 books.addAll(booksRepository.findByBookNameContaining(searchValue));
+    //                 books.addAll(booksRepository.findByBooknameContaining(searchValue));
     //                 break;
     //             case "author":
-    //                 books.addAll(booksRepository.findByBookNameContaining(searchValue));
-    //                 break;
-    //             default:
-    //                 // Handle unknown filter (optional)
+    //                 books.addAll(booksRepository.findByBooknameContaining(searchValue));
     //                 break;
     //         }
     //     }

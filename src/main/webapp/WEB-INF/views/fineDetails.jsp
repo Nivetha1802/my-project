@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="./script.js"></script>
 </head>
-<body>
+<body class="library-page">
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">

@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Registerscript.js"></script>
 </head>
-<body>
+<body class="library-page">
     <div class="signup-main-container">
         <h1>Digital Library</h1>
         <div class="signup-container">

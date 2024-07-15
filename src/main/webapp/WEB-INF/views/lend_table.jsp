@@ -6,13 +6,22 @@
 <head>	
 	<meta charset="UTF-8">
 	<title>Book Lending</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-	<script type="text/javascript">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+
+    <script type="text/javascript">
         var contextPath = "${pageContext.request.contextPath}";
     </script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
 </head>
-<body>
+<body class="library-page">
+    <div class="header">
+        <h1>Digital Library</h1>
+        <div class="nav">
+            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/login">Logout</a>
+        </div>
+    </div> 
+    <div class="lend_container">
     <h1>Lend Books</h1>
     <p>Total Books: ${fn:length(books)}</p>
     <c:if test="${empty books}">
@@ -26,6 +35,7 @@
                 <th>Author</th>
 				<th>Subject</th>
 				<th>Info</th>
+                <th>Books count</th>
 				<th>Action</th>
             </tr>
         </thead>
@@ -36,15 +46,25 @@
                     <td>${book.bookname}</td>
 					<td>${book.author}</td>
 					<td>${book.subject}</td>
-					<td>${book.info}</td>
+                    <td>${book.info}</td>
+                    <td>${book.bookcount}</td>
                     <td>
 						<form action="${pageContext.request.contextPath}/submitlendtable" method="post">
-						<button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.bookname}', '${book.author}','${book.subject}','${book.info}')">Add</button>
+                            <c:choose>
+                                <c:when test="${book.bookcount == 0}">
+                                    <button type="button" disabled>Out of stock</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.bookname}', '${book.author}', '${book.subject}', '${book.bookcount}', '${book.info}')">Add</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
 	<button type="submit" onclick="submitLendBooks()">Lend Selected Books</button>
+    </div>
 </body>
 </html>

@@ -9,7 +9,14 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
 </head>
-<body>
+<body class="library-page">
+    <div class="header">
+        <h1>Digital Library</h1>
+        <div class="nav">
+            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/login">Logout</a>
+        </div>
+    </div>
     <h1>Lend Books</h1>
     <p>Total Books: ${fn:length(lendbooks)}</p>
     <c:if test="${empty lendbooks}">

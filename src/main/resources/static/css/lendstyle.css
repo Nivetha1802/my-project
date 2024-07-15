@@ -1,0 +1,124 @@
+.library-page body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.library-page .header {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.library-page .header h1 {
+    margin: 0;
+}
+.library-page .nav a {
+    color: black;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.library-page .lend_container p, h1 {
+    text-align: center;
+    color: black;
+}
+
+.library-page table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.library-page table,
+.library-page th,
+.library-page td {
+    border: 1px solid #ddd;
+}
+
+.library-page th,
+.library-page td {
+    padding: 12px;
+    text-align: left;
+}
+
+.library-page th {
+    background-color: #f0e8e8;
+    color: black;
+}
+
+.library-page tbody tr {
+    background-color: #f9f9f9;
+}
+
+.library-page tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.library-page button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.library-page button:hover {
+    background-color: #45a049;
+}
+
+.library-page button[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF;
+}
+
+.library-page button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.lend_table_container{
+    background-color: #000000;
+}
+
+.library-page .search-container {
+    margin: 20px 0;
+}
+
+.library-page .search-bar {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.library-page .search-bar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+}
+
+.library-page .search-bar button {
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.library-page .search-bar button:hover {
+    background-color: #45a049;
+}

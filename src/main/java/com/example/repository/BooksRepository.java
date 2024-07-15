@@ -22,6 +22,6 @@ public interface BooksRepository extends JpaRepository<Books, Integer> {
     @Query("UPDATE Books b SET b.bookcount = b.bookcount + 1 WHERE b.bookid = :bookId")
     void incrementBookCount(@Param("bookId") Integer bookId);
 
-    // Collection<? extends Books> findByBookNameContaining(String searchValue);
+    Collection<? extends Books> findByBooknameContaining(String searchValue);
 }
 

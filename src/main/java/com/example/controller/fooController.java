@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -440,14 +441,35 @@ public class fooController {
     // }
 
 
-    // @GetMapping("/search")
-    // public String searchBooks(@RequestParam(value = "filter", required = false) List<String> filters,
-    //                           @RequestParam(required = false) String searchValue,
-    //                           Model model) {
-    //     List<Books> books = booksService.searchBooks(filters, searchValue);
-    //     model.addAttribute("books", books);
-    //     return "search";
-    // }
+    @GetMapping("/search")
+    public String searchForm(Model model) {
+        return "search";
+    }
+
+    @PostMapping("/search")
+    public String searchResults(@RequestParam(value = "author", required = false) String authors,
+                                @RequestParam(value = "bookName", required = false) String bookNames,
+                                @RequestParam(value = "subject", required = false) String subjects,
+                                Model model) {
+    
+        List<Books> books = booksService.getAllBooks(); 
+    
+        // Null checks for the lists
+        if (authors != null && !authors.isEmpty()) {
+            books = books.stream().filter(book -> authors.contains(book.getAuthor())).collect(Collectors.toList());
+        }
+        if (bookNames != null && !bookNames.isEmpty()) {
+            books = books.stream().filter(book -> bookNames.contains(book.getBookname())).collect(Collectors.toList());
+        }
+        if (subjects != null && !subjects.isEmpty()) {
+            books = books.stream().filter(book -> subjects.contains(book.getSubject())).collect(Collectors.toList());
+        }
+    
+        model.addAttribute("books", books);
+        System.out.println(books);
+        return "searchResults";
+    }
+    
     
 
 }
