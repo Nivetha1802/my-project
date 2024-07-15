@@ -1,6 +1,8 @@
 package com.example.entity;
 
 import javax.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,9 +19,12 @@ public class LendDetails {
 
     private String bookname;
     private Integer bookid;
-    private Date lendDate;
-    private Date returnDate;
-    private Date renewDate;
+    private String author;
+    private String subject;
+    private String info;
+    private LocalDate lendDate;
+    private LocalDate returnDate;
+    private LocalDate renewDate;
     private Integer renewCount;
     private Double fine;
 
@@ -55,27 +60,27 @@ public class LendDetails {
         this.bookid = bookid;
     }
 
-    public Date getLendDate() {
+    public LocalDate getLendDate() {
         return lendDate;
     }
 
-    public void setLendDate(Date lendDate) {
+    public void setLendDate(LocalDate lendDate) {
         this.lendDate = lendDate;
     }
 
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
-    public Date getRenewDate() {
+    public LocalDate getRenewDate() {
         return renewDate;
     }
 
-    public void setRenewDate(Date renewDate) {
+    public void setRenewDate(LocalDate renewDate) {
         this.renewDate = renewDate;
     }
 
@@ -94,5 +99,30 @@ public class LendDetails {
     public void setFine(Double fine) {
         this.fine = fine;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
 }
 

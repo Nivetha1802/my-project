@@ -52,4 +52,12 @@ public class Lend {
         return "Lend [bookid=" + bookid + ", id=" + id + ", date_of_lending=" + date_of_lending
                 + ", date_of_return=" + date_of_return + ", fine_amount_left=" + fine_amount_left + "]";
     }
+    public void setAuthor(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAuthor'");
+    }
+    public void setBookname(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setBookname'");
+    }
 }

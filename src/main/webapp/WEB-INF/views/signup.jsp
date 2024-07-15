@@ -16,7 +16,7 @@
             <h2>Sign Up</h2>
             <form:form class="signup-form-container" action="${pageContext.request.contextPath}/submitRegistration" method="post" modelAttribute="user">
                 <div class="form-group">
-                    <form:label path="name">Your name:</form:label>
+                    <form:label path="name" for="name">Your name:</form:label>
                     <form:input path="name" id="name" required="true"/>
                     <form:errors path="name" cssClass="error"/>
                 </div>

@@ -14,14 +14,14 @@
         </div>
     </div>
     <div class="search-container">
-        <form class="search-bar" action="searchResults.jsp" method="get">
+        <form class="search-bar" action="search.jsp" method="get">
             <input type="text" name="query" placeholder="Search a book">
             <button type="submit">&#128269;</button>
         </form>
     </div>
     <div class="button-container">
-        <button onclick="window.location.href='/lendBook'">Lend a book</button>
-        <button onclick="window.location.href='/returnbook'">Return a book</button>
+        <button onclick="window.location.href='/lendtable'">Lend a book</button>
+        <button onclick="window.location.href='/returntable'">Return a book</button>
         <button onclick="window.location.href='/renewbook'">Renew a book</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
     </div>

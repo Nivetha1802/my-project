@@ -15,7 +15,8 @@ public class Books {
     private String author;
     private String subject;
     private String info;
-    private Integer bookcount;
+    @Column(nullable = false, columnDefinition = "int default 10")
+    private Integer bookcount = 10;
 
     public Integer getBookcount() {
 		return bookcount;

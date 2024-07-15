@@ -1,11 +1,13 @@
 package com.example.service;
 
+import com.example.entity.Books;
 import com.example.entity.LendDetails;
+import com.example.model.Lend;
 import com.example.repository.LendDetailsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// import java.util.Date;
+import java.util.*;
 
 @Service
 public class LendDetailsService {
@@ -27,6 +29,13 @@ public class LendDetailsService {
         lendDetailsRepository.deleteById(lendId);
     }
 
+    public List<LendDetails> getAllLendDetails() {
+        return lendDetailsRepository.findAll();
+    }
+
   
+    public void saveLendedBooks(List<LendDetails> lendedBooks) {
+        lendDetailsRepository.saveAll(lendedBooks);
+    }
 }
 
