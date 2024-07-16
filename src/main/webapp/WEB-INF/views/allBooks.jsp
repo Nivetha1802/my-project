@@ -5,7 +5,7 @@
 <html>
 <head>	
 	<meta charset="UTF-8">
-	<title>Book Lending</title>
+	<title>All Books</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
     </head>
@@ -18,7 +18,7 @@
         </div>
     </div> 
     <div class="lend_container">
-    <h1>Lend Books</h1>
+    <h1>All Books</h1>
     <p>Total Books: ${fn:length(books)}</p>
     <c:if test="${empty books}">
         <p>No books available for lending.</p>
@@ -32,7 +32,6 @@
 				<th>Subject</th>
 				<th>Info</th>
                 <th>Books count</th>
-				<th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -44,26 +43,9 @@
 					<td>${book.subject}</td>
                     <td>${book.info}</td>
                     <td>${book.bookcount}</td>
-                    <td>
-						<!-- <form action="${pageContext.request.contextPath}/submitlendtable" method="post"> -->
-                            <c:choose>
-                                <c:when test="${book.bookcount == 0}">
-                                    <button type="button" disabled>Out of stock</button>
-                                </c:when>
-                                <c:otherwise>
-                                    <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.bookname}', '${book.author}', '${book.subject}', '${book.bookcount}', '${book.info}')">Add</button>
-                                </c:otherwise>
-                            </c:choose>
-                        <!-- </form> -->
-                    </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-	<button type="button" onclick="submitLendBooks()">Lend Selected Books</button>
-    </div>
-    <form id="lendForm" action="submitlendtable" method="post">
-        <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
-    </form>
 </body>
 </html>

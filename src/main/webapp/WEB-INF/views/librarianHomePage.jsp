@@ -22,6 +22,7 @@
     <div class="button-container">
         <button onclick="window.location.href='/bookManagement'">Manage Books</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
+        <button onclick="window.location.href='/allBooks'">View All Books</button>
     </div>
 </body>
 </html>

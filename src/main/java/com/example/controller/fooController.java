@@ -5,7 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,12 +197,36 @@ public class fooController {
     }
 
     @PostMapping("/submitlendtable")
-    public String getBooksByIds(@RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
+    public String submitLendTable(@RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
         List<Books> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<Books>>() {});
         session.setAttribute("selectedBooks", selectedBooksList);
         System.out.println(selectedBooksList);
         return "redirect:/lendDetails";
     }
+    @PostMapping("/submitlenddetails")
+    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
+    List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<LendDetails>>() {});
+    Integer userId = (Integer) session.getAttribute("userId");
+    System.out.println(userId);
+    UserEntity user = userService.getUserById(userId);
+    System.out.println(selectedBooksList);
+    for (LendDetails book : selectedBooksList) {
+        LendDetails lendDetail = new LendDetails();
+        lendDetail.setUser(user);
+        lendDetail.setBookid(book.getBookid());
+        lendDetail.setLendDate(book.getLendDate()); // Set the current date as the lending date
+        lendDetail.setReturnDate(book.getReturnDate()); // 14 days after lending date
+        lendDetail.setRenewDate(null);
+        lendDetail.setRenewCount(0);
+        lendDetail.setFine(0.0);
+        lendDetailsService.createLendDetails(lendDetail);
+        Books bookEntity = booksService.getBookById(book.getBookid());
+        booksService.updateBook(book.getBookid(), bookEntity);
+    }
+    //session.setAttribute("selectedBooks", selectedBooksList);
+
+    return "studentHomePage";
+}
 
     // @GetMapping("/lendDetails")
     // public String showLendDetails(Model model, HttpSession session) {
@@ -272,8 +299,14 @@ public class fooController {
     }
 
     @GetMapping("/fineDetails")
-    public String showFineDetailsPage() {
-        return "fineDetails";
+    public String showFineDetailsPage(Model model) {
+        List<Books> availableBooks = booksService.getAllBooks();
+        System.out.println(booksService.getAllBooks());
+        if (availableBooks != null) {
+            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
+        }
+        model.addAttribute("books", availableBooks);
+        return "allBooks";
     }
 
     @PostMapping("/submitReturnBook")
@@ -366,7 +399,7 @@ public class fooController {
 
     @GetMapping("/addBook")
     public String showAddBookPage(Model model) {
-        AddBook addBook = new AddBook();
+        Books addBook = new Books();
         model.addAttribute(addBook);
         return "bookManagement";
     }
@@ -380,18 +413,30 @@ public class fooController {
 
     @GetMapping("/deleteBook")
     public String showDeleteBookPage(Model model) {
-        DeleteBook deleteBook = new DeleteBook();
+        Books deleteBook = new Books();
         model.addAttribute(deleteBook);
         return "deleteBook";
     }
 
+    @GetMapping("/allBooks")
+    public String showAllBookPage(Model model) {
+        List<Books> availableBooks = booksService.getAllBooks();
+        System.out.println(booksService.getAllBooks());
+        if (availableBooks != null) {
+            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
+        }
+        model.addAttribute("books", availableBooks);
+        return "allBooks";
+    }
+
     @PostMapping("/submitAddBook")
-    public String submitAddBook(@Valid @ModelAttribute("addBook") AddBook addBook, BindingResult bindingResult,
+    public String submitAddBook(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "bookManagement";
         } else {
             System.out.println(addBook);
+            booksService.createBook(addBook);
             model.addAttribute("message", "successful!");
             return "librarianHomePage";
         }
@@ -411,12 +456,13 @@ public class fooController {
     }
 
     @PostMapping("/submitDeleteBook")
-    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") DeleteBook deleteBook,
+    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "deleteBook";
         } else {
             System.out.println(deleteBook);
+            booksService.deleteBook(deleteBook.getBookid());
             model.addAttribute("message", "successful!");
             return "librarianHomePage";
         }

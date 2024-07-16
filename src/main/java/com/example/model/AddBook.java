@@ -11,7 +11,7 @@ public class AddBook {
     private Integer bookid;
 
     @NotEmpty(message = "Book name is required")
-    private String bookName;
+    private String bookname;
     
     @NotEmpty(message = "Author name is required")
     private String author;
@@ -31,11 +31,11 @@ public class AddBook {
     }
 
     public String getBookName() {
-        return bookName;
+        return bookname;
     }
 
     public void setBookName(String bookName) {
-        this.bookName = bookName;
+        this.bookname = bookName;
     }
 
     public String getAuthor() {
@@ -64,7 +64,7 @@ public class AddBook {
 
     @Override
     public String toString() {
-        return "AddBook [bookid=" + bookid + ", bookName=" + bookName +",author=" + author + ", subject=" + subject + ", info=" + info + "]";
+        return "AddBook [bookid=" + bookid + ", bookName=" + bookname +",author=" + author + ", subject=" + subject + ", info=" + info + "]";
     }
 
 }

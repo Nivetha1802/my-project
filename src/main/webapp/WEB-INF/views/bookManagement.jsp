@@ -31,8 +31,8 @@
             <label path="bookid" for="bookid">Book ID</label>
             <input path="bookid" type="text" id="bookid" name="bookid" required>
 
-            <label path="bookName" for="bookName">Book name</label>
-            <input path="bookName" type="text" id="bookName" name="bookName" required>
+            <label path="bookname" for="bookname">Book name</label>
+            <input path="bookname" type="text" id="bookname" name="bookname" required>
 
             <label path="author" for="author">Author name</label>
             <input path="author" type="text" id="author" name="author" required>

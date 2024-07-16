@@ -25,7 +25,7 @@
     <table>
         <thead>
             <tr>
-				<th>No.</th>
+				<th>Book Id</th>
                 <th>Title</th>
                 <th>Author</th>
 				<th>Subject</th>
