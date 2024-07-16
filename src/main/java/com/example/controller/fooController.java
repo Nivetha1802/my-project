@@ -1,11 +1,19 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -25,10 +33,13 @@ public class fooController {
 
     private LendDetailsService lendDetailsService;
 
-    public fooController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService) {
+    private final ObjectMapper objectMapper;
+
+    public fooController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.booksService = booksService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping({ "/", "/logout" })
@@ -59,10 +70,12 @@ public class fooController {
 
     @PostMapping("/submitRegistration")
     public String submitRegistration(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
-            Model model) {
+            Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "signup";
         } else {
+            session.setAttribute("userId", user.getId());
+            System.out.println("user id:" + user.getId());
             System.out.println(user);
             userService.saveUser(user);
             model.addAttribute("message", "Registration successful!");
@@ -181,55 +194,52 @@ public class fooController {
     }
 
     @PostMapping("/submitlendtable")
-    public String submitlendtable(@RequestParam("bookIds") List<Integer> bookIds,
-            @RequestParam("bookNames") List<String> bookNames,
-            @RequestParam("bookAuthors") List<String> bookAuthors,
-            @RequestParam("bookSubjects") List<String> bookSubjects,
-            @RequestParam("bookInfos") List<String> bookInfos,
-            HttpSession session) {
-        System.out.println(bookIds);
-        List<LendDetails> selectedBooks = new ArrayList<>();
-        for (int i = 0; i < bookIds.size(); i++) {
-            LendDetails selectedBook = new LendDetails();
-            selectedBook.setBookid(bookIds.get(i));
-            selectedBook.setBookname(bookNames.get(i));
-            selectedBook.setAuthor(bookAuthors.get(i));
-            selectedBook.setSubject(bookSubjects.get(i));
-            selectedBook.setInfo(bookInfos.get(i));
-            selectedBooks.add(selectedBook);
-        }
-
-        // Save selectedBooks in session
-        session.setAttribute("selectedBooks", selectedBooks);
-
+    public String getBooksByIds(@RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
+        List<Books> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<Books>>() {});
+        session.setAttribute("selectedBooks", selectedBooksList);
+        System.out.println(selectedBooksList);
         return "redirect:/lendDetails";
     }
 
+    // @GetMapping("/lendDetails")
+    // public String showLendDetails(Model model, HttpSession session) {
+    //     List<LendDetails> selectedBooks = (List<LendDetails>) session.getAttribute("selectedBooks");
+    //     LocalDate lendDate = LocalDate.now();
+    //     LocalDate returnDate = lendDate.plusDays(14);
+    //     if (selectedBooks != null) {
+    //         model.addAttribute("selectedBooks", selectedBooks);
+    //         List<LendDetails> lendDetailsList = new ArrayList<>();
+    //         for (LendDetails lend : selectedBooks) {
+    //             LendDetails lendDetails = new LendDetails();
+    //             lendDetails.setBookid(lend.getBookid());
+    //             lendDetails.setBookname(lend.getBookname());
+    //             lendDetails.setAuthor(lend.getAuthor());
+    //             lendDetails.setSubject(lend.getSubject());
+    //             lendDetails.setLendDate(lendDate);
+    //             lendDetails.setReturnDate(returnDate);
+    //             lendDetailsList.add(lendDetails);
+    //         }
+
+    //         // Pass bookDetailsList to the view
+    //         model.addAttribute("lendDetailsList", lendDetailsList);
+    //     } else {
+    //         model.addAttribute("error", "No books selected for lending.");
+    //     }
+
+    //     return "lend_details";
+    // }
+    
     @GetMapping("/lendDetails")
-    public String showLendDetails(Model model, HttpSession session) {
-        List<LendDetails> selectedBooks = (List<LendDetails>) session.getAttribute("selectedBooks");
-        LocalDate lendDate = LocalDate.now();
-        LocalDate returnDate = lendDate.plusDays(14);
+    public String showLendDetails(HttpSession session, Model model) {
+        @SuppressWarnings("unchecked")
+        List<Books> selectedBooks = (List<Books>) session.getAttribute("selectedBooks");
         if (selectedBooks != null) {
-            model.addAttribute("selectedBooks", selectedBooks);
-            List<LendDetails> lendDetailsList = new ArrayList<>();
-            for (LendDetails lend : selectedBooks) {
-                LendDetails lendDetails = new LendDetails();
-                lendDetails.setBookid(lend.getBookid());
-                lendDetails.setBookname(lend.getBookname());
-                lendDetails.setAuthor(lend.getAuthor());
-                lendDetails.setSubject(lend.getSubject());
-                lendDetails.setLendDate(lendDate);
-                lendDetails.setReturnDate(returnDate);
-                lendDetailsList.add(lendDetails);
-            }
-
-            // Pass bookDetailsList to the view
-            model.addAttribute("lendDetailsList", lendDetailsList);
+            System.out.println("Selected Books: " + selectedBooks);
         } else {
-            model.addAttribute("error", "No books selected for lending.");
+            System.out.println("Selected Books is null");
         }
-
+        model.addAttribute("selectedBooks", selectedBooks);
+        System.out.println("model"+selectedBooks);
         return "lend_details";
     }
 
@@ -248,11 +258,11 @@ public class fooController {
             lendDetailsService.deleteLendDetails(bookId);
         }
 
-    session.removeAttribute("selectedBooks");
+        session.removeAttribute("selectedBooks");
 
-    return"redirect:/studenthomepage"; // Redirect to a success page or another appropriate endpoint
+        return "redirect:/studenthomepage"; // Redirect to a success page or another appropriate endpoint
 
-}
+    }
 
     @GetMapping("/renewbook")
     public String showRenewBookPage(Model model) {
@@ -440,7 +450,6 @@ public class fooController {
     // return ResponseEntity.noContent().build();
     // }
 
-
     @GetMapping("/search")
     public String searchForm(Model model) {
         return "search";
@@ -448,12 +457,12 @@ public class fooController {
 
     @PostMapping("/search")
     public String searchResults(@RequestParam(value = "author", required = false) String authors,
-                                @RequestParam(value = "bookName", required = false) String bookNames,
-                                @RequestParam(value = "subject", required = false) String subjects,
-                                Model model) {
-    
-        List<Books> books = booksService.getAllBooks(); 
-    
+            @RequestParam(value = "bookName", required = false) String bookNames,
+            @RequestParam(value = "subject", required = false) String subjects,
+            Model model) {
+
+        List<Books> books = booksService.getAllBooks();
+
         // Null checks for the lists
         if (authors != null && !authors.isEmpty()) {
             books = books.stream().filter(book -> authors.contains(book.getAuthor())).collect(Collectors.toList());
@@ -464,12 +473,10 @@ public class fooController {
         if (subjects != null && !subjects.isEmpty()) {
             books = books.stream().filter(book -> subjects.contains(book.getSubject())).collect(Collectors.toList());
         }
-    
+
         model.addAttribute("books", books);
         System.out.println(books);
         return "searchResults";
     }
-    
-    
 
 }

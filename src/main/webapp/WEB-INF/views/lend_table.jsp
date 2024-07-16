@@ -7,12 +7,8 @@
 	<meta charset="UTF-8">
 	<title>Book Lending</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
-
-    <script type="text/javascript">
-        var contextPath = "${pageContext.request.contextPath}";
-    </script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
-</head>
+    </head>
 <body class="library-page">
     <div class="header">
         <h1>Digital Library</h1>
@@ -49,7 +45,7 @@
                     <td>${book.info}</td>
                     <td>${book.bookcount}</td>
                     <td>
-						<form action="${pageContext.request.contextPath}/submitlendtable" method="post">
+						<!-- <form action="${pageContext.request.contextPath}/submitlendtable" method="post"> -->
                             <c:choose>
                                 <c:when test="${book.bookcount == 0}">
                                     <button type="button" disabled>Out of stock</button>
@@ -58,13 +54,16 @@
                                     <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.bookname}', '${book.author}', '${book.subject}', '${book.bookcount}', '${book.info}')">Add</button>
                                 </c:otherwise>
                             </c:choose>
-                        </form>
+                        <!-- </form> -->
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-	<button type="submit" onclick="submitLendBooks()">Lend Selected Books</button>
+	<button type="button" onclick="submitLendBooks()">Lend Selected Books</button>
     </div>
+    <form id="lendForm" action="submitlendtable" method="post">
+        <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
+    </form>
 </body>
 </html>

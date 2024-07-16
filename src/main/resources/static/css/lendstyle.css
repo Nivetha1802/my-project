@@ -14,6 +14,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 1px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .library-page .header h1 {
@@ -86,39 +88,46 @@
     background-color: #0056b3;
 }
 
-.lend_table_container{
-    background-color: #000000;
+.lend_container {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.library-page .search-container {
-    margin: 20px 0;
-}
-
-.library-page .search-bar {
+.search-container {
+    margin-bottom: 20px;
     display: flex;
-    justify-content: center;
-    width: 50%;
-    margin: 0 auto;
+    align-items: center;
 }
-
-.library-page .search-bar input[type="text"] {
-    width: 100%;
+.search-container input[type="text"] {
+    width: 80%;
     padding: 10px;
+    margin-right: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    font-size: 16px;
+    border-radius: 5px;
 }
-
-.library-page .search-bar button {
-    padding: 10px;
-    background-color: #4CAF50;
+.search-container button {
+    padding: 10px 20px;
     border: none;
-    border-radius: 0 4px 4px 0;
+    border-radius: 5px;
+    background-color: #007bff;
     color: white;
     cursor: pointer;
-    font-size: 16px;
 }
-
-.library-page .search-bar button:hover {
-    background-color: #45a049;
+.search-container button:hover {
+    background-color: #0056b3;
+}
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+legend {
+    font-weight: bold;
+}
+label {
+    display: block;
+    margin: 5px 0;
 }

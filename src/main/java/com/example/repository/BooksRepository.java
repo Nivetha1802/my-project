@@ -2,7 +2,7 @@ package com.example.repository;
 
 import com.example.entity.Books;
 
-import java.util.Collection;
+import java.util.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,6 +21,9 @@ public interface BooksRepository extends JpaRepository<Books, Integer> {
     @Modifying
     @Query("UPDATE Books b SET b.bookcount = b.bookcount + 1 WHERE b.bookid = :bookId")
     void incrementBookCount(@Param("bookId") Integer bookId);
+
+    @Query("SELECT b FROM Books b WHERE b.id IN :bookIds")
+    List<Books> findByIds(@Param("bookIds") List<Long> bookIds);
 
     Collection<? extends Books> findByBooknameContaining(String searchValue);
 }

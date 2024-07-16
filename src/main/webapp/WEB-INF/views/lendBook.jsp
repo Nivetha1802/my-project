@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lendingscript.js"></script>
 </head>
-<body class="library-page">
+<body>
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">

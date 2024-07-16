@@ -6,7 +6,7 @@
 <head>	
 	<meta charset="UTF-8">
 	<title>Book Returning</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
 </head>
 <body class="library-page">

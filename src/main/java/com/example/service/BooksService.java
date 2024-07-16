@@ -91,6 +91,10 @@ public class BooksService {
     //     Set<Books> uniqueBooks = new LinkedHashSet<>(books);
     //     return new ArrayList<>(uniqueBooks);
     // }
+
+    public List<Books> getBooksByIds(List<Long> bookIds) {
+        return booksRepository.findByIds(bookIds);
+    }
     
 }
 

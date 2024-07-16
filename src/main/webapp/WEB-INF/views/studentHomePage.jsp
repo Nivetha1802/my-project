@@ -5,7 +5,7 @@
     <title>Digital Library</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body class="library-page">
+<body>
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">
