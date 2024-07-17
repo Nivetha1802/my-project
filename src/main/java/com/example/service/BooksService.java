@@ -41,19 +41,6 @@ public class BooksService {
         booksRepository.deleteById(bookid);
     }
 
-
-    public List<Books> lendBooks(List<Integer> bookIds) {
-        List<Books> lendedBooks = new ArrayList<>();
-        for (Integer bookId : bookIds) {
-            Optional<Books> book = booksRepository.findById(bookId);
-            if (book.isPresent() && book.get().getBookcount() > 0) {
-                booksRepository.decrementBookCount(bookId);
-                lendedBooks.add(book.get());
-            }
-        }
-        return lendedBooks;
-    }
-
     public void returnBooks(List<Integer> bookIds) {
         for (Integer bookId : bookIds) {
             Optional<Books> book = booksRepository.findById(bookId);

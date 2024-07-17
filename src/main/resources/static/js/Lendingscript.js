@@ -25,3 +25,14 @@ function submitLendDetails() {
     console.log(selectedBooksInput.value);
     document.getElementById('lendDetForm').submit();
 }
+function showSuccessMessage(message) {
+    toastr.success(message, 'Success', {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        showDuration: '300',
+        hideDuration: '1000',
+        timeOut: '5000',
+        extendedTimeOut: '1000'
+    });
+}

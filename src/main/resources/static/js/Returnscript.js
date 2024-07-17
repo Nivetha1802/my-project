@@ -1,42 +1,54 @@
-function calculateFine() {
-    const lendingDateInput = document.getElementById('date_of_lending').value;
-    const returnDateInput = document.getElementById('date_of_return').value;
+function calculateFine(bookId) {
+    const dueDateInput = document.getElementById(`due_date_${bookId}`).innerText;
 
-    if (!lendingDateInput || !returnDateInput) {
-        document.getElementById('fine').value = 0;
+    if (!dueDateInput) {
+        document.getElementById(`fine_${bookId}`).innerText = '0';
         return;
     }
 
-    const lendingDate = new Date(lendingDateInput);
-    const returnDate = new Date(returnDateInput);
-    
-    // Assuming a lending period of 14 days
-    const dueDate = new Date(lendingDate);
-    dueDate.setDate(lendingDate.getDate() + 14);
+    const dueDate = new Date(dueDateInput);
+    const actualReturnDate = new Date();
 
-    const dailyFineRate = 10; // Fine rate per day in currency units
+    const dailyFineRate = 10;
     let fineAmount = 0;
 
-    if (returnDate > dueDate) {
-        const lateDays = Math.ceil((returnDate - dueDate) / (1000 * 60 * 60 * 24));
+    if (actualReturnDate > dueDate) {
+        const lateDays = Math.ceil((actualReturnDate - dueDate) / (1000 * 60 * 60 * 24));
         fineAmount = lateDays * dailyFineRate;
     }
-    console.log("success");
-    document.getElementById('fine').value = fineAmount;
-}
-function setDates() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); 
-    const day = String(today.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
 
-    const returnDateInput = document.getElementById('actual_date_of_return');
-    returnDateInput.value = formattedDate;
+    const actualreturnDateStr = actualReturnDate.toISOString().split('T')[0];
+
     console.log("success");
+    document.getElementById(`fine_${bookId}`).innerText = fineAmount.toFixed(2);
+    const rows = document.querySelectorAll('#lendDetailsTable tbody tr');
+
+            rows.forEach(row => {
+                row.querySelector('.lending-date').textContent = lendingDateStr;
+                row.querySelector('.return-date').textContent = returnDateStr;
+            });
+    document.getElementById(`actual_return_date_${bookId}`).innerText = actualreturnDateStr;
 }
 
-// window.onload = function() {
-//     setDates();
-//     calculateFine();
-// };
+let selectedBooks = [];
+
+function toggleBook(button, lendId) {
+    if (selectedBooks.includes(lendId)) {
+        selectedBooks = selectedBooks.filter(id => id !== lendId);
+        button.textContent = 'Return';
+        button.classList.remove('Returned');
+    } else {
+        selectedBooks.push(lendId);
+        button.textContent = 'Returned';
+        button.classList.add('Returned');
+    }
+    console.log(slectedBooks);
+}
+
+function submitReturnBooks() {
+    var selectedBooksInput = document.getElementById('selectedBooks');
+    selectedBooksInput.value = selectedBooks.join(',');
+    console.log(selectedBooksInput.value);
+    const form = document.getElementById('returnBooksForm');
+    form.submit();
+}

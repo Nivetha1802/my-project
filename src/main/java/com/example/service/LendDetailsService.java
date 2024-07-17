@@ -37,5 +37,20 @@ public class LendDetailsService {
     public void saveLendedBooks(List<LendDetails> lendedBooks) {
         lendDetailsRepository.saveAll(lendedBooks);
     }
+
+    @Transactional
+    public void renewBook(Integer lendId) {
+        LendDetails lendDetails = lendDetailsRepository.findById(lendId).orElseThrow(() -> new RuntimeException("LendDetails not found"));
+        lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
+
+        // Extend the return date by 14 days
+        // Calendar calendar = Calendar.getInstance();
+        // calendar.setTime(lendDetails.getReturnDate());
+        // calendar.add(Calendar.DAY_OF_YEAR, 14);
+        // lendDetails.setReturnDate(calendar.getTime());
+
+        lendDetailsRepository.save(lendDetails);
+    }
+
 }
 

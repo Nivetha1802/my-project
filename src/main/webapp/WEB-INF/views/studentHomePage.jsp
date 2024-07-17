@@ -22,8 +22,9 @@
     <div class="button-container">
         <button onclick="window.location.href='/lendtable'">Lend a book</button>
         <button onclick="window.location.href='/returntable'">Return a book</button>
-        <button onclick="window.location.href='/renewbook'">Renew a book</button>
+        <button onclick="window.location.href='/renewtable'">Renew a book</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
+        <button onclick="window.location.href='/allBooks'">View All Books</button>
     </div>
 </body>
 </html>

@@ -5,12 +5,10 @@ let selectedBooks = [];
                 return; 
             }
             if (selectedBooks.some(book => book.bookid === bookid)) {
-                // Remove book from selection
                 selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
                 button.textContent = 'Add';
                 button.classList.remove('added');
             } else {
-                // Add book to selection
                 selectedBooks.push({ button, bookid, bookname, author, subject, bookcount, info});
                 button.textContent = 'Added';
                 button.classList.add('added');
@@ -25,5 +23,7 @@ let selectedBooks = [];
             console.log(selectedBooks);
             document.getElementById('lendForm').submit();
         }
+
+        
         
     

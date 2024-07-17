@@ -65,5 +65,6 @@
     <form id="lendForm" action="submitlendtable" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
     </form>
+    
 </body>
 </html>

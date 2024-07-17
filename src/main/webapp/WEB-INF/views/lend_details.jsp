@@ -50,6 +50,9 @@
     <form id="lendDetForm" action="submitlenddetails" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
     </form>
+    <c:if test="${not empty successMessage}">
+            showSuccessMessage('${successMessage}');
+    </c:if>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -92,6 +95,17 @@
             selectedBooksInput.value = JSON.stringify(selectedBooks);
             console.log(selectedBooksInput.value);
             document.getElementById('lendDetForm').submit();
+        }
+        function showSuccessMessage(message) {
+            toastr.success(message, 'Success', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                showDuration: '300',
+                hideDuration: '1000',
+                timeOut: '5000',
+                extendedTimeOut: '1000'
+            });
         }
     </script>
 </body>
