@@ -209,9 +209,9 @@ public class fooController {
     @PostMapping("/submitReturnBooks")
     public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,
             HttpSession session) throws JsonMappingException, JsonProcessingException {
-        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<LendDetails>>() {
-        });
-        
+        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
+                new TypeReference<List<LendDetails>>() {
+                });
 
         for (LendDetails book : selectedBooksList) {
             Books bookEntity = booksService.getBookById(book.getBookid());
@@ -235,29 +235,23 @@ public class fooController {
 
     @PostMapping("/submitRenewtable")
     public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,
-            HttpSession session) {
-        List<Integer> lendIds = Arrays.stream(selectedBooks.split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-
-        for (int lendId : lendIds) {
-            lendDetailsService.renewBook(lendId);
+            HttpSession session) throws JsonMappingException, JsonProcessingException {
+        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,new TypeReference<List<LendDetails>>() {});
+        for (LendDetails book : selectedBooksList) {
+            lendDetailsService.renewBook(book.getLendId());
         }
-
-        session.removeAttribute("selectedBooks");
-
         return "redirect:/studentHomePage";
     }
 
     @GetMapping("/fineDetails")
-    public String showFineDetailsPage(Model model) {
-        List<Books> availableBooks = booksService.getAllBooks();
-        System.out.println(booksService.getAllBooks());
-        if (availableBooks != null) {
-            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
-        }
-        model.addAttribute("books", availableBooks);
-        return "fineDetails";
+    public String showFineDetailsPage(Model model, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        UserEntity user = userService.getUserById(userId);
+        String username = user.getName();
+        List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
+        model.addAttribute("books", lendBooks);
+        model.addAttribute("user", username);
+        return "fine_table";
     }
 
     // @PostMapping("/submitReturnBook")
@@ -274,42 +268,42 @@ public class fooController {
     // }
     // }
 
-    @PostMapping("/submitRenewBook")
-    public String submitRenewBook(@Valid @ModelAttribute("renew") Renew renew, BindingResult bindingResult,
-            Model model) {
-        if (bindingResult.hasErrors()) {
-            System.out.println(renew);
-            return "redirect:/renewBook";
-        } else {
-            System.out.println(renew);
-            model.addAttribute("message", "Renew successful!");
-            return "redirect:/studentHomePage";
-        }
-    }
+    // @PostMapping("/submitRenewBook")
+    // public String submitRenewBook(@Valid @ModelAttribute("renew") Renew renew, BindingResult bindingResult,
+    //         Model model) {
+    //     if (bindingResult.hasErrors()) {
+    //         System.out.println(renew);
+    //         return "redirect:/renewBook";
+    //     } else {
+    //         System.out.println(renew);
+    //         model.addAttribute("message", "Renew successful!");
+    //         return "redirect:/studentHomePage";
+    //     }
+    // }
 
-    @PostMapping("/submitLendBook")
-    public String submitLendBook(@Valid @ModelAttribute("lend") Lend lend, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/lendBook";
-        } else {
-            System.out.println(lend);
-            // lendDetailsService.createLendDetails(lend);
-            model.addAttribute("message", "Lending successful!");
-            return "redirect:/studentHomePage";
-        }
-    }
+    // @PostMapping("/submitLendBook")
+    // public String submitLendBook(@Valid @ModelAttribute("lend") Lend lend, BindingResult bindingResult, Model model) {
+    //     if (bindingResult.hasErrors()) {
+    //         return "redirect:/lendBook";
+    //     } else {
+    //         System.out.println(lend);
+    //         // lendDetailsService.createLendDetails(lend);
+    //         model.addAttribute("message", "Lending successful!");
+    //         return "redirect:/studentHomePage";
+    //     }
+    // }
 
-    @PostMapping("/submitFineDetails")
-    public String submitFineDetails(@Valid @ModelAttribute("finedet") FineDetails finedet, BindingResult bindingResult,
-            Model model) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/fineDetails";
-        } else {
-            System.out.println(finedet);
-            model.addAttribute("message", "successful!");
-            return "redirect:/studentHomePage";
-        }
-    }
+    // @PostMapping("/submitFineDetails")
+    // public String submitFineDetails(@Valid @ModelAttribute("finedet") FineDetails finedet, BindingResult bindingResult,
+    //         Model model) {
+    //     if (bindingResult.hasErrors()) {
+    //         return "redirect:/fineDetails";
+    //     } else {
+    //         System.out.println(finedet);
+    //         model.addAttribute("message", "successful!");
+    //         return "redirect:/studentHomePage";
+    //     }
+    // }
 
     @GetMapping("/bookManagement")
     public String showBookManagementPage(Model model) {

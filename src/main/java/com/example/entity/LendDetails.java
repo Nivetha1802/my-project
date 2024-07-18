@@ -1,9 +1,8 @@
 package com.example.entity;
 
 import javax.persistence.*;
-
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "LendDetails")
@@ -121,6 +120,27 @@ public class LendDetails {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getUserName() {
+        return user != null ? user.getName() : null;
+    }
+
+    public Integer getUserId() {
+        return user != null ? user.getId() : null;
+    }
+
+    public void calculateFine(LocalDate actualReturnDate) {
+        if (actualReturnDate.isAfter(returnDate)) {
+            long daysOverdue = ChronoUnit.DAYS.between(returnDate, actualReturnDate);
+            this.fine = daysOverdue * 10.0; 
+        } else {
+            this.fine = 0.0;
+        }
+    }
+    
+    public LocalDate calculateExtendedReturnDate() {
+        return this.returnDate.plusDays(14); 
     }
 
 }

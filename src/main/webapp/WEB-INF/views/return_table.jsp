@@ -22,11 +22,9 @@
         <h1>Return Books</h1>
         <p>Total Books: ${fn:length(lendBooks)}</p>
         <c:if test="${empty lendBooks}">
-            <p>No books available for lending.</p>
+            <p>No books to return.</p>
         </c:if>
-        <form id="returnBooksForm" action="submitReturnBooks" method="post">
-            <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
-            <table id="returnTable">
+        <table id="returnTable">
                 <thead>
                     <tr>
                         <th>Book Id</th>
@@ -34,7 +32,7 @@
                         <th>Author</th>
                         <th>Subject</th>
                         <th>Info</th>
-                        <th>Lending Date</th>
+                        <th>Lend Date</th>
                         <th>Due Date</th>
                         <th>Actual Return Date</th>
                         <th>Action</th>
@@ -56,18 +54,19 @@
                             <td>
                                 <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.lendId}')">Return</button>
                             </td>
-                            <td id="fine_${book.bookid}">0.00</td>
+                            <td>${book.fine}</td>
                             <td>
                                 <button type="button">Pay</button>
                             </td>
-                            <input type="hidden" id="lendId_${book.bookid}" value="${book.lendId}" />
-                        </tr>
+                            </tr>
                     </c:forEach>
                 </tbody>
             </table>
             <button type="button" onclick="submitReturnBooks()">Return Selected Books</button>
-        </form>
     </div>
+    <form id="returnBooksForm" action="submitReturnBooks" method="post">
+        <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
+    </form>    
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

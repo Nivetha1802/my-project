@@ -1,12 +1,10 @@
 package com.example.service;
 
-import com.example.entity.Books;
+import java.time.LocalDate;
 import com.example.entity.LendDetails;
-import com.example.model.Lend;
 import com.example.repository.LendDetailsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 @Service
@@ -38,23 +36,22 @@ public class LendDetailsService {
         lendDetailsRepository.saveAll(lendedBooks);
     }
 
+    public List<LendDetails> getLendDetailsByUserId(Integer id) {
+        List<LendDetails> lendDetailsList = lendDetailsRepository.findLendDetailsById(id);
+        LocalDate actualReturnDate = LocalDate.now();
+        for (LendDetails lendDetails : lendDetailsList) {
+            lendDetails.calculateFine(actualReturnDate);
+        }
+        return lendDetailsList;
+    }
+
     @Transactional
     public void renewBook(Integer lendId) {
-        LendDetails lendDetails = lendDetailsRepository.findById(lendId).orElseThrow(() -> new RuntimeException("LendDetails not found"));
+        LendDetails lendDetails = lendDetailsRepository.findById(lendId).orElseThrow(() -> new IllegalArgumentException("Invalid lend ID"));
         lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
-
-        // Extend the return date by 14 days
-        // Calendar calendar = Calendar.getInstance();
-        // calendar.setTime(lendDetails.getReturnDate());
-        // calendar.add(Calendar.DAY_OF_YEAR, 14);
-        // lendDetails.setReturnDate(calendar.getTime());
-
+        lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14)); 
         lendDetailsRepository.save(lendDetails);
     }
 
-    public List<LendDetails> getLendDetailsByUserId(Integer id) {
-        return lendDetailsRepository.findLendDetailsById(id);
-    }
-    
 }
 

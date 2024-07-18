@@ -1,3 +1,4 @@
+let selectedBooks = [];
 document.addEventListener('DOMContentLoaded', function() {
     populateDates();
 });
@@ -13,17 +14,15 @@ function populateDates() {
 }
 
 function toggleBook(button, bookid, lendId) {
-    const bookIndex = selectedBooks.findIndex(book => book.bookid === bookid && book.lendId === lendId);
-
-    if (bookIndex !== -1) {
-        selectedBooks.splice(bookIndex, 1);
+    
+    if (selectedBooks.some(book => book.bookid === bookid)) {
+        selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
         button.textContent = 'Return';
-        button.classList.remove('Returned');
+        button.classList.remove('Added');
     } else {
-        
-        selectedBooks.push({ bookid, lendId });
-        button.textContent = 'Returned';
-        button.classList.add('Returned');
+        selectedBooks.push({ button, bookid, lendId});
+        button.textContent = 'Added';
+        button.classList.add('Added');
     }
     console.log(selectedBooks);
 }
