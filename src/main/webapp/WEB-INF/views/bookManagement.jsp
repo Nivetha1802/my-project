@@ -42,6 +42,9 @@
 
             <label path="info" for="info">Book info</label>
             <input path="info" type="text" id="info" name="info" required>
+
+            <label path="Bookcount" for="Bookcount">Book Count</label>
+            <input path="Bookcount" type="text" id="Bookcount" name="Bookcount" required>
         <div>
             <button type="submit">Add</button>
         </div>  

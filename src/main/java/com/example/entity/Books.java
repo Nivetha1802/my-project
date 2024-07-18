@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class Books {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookid;
 
     private String bookname;

@@ -1,53 +1,36 @@
-function calculateFine(bookId) {
-    const dueDateInput = document.getElementById(`due_date_${bookId}`).innerText;
+document.addEventListener('DOMContentLoaded', function() {
+    populateDates();
+});
 
-    if (!dueDateInput) {
-        document.getElementById(`fine_${bookId}`).innerText = '0';
-        return;
-    }
-
-    const dueDate = new Date(dueDateInput);
-    const actualReturnDate = new Date();
-
-    const dailyFineRate = 10;
-    let fineAmount = 0;
-
-    if (actualReturnDate > dueDate) {
-        const lateDays = Math.ceil((actualReturnDate - dueDate) / (1000 * 60 * 60 * 24));
-        fineAmount = lateDays * dailyFineRate;
-    }
-
-    const actualreturnDateStr = actualReturnDate.toISOString().split('T')[0];
-
-    console.log("success");
-    document.getElementById(`fine_${bookId}`).innerText = fineAmount.toFixed(2);
-    const rows = document.querySelectorAll('#lendDetailsTable tbody tr');
-
-            rows.forEach(row => {
-                row.querySelector('.lending-date').textContent = lendingDateStr;
-                row.querySelector('.return-date').textContent = returnDateStr;
-            });
-    document.getElementById(`actual_return_date_${bookId}`).innerText = actualreturnDateStr;
+function populateDates() {
+    const returnDate = new Date();
+    const returnDatestr = returnDate.toISOString().split('T')[0];
+    const rows = document.querySelectorAll('#returnTable tbody tr');
+    console.log("loaded dates")
+    rows.forEach(row => {
+        row.querySelector('.actual_return_date').textContent = returnDatestr;
+    });
 }
 
-let selectedBooks = [];
+function toggleBook(button, bookid, lendId) {
+    const bookIndex = selectedBooks.findIndex(book => book.bookid === bookid && book.lendId === lendId);
 
-function toggleBook(button, lendId) {
-    if (selectedBooks.includes(lendId)) {
-        selectedBooks = selectedBooks.filter(id => id !== lendId);
+    if (bookIndex !== -1) {
+        selectedBooks.splice(bookIndex, 1);
         button.textContent = 'Return';
         button.classList.remove('Returned');
     } else {
-        selectedBooks.push(lendId);
+        
+        selectedBooks.push({ bookid, lendId });
         button.textContent = 'Returned';
         button.classList.add('Returned');
     }
-    console.log(slectedBooks);
+    console.log(selectedBooks);
 }
 
 function submitReturnBooks() {
     var selectedBooksInput = document.getElementById('selectedBooks');
-    selectedBooksInput.value = selectedBooks.join(',');
+    selectedBooksInput.value = JSON.stringify(selectedBooks);
     console.log(selectedBooksInput.value);
     const form = document.getElementById('returnBooksForm');
     form.submit();

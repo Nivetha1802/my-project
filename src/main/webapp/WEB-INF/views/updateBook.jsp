@@ -28,20 +28,24 @@
         <form class="form-container" action="submitUpdateBook" method="post" modelattribute="updateBook">
             <h2> Update Book</h2>
             <h3>Enter Book Details</h3>
-            <label for="bookid">Book ID</label>
-            <input type="text" id="bookid" name="bookid" required>
+            <label path="bookid" for="bookid">Book ID</label>
+            <input path="bookid" type="text" id="bookid" name="bookid" required>
 
-            <label for="bookName">Book name</label>
-            <input type="text" id="bookName" name="bookName" required>
-      
+            <label path="bookname" for="bookname">Book name</label>
+            <input path="bookname" type="text" id="bookname" name="bookname" required>
+
             <label path="author" for="author">Author name</label>
             <input path="author" type="text" id="author" name="author" required>
 
-            <label for="subject">Book subject</label>
-            <input type="text" id="subject" name="subject" required>
+            <label path="subject" for="subject">Book subject</label>
+            <input path="subject" type="text" id="subject" name="subject" required>
 
-            <label for="info">Book info</label>
-            <input type="text" id="info" name="info" required>
+            <label path="info" for="info">Book info</label>
+            <input path="info" type="text" id="info" name="info" required>
+
+            <label path="Bookcount" for="Bookcount">Book Count</label>
+            <input path="Bookcount" type="text" id="Bookcount" name="Bookcount" required>
+        
         </br>
             <button type="submit">Update</button>
             

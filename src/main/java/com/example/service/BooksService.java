@@ -4,6 +4,7 @@ import com.example.entity.Books;
 import com.example.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -32,6 +33,7 @@ public class BooksService {
             book.setAuthor(bookDetails.getAuthor());
             book.setSubject(bookDetails.getSubject());
             book.setInfo(bookDetails.getInfo());
+            book.setBookcount(bookDetails.getBookcount());
             return booksRepository.save(book);
         }
         return null;
@@ -40,12 +42,11 @@ public class BooksService {
     public void deleteBook(Integer bookid) {
         booksRepository.deleteById(bookid);
     }
-
+    @Transactional
     public void returnBooks(List<Integer> bookIds) {
         for (Integer bookId : bookIds) {
             Optional<Books> book = booksRepository.findById(bookId);
             if (book.isPresent()) {
-                // Increase count when returning book
                 booksRepository.incrementBookCount(bookId);
             }
         }

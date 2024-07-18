@@ -16,7 +16,6 @@ public class LendDetails {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
-
     private String bookname;
     private Integer bookid;
     private String author;

@@ -62,7 +62,7 @@
         function populateDates() {
             const lendingDate = new Date();
             const returnDate = new Date();
-            returnDate.setDate(lendingDate.getDate() + 14); // 14 days after lending date
+            returnDate.setDate(lendingDate.getDate() + 14);
 
             const lendingDateStr = lendingDate.toISOString().split('T')[0];
             const returnDateStr = returnDate.toISOString().split('T')[0];

@@ -26,7 +26,7 @@
         </c:if>
         <form id="returnBooksForm" action="submitReturnBooks" method="post">
             <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
-            <table>
+            <table id="returnTable">
                 <thead>
                     <tr>
                         <th>Book Id</th>
@@ -54,7 +54,7 @@
                             <td id="due_date_${book.bookid}">${book.returnDate}</td>
                             <td class="actual_return_date"></td>
                             <td>
-                                <button type="button" onclick="toggleBook(this, '${book.lendId}')">Return</button>
+                                <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.lendId}')">Return</button>
                             </td>
                             <td id="fine_${book.bookid}">0.00</td>
                             <td>
@@ -69,4 +69,19 @@
         </form>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    populateDates();
+});
+
+function populateDates() {
+    const returnDate = new Date();
+    const returnDatestr = returnDate.toISOString().split('T')[0];
+    const rows = document.querySelectorAll('#returnTable tbody tr');
+    console.log("loaded dates")
+    rows.forEach(row => {
+        row.querySelector('.actual_return_date').textContent = returnDatestr;
+    });
+}
+</script>
 </html>

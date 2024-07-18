@@ -7,8 +7,7 @@
 <head>
     <title>Digital Library - Sign Up</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Registerscript.js"></script>
-</head>
+    </head>
 <body>
     <div class="signup-main-container">
         <h1>Digital Library</h1>

@@ -52,5 +52,9 @@ public class LendDetailsService {
         lendDetailsRepository.save(lendDetails);
     }
 
+    public List<LendDetails> getLendDetailsByUserId(Integer id) {
+        return lendDetailsRepository.findLendDetailsById(id);
+    }
+    
 }
 

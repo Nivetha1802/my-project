@@ -19,8 +19,7 @@ let selectedBooks = [];
         function submitLendBooks() {
             var selectedBooksInput = document.getElementById('selectedBooks');
             selectedBooksInput.value = JSON.stringify(selectedBooks);
-            console.log(selectedBooksInput);
-            console.log(selectedBooks);
+            console.log(selectedBooksInput.value);
             document.getElementById('lendForm').submit();
         }
 
