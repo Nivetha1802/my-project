@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Digital Library</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
 </head>
 <body>
     <div class="header">
@@ -21,44 +21,29 @@
     </div>
     
     <div class="lendcontainer">
-        
         <table>
             <thead>
                 <tr>
-                    <c:if test="${not empty books}">
                     <th>Book Id</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Subject</th>
                     <th>Info</th>
                     <th>Books count</th>
-                    </c:if>
                 </tr>
             </thead>
             <tbody>
-                
                     <tr>
-                        <td>${books.bookid}</td>
-                        <td>${books.bookname}</td>
-                        <td>${books.author}</td>
-                        <td>${books.subject}</td>
-                        <td>${books.info}</td>
-                        <td>${books.bookcount}</td>
+                        <td>${sessionScope.bookd}</td>
+                        <td>${sessionScope.bookname}</td>
+                        <td>${sessionScope.author}</td>
+                        <td>${sessionScope.subject}</td>
+                        <td>${sessionScope.info}</td>
+                        <td>${sessionScope.bookcount}</td>
                     </tr>
             </tbody>
         </table>
-    
-    <c:if test="${empty books}">
-        <p>can search books here</p>
-    </c:if>
     </div>
     
-    <div class="button-container">
-        <button onclick="window.location.href='/lendtable'">Lend a book</button>
-        <button onclick="window.location.href='/returntable'">Return a book</button>
-        <button onclick="window.location.href='/renewtable'">Renew a book</button>
-        <button onclick="window.location.href='/fineDetails'">Fine Details</button>
-        <button onclick="window.location.href='/allBooks'">View All Books</button>
-    </div>
 </body>
 </html>

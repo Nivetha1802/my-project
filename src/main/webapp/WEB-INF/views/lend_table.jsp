@@ -20,6 +20,7 @@
     <div class="lend_container">
     <h1>Lend Books</h1>
     <p>Total Books: ${fn:length(books)}</p>
+    
     <c:if test="${empty books}">
         <p>No books available for lending.</p>
     </c:if>

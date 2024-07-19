@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -53,7 +54,9 @@ public class fooController {
     }
 
     @GetMapping("/studentHomePage")
-    public String getStudentHomePage() {
+    public String getStudentHomePage(Model model) {
+        Search search = new Search();
+        model.addAttribute("search", search);
         return "studentHomePage";
     }
 
@@ -383,34 +386,33 @@ public class fooController {
             return "redirect:/librarianHomePage";
         }
     }
+    @PostMapping("/studentHomePage")
+    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+        System.out.println("hii");
+        if (bindingResult.hasErrors()) {
+            return "studentHomePage";
+        }
+        session.setAttribute("searchquery", search);
+        System.out.println("hii"+search.getQuery());
+        return "redirect:/search";
+    }
 
     @GetMapping("/search")
-    public String searchForm(Model model) {
-        return "search";
-    }
-
-    @PostMapping("/search")
-    public String searchResults(@RequestParam(value = "author", required = false) String authors,
-            @RequestParam(value = "bookName", required = false) String bookNames,
-            @RequestParam(value = "subject", required = false) String subjects,
-            Model model) {
-
-        List<Books> books = booksService.getAllBooks();
-
-        // Null checks for the lists
-        if (authors != null && !authors.isEmpty()) {
-            books = books.stream().filter(book -> authors.contains(book.getAuthor())).collect(Collectors.toList());
+    public String getSearchResults(HttpSession session, Model model) {
+        Search search = (Search) session.getAttribute("searchquery");
+        System.out.println("hii"+search);
+        System.out.println("hii"+ search.getQuery());
+        if (search == null || search.getQuery() == null) {
+            model.addAttribute("message", "No search query provided.");
+            return "redirect:/studentHomePage";
         }
-        if (bookNames != null && !bookNames.isEmpty()) {
-            books = books.stream().filter(book -> bookNames.contains(book.getBookname())).collect(Collectors.toList());
-        }
-        if (subjects != null && !subjects.isEmpty()) {
-            books = books.stream().filter(book -> subjects.contains(book.getSubject())).collect(Collectors.toList());
-        }
-
+        Books books = booksService.getBookById(search.getQuery());
+        
         model.addAttribute("books", books);
-        System.out.println(books);
-        return "searchResults";
+        model.addAttribute("search", search);
+        return "studentHomePage";
     }
 
+
+  
 }
