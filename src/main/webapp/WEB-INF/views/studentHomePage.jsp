@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Digital Library</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
+
 <body>
     <div class="header">
         <h1>Digital Library</h1>
@@ -19,40 +21,36 @@
             <button type="submit">&#128269;</button>
         </form>
     </div>
-    
+    <c:if test="${not empty books}">
     <div class="lendcontainer">
-        
         <table>
             <thead>
                 <tr>
-                    <c:if test="${not empty books}">
                     <th>Book Id</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Subject</th>
                     <th>Info</th>
                     <th>Books count</th>
-                    </c:if>
                 </tr>
             </thead>
             <tbody>
-                
-                    <tr>
-                        <td>${books.bookid}</td>
-                        <td>${books.bookname}</td>
-                        <td>${books.author}</td>
-                        <td>${books.subject}</td>
-                        <td>${books.info}</td>
-                        <td>${books.bookcount}</td>
-                    </tr>
+
+                <tr>
+                    <td>${books.bookid}</td>
+                    <td>${books.bookname}</td>
+                    <td>${books.author}</td>
+                    <td>${books.subject}</td>
+                    <td>${books.info}</td>
+                    <td>${books.bookcount}</td>
+                </tr>
             </tbody>
         </table>
-    
-    <c:if test="${empty books}">
-        <p>can search books here</p>
-    </c:if>
     </div>
-    
+</c:if>
+<c:if test="${empty books}">
+    <p>can search books here</p>
+</c:if>
     <div class="button-container">
         <button onclick="window.location.href='/lendtable'">Lend a book</button>
         <button onclick="window.location.href='/returntable'">Return a book</button>
@@ -61,4 +59,5 @@
         <button onclick="window.location.href='/allBooks'">View All Books</button>
     </div>
 </body>
+
 </html>
