@@ -14,53 +14,34 @@
             <a href="/login">Logout</a>
         </div>
     </div>
-    <div class="lend_container">
-    <h1>Book Search Results</h1>
-    <form action="${pageContext.request.contextPath}/search" method="post">
-        <fieldset>
-            <legend>Filter Options:</legend>
-            <label>
-                <input type="checkbox" name="filter" value="bookName">
-                Book Name
-            </label>
-            <label>
-                <input type="checkbox" name="filter" value="subject">
-                Subject
-            </label>
-            <label>
-                <input type="checkbox" name="filter" value="author">
-                Author
-            </label>
-        </fieldset>
-        <div class="search-container">
-                <input type="text" name="query" placeholder="Search a book">
+       <div class="search-container">
+            <form class="search-bar" action="search" method="post" modelAttribute="search">
+                <input path="query" type="text" name="query" placeholder="Search a book" value="${search.query}">
                 <button type="submit">&#128269;</button>
+            </form>
         </div>
     </form>
 
     <table border="1">
         <thead>
             <tr>
-				<th>No.</th>
+				<th>Book Id</th>
                 <th>Title</th>
                 <th>Author</th>
 				<th>Subject</th>
 				<th>Info</th>
                 <th>Books count</th>
-				<th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="book" items="${books}">
                 <tr>
-                    <td>${book.bookid}</td>
-                    <td>${book.bookname}</td>
-					<td>${book.author}</td>
-					<td>${book.subject}</td>
-                    <td>${book.info}</td>
-                    <td>${book.bookcount}</td>
+                    <td>${books.bookid}</td>
+                    <td>${books.bookname}</td>
+					<td>${books.author}</td>
+					<td>${books.subject}</td>
+                    <td>${books.info}</td>
+                    <td>${books.bookcount}</td>
                 </tr>
-            </c:forEach>
         </tbody>
     </table>
 

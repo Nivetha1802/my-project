@@ -20,6 +20,7 @@ import com.example.entity.*;
 import com.example.model.*;
 import com.example.service.*;
 
+
 @Controller
 public class fooController {
 
@@ -54,11 +55,31 @@ public class fooController {
     }
 
     @GetMapping("/studentHomePage")
-    public String getStudentHomePage(Model model) {
-        Search search = new Search();
-        model.addAttribute("search", search);
+    public String getstudentHomePage() {
         return "studentHomePage";
     }
+    
+   
+
+    // @GetMapping("/searchQuery")
+    // public String getSearch(Model model, HttpSession session) {
+    //     Search search = new Search();
+    //     model.addAttribute("search", search);
+    //     Search searchresult = (Search) session.getAttribute("searchquery");
+    //     System.out.println("hii"+searchresult);
+    //     // System.out.println("hii"+ searchresult.getQuery());
+    //     if (searchresult == null || searchresult.getQuery() == null) {
+    //         model.addAttribute("message", "No search query provided.");
+    //         model.addAttribute("books", Collections.emptyList()); // Ensure books attribute is present even if empty 
+    //         return "search";
+    //     }
+    //     Books books = booksService.getBookById(searchresult.getQuery());
+        
+    //     model.addAttribute("books", books);
+    //     model.addAttribute("search", searchresult);
+    //     return "search";
+    // }
+
 
     @GetMapping("/librarianHomePage")
     public String getLibrarianHomePage() {
@@ -386,33 +407,31 @@ public class fooController {
             return "redirect:/librarianHomePage";
         }
     }
-    @PostMapping("/studentHomePage")
-    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
-        System.out.println("hii");
-        if (bindingResult.hasErrors()) {
-            return "studentHomePage";
-        }
-        session.setAttribute("searchquery", search);
-        System.out.println("hii"+search.getQuery());
-        return "redirect:/search";
-    }
 
     @GetMapping("/search")
     public String getSearchResults(HttpSession session, Model model) {
         Search search = (Search) session.getAttribute("searchquery");
         System.out.println("hii"+search);
-        System.out.println("hii"+ search.getQuery());
+        // System.out.println("hii"+ search.getQuery());
         if (search == null || search.getQuery() == null) {
             model.addAttribute("message", "No search query provided.");
-            return "redirect:/studentHomePage";
+            return "search";
         }
         Books books = booksService.getBookById(search.getQuery());
         
         model.addAttribute("books", books);
         model.addAttribute("search", search);
-        return "studentHomePage";
+        return "search";
     }
 
-
-  
+    @PostMapping("/search")
+    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+        System.out.println("hii");
+        if (bindingResult.hasErrors()) {
+            return "search";
+        }
+        session.setAttribute("searchquery", search);
+        System.out.println("hii"+search.getQuery());
+        return "redirect:/search";
+    }
 }
