@@ -6,7 +6,7 @@
     <title>Book Returning</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
 </head>
-<body>
+<body class="library-page">
     <div class="header">
         <h1>Digital Library</h1>
         <div class="nav">

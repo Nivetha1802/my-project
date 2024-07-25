@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Digital Library</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
 </head>
 <body class="library-page">
     <div class="header">

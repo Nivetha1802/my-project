@@ -148,9 +148,9 @@ public class fooController {
 
         List<Books> availableBooks = booksService.getAllBooks();
         System.out.println(booksService.getAllBooks());
-        if (availableBooks != null) {
-            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
-        }
+        // if (availableBooks != null) {
+        //     availableBooks.forEach(book -> System.out.println(book.getBookname())); 
+        // }
         model.addAttribute("books", availableBooks);
         return "lend_table";
     }
