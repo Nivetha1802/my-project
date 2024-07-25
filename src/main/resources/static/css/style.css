@@ -1,111 +1,29 @@
-.login-main-container, .signup-main-container{
+.library-page body {
     font-family: Arial, sans-serif;
-    background-image: url('./../lib.jpg');
-    background-size: cover;
-    background-position: center; 
+    background-color: white;
+    color: black;
+    text-align: center;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color:white;
 }
 
-.login-container, .signup-container {
-    background-color: rgba(59, 55, 55, 0.7);
-    padding: 20px;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    width: 300px;
-}
-
-.login-container h2, .signup-container h2 {
-    margin-bottom: 20px;
-}
-
-select {
-    width: 67%; 
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 4px;
-    justify-content: center;
-}
-
-.login-container input[type="text"],
-.login-container input[type="int"],
-.login-container input[type="password"],
-.signup-container input[type="text"],
-.signup-container input[type="int"],
-.signup-container input[type="password"] {
-    width: 50%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 4px;
-    justify-content: center;
-}
-
-.login-container button, .signup-container button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.login-container button:hover, .signup-container button:hover {
-    background-color: #45a049;
-}
-
-.login-container a, .signup-container a {
-    color: #4CAF50;
-    text-decoration: none;
-}
-
-.login-container a:hover, .signup-container a:hover {
-    text-decoration: underline;
-}
-
-.login-form-container, .signup-form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.form-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.form-group label {
-    width: 100px; 
-}
-.form-group input {
-    flex: 1; 
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color: black;
-    color: white;
-    padding: 0;
-}
-
-.header {
+.library-page .header {
     background-color: white;
     color: black;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 1px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
     margin: 0;
+}
+
+h1 {
+    color: white;
 }
 
 .nav a {
@@ -114,8 +32,112 @@ body {
     margin: 0 10px;
 }
 
+.lend_container p, h1 {
+    text-align: center;
+    color: black;
+}
+
+.lend_container {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home-container {
+    background-image: url('./../lib.jpg');
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0e8e8;
+    color: black;
+}
+
+tbody tr {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+    width: 60%;
+}
+
+.button-container button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+    background-color: #45a049;
+}
+
 .search-container {
-    margin: 20px 0;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-bar {
@@ -131,6 +153,8 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
     font-size: 16px;
+    height: 40px;
+    box-sizing: border-box;
 }
 
 .search-bar button {
@@ -141,32 +165,12 @@ body {
     color: white;
     cursor: pointer;
     font-size: 16px;
+    height: 40px;
+    box-sizing: border-box;
 }
+
 .search-bar button:hover {
     background-color: #45a049;
-}
-
-.button-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    justify-content: center;
-    width: 50%;
-    margin:100px;
-}
-
-.button-container button {
-    padding: 20px;
-    font-size: 18px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-}
-
-.button-container button:hover {
-    background-color: #ddd;
 }
 
 .form-container {
@@ -211,15 +215,17 @@ body {
     background-color: #4CAF50;
     color: white;
 }
+
 .form-container button:hover {
     background-color: #45a049;
 }
 
-.bookManagement-container{
+.bookManagement-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
+
 .container {
     display: flex;
     width: 80%;
@@ -237,7 +243,7 @@ body {
     padding: 20px;
     box-sizing: border-box;
     margin: 20px;
-    /* height:100vh; */
+    height: 100vh;
 }
 
 .sidebar h2 {
@@ -262,5 +268,3 @@ body {
 .sidebar ul li a:hover {
     text-decoration: underline;
 }
-
-
