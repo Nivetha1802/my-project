@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Digital Library</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+    <script src="${pageContext.request.contextPath}/js/search.js"></script>
 </head>
 <body class="library-page">
     <div class="header">
@@ -14,16 +15,15 @@
         </div>
     </div>
     <div class="search-container">
-        <form class="search-bar" action="searchResults.jsp" method="get">
-            <input type="text" name="query" placeholder="Search a book">
+        <form class="search-bar" onsubmit="searchBooks(event)">
+            <input type="text" id="query" placeholder="Search a book">
             <button type="submit">&#128269;</button>
         </form>
     </div>
+    <div id="search-results"></div>
     <div class="button-container">
         <button onclick="window.location.href='/bookManagement'">Manage Books</button>
-        <!-- <button onclick="window.location.href='/fineDetails'">Fine Details</button> -->
         <button onclick="window.location.href='/allBooks'">View All Books</button>
-    </div>
+    </div> 
 </body>
 </html>
-

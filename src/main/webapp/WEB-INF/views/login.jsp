@@ -4,7 +4,6 @@
 <head>
     <title>Digital Library - Sign In</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>
 </head>
 <body>
     <div class="login-main-container">
