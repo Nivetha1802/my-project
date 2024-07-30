@@ -23,12 +23,12 @@ dependencies {
     providedCompile 'javax.servlet:jstl'
     providedCompile 'org.apache.tomcat.embed:tomcat-embed-jasper'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
-
+    implementation 'com.fasterxml.jackson.core:jackson-databind' 
     // compileOnly 'org.projectlombok:lombok:1.18.22'
     // annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     // Spring Security
-    // implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
 
     // javax.servlet API
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'

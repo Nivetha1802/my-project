@@ -23,7 +23,7 @@ import com.example.service.*;
 
 
 @Controller
-public class fooController {
+public class MainController {
 
     private UserService userService;
 
@@ -33,7 +33,7 @@ public class fooController {
 
     private final ObjectMapper objectMapper;
 
-    public fooController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService,
+    public MainController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService,
             ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
