@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,13 +32,16 @@ public class MainController {
 
     private LendDetailsService lendDetailsService;
 
+    private final GoogleBooksService googleBooksService;
+
     private final ObjectMapper objectMapper;
 
     public MainController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService,
-            ObjectMapper objectMapper) {
+    GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.booksService = booksService;
+        this.googleBooksService = googleBooksService;
         this.objectMapper = objectMapper;
     }
 
@@ -347,8 +351,8 @@ public class MainController {
             model.addAttribute("message", "No search query provided.");
             return "search";
         }
-        Books books = booksService.getBookById(search.getQuery());
-        
+        GoogleBooks books = googleBooksService.searchBook(search.getQuery());
+        System.out.println(books);
         model.addAttribute("books", books);
         model.addAttribute("search", search);
         return "search";
@@ -366,9 +370,10 @@ public class MainController {
     }
 
     @GetMapping("/searchBooks")
-    public ResponseEntity<Books> searchBooks(@RequestParam Integer query) {
+    public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
     System.out.println(query);
-    Books book = booksService.getBookById(query);
+    GoogleBooks book = googleBooksService.searchBook(query);
+    System.out.println(book);
     System.out.println(book);
     if (book != null) {
         return new ResponseEntity<>(book, HttpStatus.OK);
@@ -377,6 +382,11 @@ public class MainController {
     }
 }
 
+
+    // @GetMapping("/search")
+    // public String searchBooks(@RequestParam String query) {
+    //     return googleBooksService.searchBooks(query);
+    // }
  // @GetMapping("/searchQuery")
     // public String getSearch(Model model, HttpSession session) {
     //     Search search = new Search();

@@ -7,13 +7,13 @@ public class Search {
 
     @NotNull(message = "Book Id is required")
     @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")
-    private Integer query;
+    private String query;
 
-    public Integer getQuery() {
+    public String getQuery() {
         return query;
     }
 
-    public void setQuery(Integer query) {
+    public void setQuery(String query) {
         this.query = query;
     }
 }

@@ -21,27 +21,29 @@
 //     @Override
 //     protected void configure(HttpSecurity http) throws Exception {
 //         http
-//             .authorizeRequests()
-//                 .antMatchers("/", "/signup", "/login", "/submitRegistration").permitAll()
-//                 .antMatchers("/home").authenticated()
-//                 .antMatchers("/studentHomePage").hasAnyRole("STUDENT", "TEACHER")
-//                 .antMatchers("/librarianHomePage").hasRole("LIBRARIAN")
-//                 .and()
-//             .formLogin()
-//                 .loginPage("/login")
-//                 .defaultSuccessUrl("/home", true)
-//                 .permitAll()
-//                 .and()
-//             .logout()
-//                 .logoutUrl("/logout")
-//                 .logoutSuccessUrl("/login")
-//                 .permitAll();
+//                 .httpBasic(basic -> basic.disable())
+//                 .csrf(csrf -> csrf
+//                         .disable()) // Disable CSRF protection
+//                 .authorizeRequests(requests -> requests
+//                         .antMatchers("/", "/signup", "/login", "/submitRegistration").permitAll() // Allow these URLs without authentication
+//                         .antMatchers("/home").authenticated() // Require authentication for /home
+//                         .antMatchers("/studentHomePage").hasAnyRole("STUDENT", "TEACHER") // Require STUDENT or TEACHER role for /studentHomePage
+//                         .antMatchers("/librarianHomePage").hasRole("LIBRARIAN") // Require LIBRARIAN role for /librarianHomePage
+//                         .anyRequest().authenticated())
+//                 .formLogin(login -> login
+//                         .loginPage("/login") // Custom login page
+//                         .defaultSuccessUrl("/home", true) // Redirect to /home on successful login
+//                         .permitAll())
+//                 .logout(logout -> logout
+//                         .logoutUrl("/logout") // URL for logout
+//                         .logoutSuccessUrl("/login") // Redirect to /login after logout
+//                         .permitAll());
 //     }
 
 //     @Override
 //     public void configure(WebSecurity web) throws Exception {
 //         web
 //             .ignoring()
-//             .antMatchers("/css/**", "/js/**", "/images/**");
+//             .antMatchers("/css/**", "/js/**", "/images/**"); // Ignore static resources
 //     }
 // }

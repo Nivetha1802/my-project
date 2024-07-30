@@ -11,8 +11,9 @@ function searchBooks(event) {
             if (xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 displayResults(response);
+                console.log(book);
             } else {
-                displayResults(null); // handle case when no book is found
+                displayResults(null);
             }
         }
     };
@@ -20,6 +21,7 @@ function searchBooks(event) {
 }
 
 function displayResults(book) {
+    console.log(book);
     const resultsContainer = document.getElementById("search-results");
     resultsContainer.innerHTML = '';
 
@@ -37,12 +39,12 @@ function displayResults(book) {
             </thead>
             <tbody>
                 <tr>
-                    <td>${book.bookid}</td>
-                    <td>${book.bookname}</td>
-                    <td>${book.author}</td>
-                    <td>${book.subject}</td>
-                    <td>${book.info}</td>
-                    <td>${book.bookcount}</td>
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.authors}</td>
+                    <td>${book.publisher}</td>
+                    <td>${book.publishedDate}</td>
+                    <td>${book.description}</td>
                 </tr>
             </tbody>
         </table>`;
