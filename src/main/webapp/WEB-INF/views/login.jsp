@@ -35,6 +35,16 @@
                 </div>
         </form>
         </div>
+        <div>
+            <c:if test="${not empty errors}">
+                <div>
+                    <c:forEach var="error" items="${errors.allErrors}">
+                        <p style="color: red;">error msg:${error.defaultMessage}</p>
+                    </c:forEach>
+                </div>
+            </c:if>
+        </div>
     </div>
+    
 </body>
 </html>

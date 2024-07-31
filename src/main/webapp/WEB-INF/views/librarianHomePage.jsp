@@ -24,6 +24,15 @@
     <div class="button-container">
         <button onclick="window.location.href='/bookManagement'">Manage Books</button>
         <button onclick="window.location.href='/allBooks'">View All Books</button>
+    </div>
+    <div>
+        <c:if test="${not empty errors}">
+            <div>
+                <c:forEach var="error" items="${errors.allErrors}">
+                    <p style="color: red;">${error.defaultMessage}</p>
+                </c:forEach>
+            </div>
+        </c:if>
     </div> 
 </body>
 </html>

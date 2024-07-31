@@ -11,12 +11,16 @@
     </head>
 <body class="library-page">
     <div class="header">
+        <button class="back-button" onclick="history.back()">
+            &#8592;
+        </button>
         <h1>Digital Library</h1>
         <div class="nav">
             <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
-    </div> 
+    </div>
+    
     <div class="lend_container">
     <h1>All Books</h1>
     <p>Total Books: ${fn:length(books)}</p>

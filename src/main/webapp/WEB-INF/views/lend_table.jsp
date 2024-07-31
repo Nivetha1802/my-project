@@ -11,11 +11,15 @@
 <body class="library-page">
     <div class="header">
         <h1>Digital Library</h1>
+        <a href="/studentHomePage">Home</a>
         <div class="nav">
             <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div> 
+    <button class="back-button" onclick="history.back()">
+        &#8592;
+    </button>
     <div class="lend_container">
         <h1>Lend Books</h1>
         <div>
@@ -43,7 +47,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${book.bookcount == 0}">
-                                        <button type="button" disabled>Out of stock</button>
+                                        <button type="out-of-stock-button" disabled>Out of stock</button>
                                     </c:when>
                                     <c:otherwise>
                                         <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.bookname}', '${book.author}', '${book.subject}', '${book.bookcount}', '${book.info}')">Add</button>

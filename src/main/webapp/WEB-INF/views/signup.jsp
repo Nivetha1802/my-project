@@ -7,7 +7,7 @@
 <head>
     <title>Digital Library - Sign Up</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-    </head>
+</head>
 <body>
     <div class="signup-main-container">
         <h1>Digital Library</h1>
@@ -16,12 +16,12 @@
             <form:form class="signup-form-container" action="${pageContext.request.contextPath}/submitRegistration" method="post" modelAttribute="user">
                 <div class="form-group">
                     <form:label path="name" for="name">Your name:</form:label>
-                    <form:input path="name" id="name" required="true"/>
+                    <form:input path="name" id="name" />
                     <form:errors path="name" cssClass="error"/>
                 </div>
                 <div class="form-group">
                     <form:label path="role" for="role">Role:</form:label>
-                    <form:select path="role" id="role" required="true">
+                    <form:select path="role" id="role">
                         <form:option value="student">Student</form:option>
                         <form:option value="teacher">Teacher</form:option>
                         <form:option value="librarian">Librarian</form:option>
@@ -30,24 +30,24 @@
                 </div>
                 <div class="form-group">
                     <form:label path="id" for="id">ID Number:</form:label>
-                    <form:input path="id" id="id" required="true"/>
+                    <form:input path="id" id="id" />
                     <form:errors path="id" cssClass="error"/>
                 </div>
                 <div class="form-group">
                     <form:label path="password" for="password">Password:</form:label>
-                    <form:password path="password" id="password" required="true"/>
+                    <form:password path="password" id="password" />
                     <form:errors path="password" cssClass="error"/>
                 </div>
                 <div class="form-group">
                     <form:label path="confirmPassword" for="confirmPassword">Confirm Password:</form:label>
-                    <form:password path="confirmPassword" id="confirmPassword" required="true"/>
+                    <form:password path="confirmPassword" id="confirmPassword" />
                     <form:errors path="confirmPassword" cssClass="error"/>
                 </div>
                 <div>
                     <button type="submit">Sign Up</button>
                 </div>
                 <div>
-                    <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in</a></p>
+                    <p>Already have an account? <a href="/login">Sign in</a></p>
                 </div>
             </form:form>
         </div>

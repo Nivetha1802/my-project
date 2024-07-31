@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,17 +78,15 @@ public class MainController {
     }
 
     @PostMapping("/submitRegistration")
-    public String submitRegistration(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
             Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/signup";
+            return "signup";
         } else {
             session.setAttribute("userId", user.getId());
-            System.out.println("user id:" + user.getId());
-            System.out.println(user);
             userService.saveUser(user);
             model.addAttribute("message", "Registration successful!");
-            String role = user.getRole(); // Assume User has a getRole() method
+            String role = user.getRole();
             return "redirect:/home?role=" + role;
         }
 
@@ -99,16 +99,14 @@ public class MainController {
     }
 
     @PostMapping("/submitLogin")
-    public String submitLogin(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult,
+    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult,
             Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/login";
+            return "login";
         } else {
-            // Authenticate the user
             UserEntity user = userService.authenticate(loginuser.getId(), loginuser.getPassword());
             if (user != null) {
                 session.setAttribute("userId", user.getId());
-                System.out.println("user id:" + user.getId());
                 model.addAttribute("message", "Login successful!");
                 String role = user.getRole();
                 return "redirect:/home?role=" + role;
@@ -123,10 +121,6 @@ public class MainController {
     public String showLendtablePage(Model model) {
 
         List<Books> availableBooks = booksService.getAllBooks();
-        System.out.println(booksService.getAllBooks());
-        // if (availableBooks != null) {
-        //     availableBooks.forEach(book -> System.out.println(book.getBookname())); 
-        // }
         model.addAttribute("books", availableBooks);
         return "lend_table";
     }
@@ -137,7 +131,6 @@ public class MainController {
         List<Books> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<Books>>() {
         });
         session.setAttribute("selectedBooks", selectedBooksList);
-        System.out.println(selectedBooksList);
         return "redirect:/lendDetails";
     }
 
@@ -151,7 +144,6 @@ public class MainController {
             System.out.println("Selected Books is null");
         }
         model.addAttribute("selectedBooks", selectedBooks);
-        System.out.println("model" + selectedBooks);
         return "lend_details";
     }
 
@@ -343,36 +335,69 @@ public class MainController {
     
 
     @GetMapping("/search")
-    public String getSearchResults(HttpSession session, Model model) {
-        Search search = (Search) session.getAttribute("searchquery");
-        System.out.println("hii"+search);
-        // System.out.println("hii"+ search.getQuery());
-        if (search == null || search.getQuery() == null) {
-            model.addAttribute("message", "No search query provided.");
+    public String getSearchResults(Model model, @RequestParam(required = false) String searchType, @RequestParam(required = false) String query) {
+        try{
+        if (searchType == null || query == null || query.isEmpty()) {
+            model.addAttribute("message", "Please provide a search type and query.");
             return "search";
         }
-        GoogleBooks books = googleBooksService.searchBook(search.getQuery());
-        System.out.println(books);
+
+        List<GoogleBooks> books = null;
+
+        if ("id".equals(searchType)) {
+            GoogleBooks book = googleBooksService.searchBookById(query);
+            if (book != null) {
+                books = List.of(book);
+            }
+        } else if ("title".equals(searchType)) {
+            books = googleBooksService.searchBooksByTitle(query);
+        } else if ("author".equals(searchType)) {
+            books = googleBooksService.searchBooksByAuthor(query);
+        }
+
         model.addAttribute("books", books);
-        model.addAttribute("search", search);
         return "search";
     }
-
-    @PostMapping("/search")
-    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
-        System.out.println("hii");
-        if (bindingResult.hasErrors()) {
-            return "search";
-        }
-        session.setAttribute("searchquery", search);
-        System.out.println("hii"+search.getQuery());
-        return "redirect:/search";
+     catch (HttpServerErrorException.ServiceUnavailable e) {
+        model.addAttribute("message", "The Google Books service is temporarily unavailable. Please try again later.");
+        return "search";
     }
+    }
+
+
+    // @GetMapping("/search")
+    // public String searchBooks(@RequestParam String searchType, @RequestParam String query, Model model) {
+    //     List<GoogleBooks> books = null;
+    //     if ("id".equals(searchType)) {
+    //         GoogleBooks book = googleBooksService.searchBookById(query);
+    //         if (book != null) {
+    //             books = List.of(book);
+    //         }
+    //     } else if ("title".equals(searchType)) {
+    //         books = googleBooksService.searchBooksByTitle(query);
+    //     } else if ("author".equals(searchType)) {
+    //         books = googleBooksService.searchBooksByAuthor(query);
+    //     }
+
+    //     model.addAttribute("books", books);
+    //     return "search";
+    // }
+
+    // @PostMapping("/search")
+    // public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+    //     System.out.println("hii");
+    //     if (bindingResult.hasErrors()) {
+    //         return "search";
+    //     }
+    //     session.setAttribute("searchquery", search);
+    //     System.out.println("hii"+search.getQuery());
+    //     return "redirect:/search";
+    // }
 
     @GetMapping("/searchBooks")
     public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
     System.out.println(query);
-    GoogleBooks book = googleBooksService.searchBook(query);
+    GoogleBooks book = googleBooksService.searchBookById(query);
     System.out.println(book);
     System.out.println(book);
     if (book != null) {
