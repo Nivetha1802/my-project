@@ -5,7 +5,7 @@
     <title>Digital Library - Sign In</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body>
+<body class="signing">
     <div class="login-main-container">
         <h1>Digital Library</h1>
         <div class="login-container">

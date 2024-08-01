@@ -273,16 +273,16 @@ button[type="submit"]:hover {
 .sidebar ul li a:hover {
     text-decoration: underline;
 }
-.out-of-stock-button {
+button.out-of-stock-button {
     background-color: grey; 
-    color: white;           
-    border: none;           
-    padding: 10px 20px;    
-    font-size: 16px;      
-    cursor: not-allowed;    
-    border-radius: 5px;     
-    margin: 10px;         
+    color: white;                      
+    padding: 5px 10px;    
+    font-size: 12px;      
+    cursor: not-allowed; 
 }
+/* button .out-of-stock-button:hover{
+    background-color: grey;
+} */
 .back-button {
     background: none; 
     border: none;     

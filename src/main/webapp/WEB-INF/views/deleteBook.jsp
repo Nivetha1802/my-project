@@ -4,20 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Book</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="library-page">
+   
     <div class="header">
+        <button class="back-button" onclick="history.back()">
+            &#8592;
+        </button>
         <h1>Digital Library</h1>
-        <a href="/librarianHomePage">Home</a>
         <div class="nav">
+            <a href="/librarianHomePage">Home</a>
             <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>
-    <button class="back-button" onclick="history.back()">
-        &#8592;
-    </button>
     <div class="bookManagement-container">
     <div class="container">
         <div class="sidebar">

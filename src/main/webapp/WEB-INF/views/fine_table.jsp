@@ -7,32 +7,34 @@
         <head>
             <meta charset="UTF-8">
             <title>Fine Details</title>
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
             <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
         </head>
 
         <body class="library-page">
+           
             <div class="header">
+                <button class="back-button" onclick="history.back()">
+                    &#8592;
+                </button>
                 <h1>Digital Library</h1>
-                <a href="/studentHomePage">Home</a>
+                
                 <div class="nav">
-                    <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+                    <a href="/studentHomePage">Home</a>
+                    <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
                     <a href="/login">Logout</a>
                 </div>
             </div>
-            <button class="back-button" onclick="history.back()">
-                &#8592;
-            </button>
             <div class="lend_container">
                 <h1>Fine Details</h1>
                 <p>Total Books: ${fn:length(books)}</p>
-                <c:if test="${not empty user}">
                 <p>User ID: ${sessionScope.userId}</p>
                 <p>Username: ${user}</p>
-                </c:if>
+                
                 <c:if test="${empty books}">
                     <p>No Fine</p>
                 </c:if>
+                <c:if test="${not empty books}">
                 <table>
                     <thead>
                         <tr>
@@ -55,6 +57,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+            </c:if>
             </div>
     </body>
 

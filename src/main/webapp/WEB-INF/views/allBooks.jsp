@@ -6,17 +6,19 @@
 <head>	
 	<meta charset="UTF-8">
 	<title>All Books</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
     </head>
 <body class="library-page">
+   
     <div class="header">
         <button class="back-button" onclick="history.back()">
             &#8592;
         </button>
         <h1>Digital Library</h1>
+        
         <div class="nav">
-            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>

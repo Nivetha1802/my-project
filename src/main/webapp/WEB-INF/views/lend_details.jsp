@@ -5,20 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Lending Details</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="library-page">
+   
     <div class="header">
+        <button class="back-button" onclick="history.back()">
+            &#8592;
+        </button>
         <h1>Digital Library</h1>
-        <a href="/studentHomePage">Home</a>
+        
         <div class="nav">
-            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/studentHomePage">Home</a>
+            <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>
-    <button class="back-button" onclick="history.back()">
-        &#8592;
-    </button>
     <div class="lend_container">
         <h1>Lent Books Details</h1>
         <p>Total Books: ${fn:length(selectedBooks)}</p>
@@ -49,7 +51,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <button type="button" onclick="submitLendDetails()">Lend Selected Books</button>
+        <button type="submit" onclick="submitLendDetails()">Lend Selected Books</button>
     </div>
     <form id="lendDetForm" action="submitlenddetails" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="">

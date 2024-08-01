@@ -6,28 +6,31 @@
 <head>    
     <meta charset="UTF-8">
     <title>Book Returning</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/lendstyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Returnscript.js"></script>
     
 </head>
 <body class="library-page">
+   
     <div class="header">
+        <button class="back-button" onclick="history.back()">
+            &#8592;
+        </button>
         <h1>Digital Library</h1>
-        <a href="/studentHomePage">Home</a>
+        
         <div class="nav">
-            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
+            <a href="/studentHomePage">Home</a>
+            <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>
-    <button class="back-button" onclick="history.back()">
-        &#8592;
-    </button>
     <div class="lend_container">
         <h1>Return Books</h1>
         <p>Total Books: ${fn:length(lendBooks)}</p>
         <c:if test="${empty lendBooks}">
             <p>No books to return.</p>
         </c:if>
+        <c:if test="${not empty lendBooks}">
         <table id="returnTable">
                 <thead>
                     <tr>
@@ -66,7 +69,8 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <button type="button" onclick="submitReturnBooks()">Return Selected Books</button>
+            <button type="submit" onclick="submitReturnBooks()">Return Selected Books</button>
+        </c:if>
     </div>
     <form id="returnBooksForm" action="submitReturnBooks" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />

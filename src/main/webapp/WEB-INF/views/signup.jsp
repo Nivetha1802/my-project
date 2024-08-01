@@ -8,7 +8,7 @@
     <title>Digital Library - Sign Up</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body>
+<body class="signing">
     <div class="signup-main-container">
         <h1>Digital Library</h1>
         <div class="signup-container">

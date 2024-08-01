@@ -2,16 +2,18 @@ function searchBooks(event) {
     event.preventDefault();
 
     const query = document.getElementById("query").value;
+    console.log(query);
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `/searchBooks?query=${query}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
+    console.log("req sent")
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 displayResults(response);
-                console.log(book);
+                console.log(response);
             } else {
                 displayResults(null);
             }
@@ -29,12 +31,12 @@ function displayResults(book) {
         let table = `<table>
             <thead>
                 <tr>
-                    <th>Book Id</th>
+                    <th>ID</th>
                     <th>Title</th>
-                    <th>Author</th>
-                    <th>Subject</th>
-                    <th>Info</th>
-                    <th>Books count</th>
+                    <th>Authors</th>
+                    <th>Publisher</th>
+                    <th>Published Date</th>
+                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>

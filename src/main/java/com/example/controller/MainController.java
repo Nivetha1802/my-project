@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,25 +26,29 @@ import com.example.model.*;
 import com.example.service.*;
 
 
+
 @Controller
 public class MainController {
 
-    private UserService userService;
+    private final UserService userService;
 
-    private BooksService booksService;
+    private final BooksService booksService;
 
-    private LendDetailsService lendDetailsService;
+    private final LendDetailsService lendDetailsService;
 
     private final GoogleBooksService googleBooksService;
 
     private final ObjectMapper objectMapper;
 
+    private final OLBooksService olBooksService;
+
     public MainController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService,
-    GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
+    GoogleBooksService googleBooksService, OLBooksService olBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.booksService = booksService;
         this.googleBooksService = googleBooksService;
+        this.olBooksService = olBooksService;
         this.objectMapper = objectMapper;
     }
 
@@ -138,11 +143,6 @@ public class MainController {
     public String showLendDetails(HttpSession session, Model model) {
         @SuppressWarnings("unchecked")
         List<Books> selectedBooks = (List<Books>) session.getAttribute("selectedBooks");
-        if (selectedBooks != null) {
-            System.out.println("Selected Books: " + selectedBooks);
-        } else {
-            System.out.println("Selected Books is null");
-        }
         model.addAttribute("selectedBooks", selectedBooks);
         return "lend_details";
     }
@@ -154,30 +154,10 @@ public class MainController {
                 new TypeReference<List<LendDetails>>() {
                 });
         Integer userId = (Integer) session.getAttribute("userId");
-        System.out.println(userId);
         UserEntity user = userService.getUserById(userId);
-        System.out.println(selectedBooksList);
 
         for (LendDetails book : selectedBooksList) {
-            LendDetails lendDetail = new LendDetails();
-            lendDetail.setUser(user);
-            lendDetail.setBookid(book.getBookid());
-            lendDetail.setLendDate(book.getLendDate());
-            lendDetail.setReturnDate(book.getReturnDate());
-            lendDetail.setRenewDate(null);
-            lendDetail.setRenewCount(0);
-            lendDetail.setFine(0.0);
-
-            Books bookEntity = booksService.getBookById(book.getBookid());
-            lendDetail.setBookname(bookEntity.getBookname());
-            lendDetail.setAuthor(bookEntity.getAuthor());
-            lendDetail.setInfo(bookEntity.getInfo());
-            lendDetail.setSubject(bookEntity.getSubject());
-
-            bookEntity.setBookcount(bookEntity.getBookcount() - 1);
-            lendDetailsService.createLendDetails(lendDetail);
-            booksService.updateBook(book.getBookid(), bookEntity);
-
+           lendDetailsService.processLendDetails(book, user);
         }
         model.addAttribute("message", "Successfully Lent books");
         return "redirect:/studentHomePage";
@@ -263,7 +243,6 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookManagement";
         } else {
-            System.out.println(addBook);
             booksService.createBook(addBook);
             model.addAttribute("message", "successful!");
             return "redirect:/librarianHomePage";
@@ -281,10 +260,8 @@ public class MainController {
     public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            System.out.println(updateBook);
             return "redirect:/updateBook";
         } else {
-            System.out.println(updateBook);
             booksService.updateBook(updateBook.getBookid(), updateBook);
             model.addAttribute("message", "successful!");
             return "redirect:/librarianHomePage";
@@ -304,7 +281,6 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "redirect:/deleteBook";
         } else {
-            System.out.println(deleteBook);
             booksService.deleteBook(deleteBook.getBookid());
             model.addAttribute("message", "successful!");
             return "redirect:/librarianHomePage";
@@ -314,10 +290,6 @@ public class MainController {
     @GetMapping("/allBooks")
     public String showAllBookPage(Model model) {
         List<Books> availableBooks = booksService.getAllBooks();
-        System.out.println(booksService.getAllBooks());
-        if (availableBooks != null) {
-            availableBooks.forEach(book -> System.out.println(book.getBookname())); // Debugging
-        }
         model.addAttribute("books", availableBooks);
         return "allBooks";
     }
@@ -332,37 +304,81 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
-
+   
     @GetMapping("/search")
-    public String getSearchResults(Model model, @RequestParam(required = false) String searchType, @RequestParam(required = false) String query) {
-        try{
-        if (searchType == null || query == null || query.isEmpty()) {
-            model.addAttribute("message", "Please provide a search type and query.");
+    public String getSearchResults(HttpSession session, Model model) {
+        Search search = (Search) session.getAttribute("searchquery");
+        System.out.println("hii"+search);
+        if (search == null || search.getQuery() == null) {
+            model.addAttribute("message", "No search query provided.");
             return "search";
         }
-
-        List<GoogleBooks> books = null;
-
-        if ("id".equals(searchType)) {
-            GoogleBooks book = googleBooksService.searchBookById(query);
-            if (book != null) {
-                books = List.of(book);
-            }
-        } else if ("title".equals(searchType)) {
-            books = googleBooksService.searchBooksByTitle(query);
-        } else if ("author".equals(searchType)) {
-            books = googleBooksService.searchBooksByAuthor(query);
-        }
-
+        Books books = booksService.getBookById(search.getQuery());
+        
         model.addAttribute("books", books);
+        model.addAttribute("search", search);
         return "search";
     }
-     catch (HttpServerErrorException.ServiceUnavailable e) {
-        model.addAttribute("message", "The Google Books service is temporarily unavailable. Please try again later.");
-        return "search";
+
+    @PostMapping("/search")
+    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+        System.out.println("hii");
+        if (bindingResult.hasErrors()) {
+            return "search";
+        }
+        session.setAttribute("searchquery", search);
+        System.out.println("hii"+search.getQuery());
+        return "redirect:/search";
     }
+
+    @GetMapping("/searchBooks")
+    public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
+    System.out.println(query);
+    GoogleBooks book = googleBooksService.searchBook(query);
+    System.out.println(book);
+    System.out.println(book);
+    if (book != null) {
+        return new ResponseEntity<>(book, HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+}
+}
+
+
+    // @GetMapping("/searchBooks")
+    // public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
+    //     GoogleBooks book = googleBooksService.searchBook(query);
+    //     if (book != null) {
+    //         return new ResponseEntity<>(book, HttpStatus.OK);
+    //     } else {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
+
+//     @GetMapping("/searchBooks")
+//     public String searchBooks(@RequestParam("query") String query,
+//                               @RequestParam("searchType") String searchType,
+//                               @RequestParam(value = "page", defaultValue = "1") int page,
+//                               @RequestParam(value = "size", defaultValue = "10") int size,
+//                               Model model) {
+//         try {
+//             System.out.println("hii");
+//             List<OLBooks> books = olBooksService.searchBooks(query, searchType, page, size);
+//             model.addAttribute("books", books);
+//             model.addAttribute("query", query);
+//             model.addAttribute("searchType", searchType);
+//             model.addAttribute("page", page);
+//             model.addAttribute("size", size);
+//         } catch (IOException e) {
+//             model.addAttribute("error", "An error occurred while fetching data from Open Library.");
+//         }
+//         return "bookList";
+//     }
+// }
+
+
 
 
     // @GetMapping("/search")
@@ -394,24 +410,7 @@ public class MainController {
     //     return "redirect:/search";
     // }
 
-    @GetMapping("/searchBooks")
-    public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
-    System.out.println(query);
-    GoogleBooks book = googleBooksService.searchBookById(query);
-    System.out.println(book);
-    System.out.println(book);
-    if (book != null) {
-        return new ResponseEntity<>(book, HttpStatus.OK);
-    } else {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-}
-
-
-    // @GetMapping("/search")
-    // public String searchBooks(@RequestParam String query) {
-    //     return googleBooksService.searchBooks(query);
-    // }
+   
  // @GetMapping("/searchQuery")
     // public String getSearch(Model model, HttpSession session) {
     //     Search search = new Search();
@@ -512,4 +511,4 @@ public class MainController {
     // }
 
 
-}
+

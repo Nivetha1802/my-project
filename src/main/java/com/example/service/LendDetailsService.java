@@ -1,7 +1,10 @@
 package com.example.service;
 
 import java.time.LocalDate;
+
+import com.example.entity.Books;
 import com.example.entity.LendDetails;
+import com.example.entity.UserEntity;
 import com.example.repository.LendDetailsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +15,12 @@ public class LendDetailsService {
 
     private final LendDetailsRepository lendDetailsRepository;
 
+    private final BooksService booksService;
+
     
-    public LendDetailsService(LendDetailsRepository lendDetailsRepository) {
+    public LendDetailsService(LendDetailsRepository lendDetailsRepository, BooksService booksService) {
         this.lendDetailsRepository = lendDetailsRepository;
+        this.booksService = booksService;
     }
 
     @Transactional
@@ -51,6 +57,27 @@ public class LendDetailsService {
         lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
         lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14)); 
         lendDetailsRepository.save(lendDetails);
+    }
+
+    public void processLendDetails(LendDetails book, UserEntity user) {
+        LendDetails lendDetail = new LendDetails();
+        lendDetail.setUser(user);
+        lendDetail.setBookid(book.getBookid());
+        lendDetail.setLendDate(book.getLendDate());
+        lendDetail.setReturnDate(book.getReturnDate());
+        lendDetail.setRenewDate(null);
+        lendDetail.setRenewCount(0);
+        lendDetail.setFine(0.0);
+
+        Books bookEntity = booksService.getBookById(book.getBookid());
+        lendDetail.setBookname(bookEntity.getBookname());
+        lendDetail.setAuthor(bookEntity.getAuthor());
+        lendDetail.setInfo(bookEntity.getInfo());
+        lendDetail.setSubject(bookEntity.getSubject());
+
+        bookEntity.setBookcount(bookEntity.getBookcount() - 1);
+        createLendDetails(lendDetail);
+        booksService.updateBook(book.getBookid(), bookEntity);
     }
 
 }

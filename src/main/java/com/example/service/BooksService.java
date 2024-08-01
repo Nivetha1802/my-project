@@ -17,7 +17,6 @@ public class BooksService {
     public List<Books> getAllBooks() {
         return booksRepository.findAll();
     }
-
     public Books getBookById(Integer bookid) {
         return booksRepository.findById(bookid).orElse(null);
     }
