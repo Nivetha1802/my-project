@@ -123,26 +123,42 @@ public class MainController {
     }
 
     @GetMapping("/lendtable")
-    public String showLendtablePage(Model model) {
-
-        List<Books> availableBooks = booksService.getAllBooks();
-        model.addAttribute("books", availableBooks);
+    public String showLendtablePage(Model model, HttpSession session) {
+        Search search = (Search) session.getAttribute("searchquery");
+        if (search == null || search.getQuery() == null) {
+            model.addAttribute("message", "No search query provided.");
+            return "lend_table";
+        }
+        List<GoogleBooks> book = googleBooksService.searchBook(search.getQuery());
+        model.addAttribute("books", book);
+        model.addAttribute("search", search);
         return "lend_table";
     }
 
     @PostMapping("/submitlendtable")
     public String submitLendTable(@RequestParam("selectedBooks") String selectedBooks, HttpSession session)
             throws JsonMappingException, JsonProcessingException {
-        List<Books> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<Books>>() {
+        List<GoogleBooks> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<GoogleBooks>>() {
         });
         session.setAttribute("selectedBooks", selectedBooksList);
         return "redirect:/lendDetails";
     }
 
+    @PostMapping("/lendsearch")
+    public String searchBooksForLending(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+        System.out.println("hii");
+        if (bindingResult.hasErrors()) {
+            return "search";
+        }
+        session.setAttribute("searchquery", search);
+        System.out.println("hii"+search.getQuery());
+        return "redirect:/lendtable";
+    }
+
     @GetMapping("/lendDetails")
     public String showLendDetails(HttpSession session, Model model) {
         @SuppressWarnings("unchecked")
-        List<Books> selectedBooks = (List<Books>) session.getAttribute("selectedBooks");
+        List<GoogleBooks> selectedBooks = (List<GoogleBooks>) session.getAttribute("selectedBooks");
         model.addAttribute("selectedBooks", selectedBooks);
         return "lend_details";
     }
@@ -313,9 +329,9 @@ public class MainController {
             model.addAttribute("message", "No search query provided.");
             return "search";
         }
-        Books books = booksService.getBookById(search.getQuery());
+        List<GoogleBooks> book = googleBooksService.searchBook(search.getQuery());
         
-        model.addAttribute("books", books);
+        model.addAttribute("books", book);
         model.addAttribute("search", search);
         return "search";
     }
@@ -332,9 +348,9 @@ public class MainController {
     }
 
     @GetMapping("/searchBooks")
-    public ResponseEntity<GoogleBooks> searchBooks(@RequestParam String query) {
+    public ResponseEntity<List<GoogleBooks>> searchBooks(@RequestParam String query) {
     System.out.println(query);
-    GoogleBooks book = googleBooksService.searchBook(query);
+    List<GoogleBooks> book = googleBooksService.searchBook(query);
     System.out.println(book);
     System.out.println(book);
     if (book != null) {

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class LendDetails {
+public class Lend {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +18,6 @@ public class LendDetails {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
     private String id;
-    private String bookname;
-    private List<String> authors;
-    private LocalDate lendDate;
-    private LocalDate returnDate;
-    private LocalDate renewDate;
-    private Integer renewCount;
-    private Double fine;
-    
     public Integer getLendId() {
         return lendId;
     }
@@ -38,6 +30,15 @@ public class LendDetails {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+    private String bookname;
+    private List<String> authors;
+    private LocalDate lendDate;
+    private LocalDate returnDate;
+    private LocalDate renewDate;
+    private Integer renewCount;
+    private Double fine;
+    
+
     public String getBookname() {
         return bookname;
     }

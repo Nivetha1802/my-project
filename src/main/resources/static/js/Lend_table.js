@@ -1,15 +1,13 @@
 let selectedBooks = [];
 
-        function toggleBook(button, bookid, bookname, author, subject, bookcount, info) {
-            if (bookcount == 0) {
-                return; 
-            }
-            if (selectedBooks.some(book => book.bookid === bookid)) {
-                selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
+        function toggleBook(button, id, title, authors, publisher, publishedDate) {
+            if (selectedBooks.some(book => book.id === id)) {
+                selectedBooks = selectedBooks.filter(book => book.id !== id);
                 button.textContent = 'Add';
                 button.classList.remove('added');
-            } else {
-                selectedBooks.push({ button, bookid, bookname, author, subject, bookcount, info});
+            }else {
+                const authorsArray = authors.replace(/^\[|\]$/g, '').split(',').map(author => author.trim());
+                selectedBooks.push({ button, id, title, authors: authorsArray, publisher, publishedDate });
                 button.textContent = 'Added';
                 button.classList.add('added');
             }

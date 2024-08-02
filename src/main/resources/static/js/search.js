@@ -6,7 +6,7 @@ function searchBooks(event) {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `/searchBooks?query=${query}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    console.log("req sent")
+    console.log("req sent");
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -22,12 +22,12 @@ function searchBooks(event) {
     xhr.send();
 }
 
-function displayResults(book) {
-    console.log(book);
+function displayResults(books) {
+    console.log(books);
     const resultsContainer = document.getElementById("search-results");
     resultsContainer.innerHTML = '';
 
-    if (book) {
+    if (books && books.length > 0) {
         let table = `<table>
             <thead>
                 <tr>
@@ -39,17 +39,21 @@ function displayResults(book) {
                     <th>Description</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody>`;
+        
+        books.forEach(book => {
+            table += `
                 <tr>
                     <td>${book.id}</td>
                     <td>${book.title}</td>
-                    <td>${book.authors}</td>
+                    <td>${book.authors.join(', ')}</td>
                     <td>${book.publisher}</td>
                     <td>${book.publishedDate}</td>
                     <td>${book.description}</td>
-                </tr>
-            </tbody>
-        </table>`;
+                </tr>`;
+        });
+
+        table += `</tbody></table>`;
         resultsContainer.innerHTML = table;
     } else {
         resultsContainer.innerHTML = "<p>No books found.</p>";

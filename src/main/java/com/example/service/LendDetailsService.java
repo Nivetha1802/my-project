@@ -46,7 +46,7 @@ public class LendDetailsService {
         List<LendDetails> lendDetailsList = lendDetailsRepository.findLendDetailsById(id);
         LocalDate actualReturnDate = LocalDate.now();
         for (LendDetails lendDetails : lendDetailsList) {
-            lendDetails.calculateFine(actualReturnDate);
+            // lendDetails.calculateFine(actualReturnDate);
         }
         return lendDetailsList;
     }
@@ -62,22 +62,14 @@ public class LendDetailsService {
     public void processLendDetails(LendDetails book, UserEntity user) {
         LendDetails lendDetail = new LendDetails();
         lendDetail.setUser(user);
-        lendDetail.setBookid(book.getBookid());
+        lendDetail.setId(book.getId());
         lendDetail.setLendDate(book.getLendDate());
         lendDetail.setReturnDate(book.getReturnDate());
         lendDetail.setRenewDate(null);
         lendDetail.setRenewCount(0);
         lendDetail.setFine(0.0);
-
-        Books bookEntity = booksService.getBookById(book.getBookid());
-        lendDetail.setBookname(bookEntity.getBookname());
-        lendDetail.setAuthor(bookEntity.getAuthor());
-        lendDetail.setInfo(bookEntity.getInfo());
-        lendDetail.setSubject(bookEntity.getSubject());
-
-        bookEntity.setBookcount(bookEntity.getBookcount() - 1);
         createLendDetails(lendDetail);
-        booksService.updateBook(book.getBookid(), bookEntity);
+        // booksService.updateBook(book.getBookid(), bookEntity);
     }
 
 }
