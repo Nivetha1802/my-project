@@ -2,6 +2,10 @@ package com.example.model;
 
 import javax.validation.constraints.*;
 
+import com.example.validation.IsInteger;
+import com.example.validation.PasswordMatches;
+
+@PasswordMatches
 public class User {
     @NotEmpty(message = "Name is required")
     private String name;
@@ -9,7 +13,7 @@ public class User {
     private String role;
 
     @NotNull(message = "ID is required")
-    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
+    @IsInteger
     private Integer id;
 
     @NotEmpty(message = "Password is required")

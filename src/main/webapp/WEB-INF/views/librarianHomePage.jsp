@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script src="${pageContext.request.contextPath}/js/search.js"></script>
 </head>
-<body class="library-page">
+<body class="library-page" onload="showPopup('${message}')">
     
     <div class="header">
         <h1>Digital Library</h1>

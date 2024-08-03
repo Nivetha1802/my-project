@@ -28,14 +28,14 @@
 
                 <h1>Lend Books</h1>
                 <div class="search-container">
-                    <form class="search-bar" action="lendsearch" method="post" modelAttribute="search">
-                        <input type="text" name="query" placeholder="Search a book" value="${search.query}">
+                    <form class="search-bar" action="lendtable" method="get">
+                        <input type="text" id="query" name="query" value="${query}" placeholder="Search a book">
                         <button type="submit">&#128269;</button>
                     </form>
                 </div>
 
-                <c:if test="${not empty search.query}">
-                    <h2>Search results for: "${search.query}"</h2>
+                <c:if test="${not empty books}">
+                    <h2>Search results for: "${query}"</h2>
                     <div>
                         <table>
                             <thead>
@@ -54,7 +54,7 @@
                                     <tr>
                                         <td>${book.id}</td>
                                         <td>${book.title}</td>
-                                        <td><c:forEach var="author" items="${book.authors}">${author}<br/></c:forEach></td>
+                                        <td>${book.authors}</td>
                                         <td>${book.publisher}</td>
                                         <td>${book.publishedDate}</td>
                                         <td><img src="${book.thumbnail}" alt="Thumbnail" /></td>
@@ -71,9 +71,7 @@
                     <button type="submit" onclick="submitLendBooks()">Lend Selected Books</button>
             </div>
             </c:if>
-            <c:if test="${empty search}">
-                <p>No books found.</p>
-            </c:if>
+            
             <form id="lendForm" action="${pageContext.request.contextPath}/submitlendtable" method="post">
                 <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
             </form>

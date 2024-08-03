@@ -3,11 +3,10 @@ package com.example.model;
 import javax.validation.constraints.*;
 
 public class LoginUser {
-    @NotEmpty(message = "Name is required")
+    @NotEmpty(message = "Role is required")
     private String role;
 
     @NotNull(message = "ID is required")
-    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
     private int id;
 
     @NotEmpty(message = "Password is required")

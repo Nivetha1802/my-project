@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <title>Digital Library</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/js/signup.js"></script>
+
 </head>
 
-<body class="library-page">
+<body class="library-page" >
    
     <div class="header">
         
@@ -29,6 +31,24 @@
         
     </div>
 
+    <div>
+        <c:if  test="${empty message}">
+
+        </c:if>
+        <c:if  test="${empty error}">
+            
+        </c:if>
+        <c:if test="${not empty error}">
+            <script>
+                showMessage("${error}", 'error');
+            </script>
+        </c:if>
+        <c:if test="${not empty message}">
+            <script>
+                showMessage("${message}", 'success');
+            </script>
+        </c:if>
+</div>
 </body>
 
 </html>

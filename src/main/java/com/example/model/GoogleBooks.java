@@ -5,7 +5,7 @@ import java.util.List;
 public class GoogleBooks {
     private String id;
     private String title;
-    private List<String> authors;
+    private String authors;
     private String publisher;
     private String publishedDate;
     private String description;
@@ -29,11 +29,11 @@ public class GoogleBooks {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
     }
 

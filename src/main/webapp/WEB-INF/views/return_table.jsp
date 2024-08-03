@@ -37,8 +37,6 @@
                         <th>Book Id</th>
                         <th>Title</th>
                         <th>Author</th>
-                        <th>Subject</th>
-                        <th>Info</th>
                         <th>Lend Date</th>
                         <th>Due Date</th>
                         <th>Actual Return Date</th>
@@ -50,16 +48,14 @@
                 <tbody>
                     <c:forEach var="book" items="${lendBooks}">
                         <tr>
-                            <td>${book.bookid}</td>
-                            <td>${book.bookname}</td>
-                            <td>${book.author}</td>
-                            <td>${book.subject}</td>
-                            <td>${book.info}</td>
-                            <td id="date_of_lending_${book.bookid}">${book.lendDate}</td>
-                            <td id="due_date_${book.bookid}">${book.returnDate}</td>
+                            <td>${book.id}</td>
+                            <td>${book.title}</td>
+                            <td>${book.authors}</td>
+                            <td id="date_of_lending_${book.id}">${book.lendDate}</td>
+                            <td id="due_date_${book.id}">${book.returnDate}</td>
                             <td class="actual_return_date"></td>
                             <td>
-                                <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.lendId}')">Return</button>
+                                <button type="button" onclick="toggleBook(this, '${book.id}', '${book.lendId}')">Return</button>
                             </td>
                             <td>${book.fine}</td>
                             <td>

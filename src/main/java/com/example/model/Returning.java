@@ -1,16 +1,9 @@
 package com.example.model;
 import java.util.Date;
 
-import javax.validation.constraints.*;
-
 public class Returning {
-    
-    @NotNull(message = "Id is required")
-    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
-    private int id;
 
-    @NotNull(message = "Book Id is required")
-    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")    
+    private int id;
     private int bookid;
     private Date date_of_lending;
     private Date date_of_return;

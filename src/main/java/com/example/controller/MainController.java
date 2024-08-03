@@ -6,21 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.directory.SearchResult;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
 import com.example.entity.*;
 import com.example.model.*;
 import com.example.service.*;
@@ -40,19 +39,16 @@ public class MainController {
 
     private final ObjectMapper objectMapper;
 
-    private final OLBooksService olBooksService;
-
     public MainController(UserService userService, LendDetailsService lendDetailsService, BooksService booksService,
-    GoogleBooksService googleBooksService, OLBooksService olBooksService, ObjectMapper objectMapper) {
+    GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.booksService = booksService;
         this.googleBooksService = googleBooksService;
-        this.olBooksService = olBooksService;
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping({ "/", "/logout" })
+    @GetMapping("/logout" )
     public String getHomePage() {
         return "login";
     }
@@ -83,28 +79,28 @@ public class MainController {
     }
 
     @PostMapping("/submitRegistration")
-    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,RedirectAttributes redirectAttributes,
             Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "signup";
         } else {
             session.setAttribute("userId", user.getId());
             userService.saveUser(user);
-            model.addAttribute("message", "Registration successful!");
+            redirectAttributes.addFlashAttribute("message", "Registration successful!");
             String role = user.getRole();
             return "redirect:/home?role=" + role;
         }
 
     }
 
-    @GetMapping("/login")
+    @GetMapping({"/login","/"})
     public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginuser, Model model) {
         model.addAttribute(loginuser);
         return "login";
     }
 
     @PostMapping("/submitLogin")
-    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult,
+    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult,RedirectAttributes redirectAttributes,
             Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "login";
@@ -112,26 +108,24 @@ public class MainController {
             UserEntity user = userService.authenticate(loginuser.getId(), loginuser.getPassword());
             if (user != null) {
                 session.setAttribute("userId", user.getId());
-                model.addAttribute("message", "Login successful!");
+                redirectAttributes.addFlashAttribute("message", "Login successful!");
                 String role = user.getRole();
                 return "redirect:/home?role=" + role;
             } else {
-                model.addAttribute("error", "Invalid username or password");
+                redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
                 return "redirect:/login";
             }
         }
     }
 
     @GetMapping("/lendtable")
-    public String showLendtablePage(Model model, HttpSession session) {
-        Search search = (Search) session.getAttribute("searchquery");
-        if (search == null || search.getQuery() == null) {
-            model.addAttribute("message", "No search query provided.");
-            return "lend_table";
+    public String showLendtablePage(@RequestParam(value = "query", required = false) String query,Model model) {
+        if (query != null && !query.isEmpty()) {
+            List<GoogleBooks> books = googleBooksService.searchBook(query);
+            model.addAttribute("books", books);
+            model.addAttribute("query", query);
         }
-        List<GoogleBooks> book = googleBooksService.searchBook(search.getQuery());
-        model.addAttribute("books", book);
-        model.addAttribute("search", search);
+        
         return "lend_table";
     }
 
@@ -144,16 +138,16 @@ public class MainController {
         return "redirect:/lendDetails";
     }
 
-    @PostMapping("/lendsearch")
-    public String searchBooksForLending(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
-        System.out.println("hii");
-        if (bindingResult.hasErrors()) {
-            return "search";
-        }
-        session.setAttribute("searchquery", search);
-        System.out.println("hii"+search.getQuery());
-        return "redirect:/lendtable";
-    }
+    // @PostMapping("/lendsearch")
+    // public String searchBooksForLending(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+    //     System.out.println("hii");
+    //     if (bindingResult.hasErrors()) {
+    //         return "search";
+    //     }
+    //     session.setAttribute("searchquery", search);
+    //     System.out.println("hii"+search.getQuery());
+    //     return "redirect:/lendtable";
+    // }
 
     @GetMapping("/lendDetails")
     public String showLendDetails(HttpSession session, Model model) {
@@ -164,7 +158,7 @@ public class MainController {
     }
 
     @PostMapping("/submitlenddetails")
-    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,
+    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,RedirectAttributes redirectAttributes,
             Model model) throws JsonMappingException, JsonProcessingException {
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<LendDetails>>() {
@@ -173,9 +167,9 @@ public class MainController {
         UserEntity user = userService.getUserById(userId);
 
         for (LendDetails book : selectedBooksList) {
-           lendDetailsService.processLendDetails(book, user);
+           lendDetailsService.processBookLendDetails(book, user);
         }
-        model.addAttribute("message", "Successfully Lent books");
+        redirectAttributes.addFlashAttribute("message", "Successfully Lent Books!");
         return "redirect:/studentHomePage";
     }
 
@@ -189,21 +183,18 @@ public class MainController {
     }
 
     @PostMapping("/submitReturnBooks")
-    public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,
+    public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,RedirectAttributes redirectAttributes,
             HttpSession session) throws JsonMappingException, JsonProcessingException {
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<LendDetails>>() {
                 });
 
         for (LendDetails book : selectedBooksList) {
-            Books bookEntity = booksService.getBookById(book.getBookid());
-            bookEntity.setBookcount(bookEntity.getBookcount() + 1);
-            booksService.updateBook(bookEntity.getBookid(), bookEntity);
             lendDetailsService.deleteLendDetails(book.getLendId());
         }
 
         session.removeAttribute("selectedBooks");
-
+        redirectAttributes.addFlashAttribute("message", "Successfully Returned Books!");
         return "redirect:/studentHomePage";
     }
 
@@ -216,12 +207,13 @@ public class MainController {
     }
 
     @PostMapping("/submitRenewtable")
-    public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,
+    public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,RedirectAttributes redirectAttributes,
             HttpSession session) throws JsonMappingException, JsonProcessingException {
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,new TypeReference<List<LendDetails>>() {});
         for (LendDetails book : selectedBooksList) {
             lendDetailsService.renewBook(book.getLendId());
         }
+        redirectAttributes.addFlashAttribute("message", "Successfully Renewed Books!");
         return "redirect:/studentHomePage";
     }
 
@@ -254,13 +246,13 @@ public class MainController {
     }
 
     @PostMapping("/submitAddBook")
-    public String submitAddBook(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult,
+    public String submitAddBook(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult,RedirectAttributes redirectAttributes,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookManagement";
         } else {
             booksService.createBook(addBook);
-            model.addAttribute("message", "successful!");
+            redirectAttributes.addFlashAttribute("message", "Successfully Added Books");
             return "redirect:/librarianHomePage";
         }
     }
@@ -273,13 +265,13 @@ public class MainController {
     }
 
     @PostMapping("/submitUpdateBook")
-    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook,
+    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook,RedirectAttributes redirectAttributes,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/updateBook";
         } else {
             booksService.updateBook(updateBook.getBookid(), updateBook);
-            model.addAttribute("message", "successful!");
+            redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
             return "redirect:/librarianHomePage";
         }
     }
@@ -292,13 +284,13 @@ public class MainController {
     }
 
     @PostMapping("/submitDeleteBook")
-    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook,
+    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook,RedirectAttributes redirectAttributes,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/deleteBook";
         } else {
             booksService.deleteBook(deleteBook.getBookid());
-            model.addAttribute("message", "successful!");
+            redirectAttributes.addFlashAttribute("message", "Successfully Deleted Book!");
             return "redirect:/librarianHomePage";
         }
     }
@@ -320,32 +312,43 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-   
-    @GetMapping("/search")
-    public String getSearchResults(HttpSession session, Model model) {
-        Search search = (Search) session.getAttribute("searchquery");
-        System.out.println("hii"+search);
-        if (search == null || search.getQuery() == null) {
-            model.addAttribute("message", "No search query provided.");
-            return "search";
-        }
-        List<GoogleBooks> book = googleBooksService.searchBook(search.getQuery());
-        
-        model.addAttribute("books", book);
-        model.addAttribute("search", search);
-        return "search";
-    }
 
-    @PostMapping("/search")
-    public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
-        System.out.println("hii");
-        if (bindingResult.hasErrors()) {
-            return "search";
-        }
-        session.setAttribute("searchquery", search);
-        System.out.println("hii"+search.getQuery());
-        return "redirect:/search";
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "query", required = false) String query, Model model) {
+    if (query != null && !query.isEmpty()) {
+        List<GoogleBooks> books = googleBooksService.searchBook(query);
+        model.addAttribute("books", books);
+        model.addAttribute("query", query);
     }
+    return "search";
+}
+
+   
+    // @GetMapping("/search")
+    // public String getSearchResults(HttpSession session, Model model,RedirectAttributes redirectAttributes) {
+    //     Search search = (Search) session.getAttribute("searchquery");
+    //     System.out.println("hii"+search);
+    //     if (search == null || search.getQuery() == null) {
+    //         model.addAttribute("message", "No search query provided.");
+    //         return "search";
+    //     }
+    //     List<GoogleBooks> book = googleBooksService.searchBook(search.getQuery());
+        
+    //     model.addAttribute("books", book);
+    //     model.addAttribute("search", search);
+    //     return "search";
+    // }
+
+    // @PostMapping("/search")
+    // public String searchForm(@Valid @ModelAttribute("search") Search search, BindingResult bindingResult, HttpSession session) {
+    //     System.out.println("hii");
+    //     if (bindingResult.hasErrors()) {
+    //         return "search";
+    //     }
+    //     session.setAttribute("searchquery", search);
+    //     System.out.println("hii"+search.getQuery());
+    //     return "redirect:/search";
+    // }
 
     @GetMapping("/searchBooks")
     public ResponseEntity<List<GoogleBooks>> searchBooks(@RequestParam String query) {

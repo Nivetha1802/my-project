@@ -22,14 +22,14 @@
     </div>
 
     <div class="search-container">
-        <form class="search-bar" action="search" method="post" modelAttribute="search">
-            <input type="text" name="query" placeholder="Search a book" value="${search.query}">
+        <form class="search-bar" action="search" method="get">
+            <input type="text" id="query" name="query" value="${query}" placeholder="Search a book">
             <button type="submit">&#128269;</button>
         </form>
     </div>
    
-    <c:if test="${not empty search.query}">
-        <h2>Search results for: "${search.query}"</h2>
+    <c:if test="${not empty query}">
+        <h2>Search results for: "${query}"</h2>
         <table border="1">
             <thead>
                 <tr>
@@ -57,8 +57,5 @@
         </table>
     </c:if>
 
-    <c:if test="${empty search.query}">
-        <p>No books found.</p>
-    </c:if>
 </body>
 </html>

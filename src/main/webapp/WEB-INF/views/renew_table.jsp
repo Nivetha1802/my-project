@@ -36,8 +36,6 @@
                     <th>Book Id</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Subject</th>
-                    <th>Info</th>
                     <th>Lend date</th>
                     <th>Due date</th>
                     <th>Action</th>
@@ -49,11 +47,9 @@
             <tbody>
                 <c:forEach var="book" items="${lendBooks}">
                     <tr>
-                        <td>${book.bookid}</td>
-                        <td>${book.bookname}</td>
-                        <td>${book.author}</td>
-                        <td>${book.subject}</td>
-                        <td>${book.info}</td>
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.authors}</td>
                         <td>${book.lendDate}</td>
                         <td>${book.returnDate}</td>
                         <td>
@@ -83,8 +79,8 @@
     let selectedBooks = [];
 
 function toggleBook(button, lendId) {
-    if (selectedBooks.some(book => book.bookid === bookid)) {
-        selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
+    if (selectedBooks.some(book => book.id === id)) {
+        selectedBooks = selectedBooks.filter(book => book.id !== id);
         button.textContent = 'Renew';
         button.classList.remove('Added');
     } else {

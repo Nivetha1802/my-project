@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class GoogleBooksService {
-    
+
     private static final String GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
     @Value("${google.books.api.key}")
@@ -40,34 +40,32 @@ public class GoogleBooksService {
         return parseBooks(response.getBody());
     }
 
-    
     // private List<GoogleBooks> parseBook(String response) {
-    //     List<GoogleBooks> books = new ArrayList<>();
-    //     try {
-    //         ObjectMapper mapper = new ObjectMapper();
-    //         JsonNode root = mapper.readTree(response);
-    //         JsonNode items = root.path("items");
+    // List<GoogleBooks> books = new ArrayList<>();
+    // try {
+    // ObjectMapper mapper = new ObjectMapper();
+    // JsonNode root = mapper.readTree(response);
+    // JsonNode items = root.path("items");
 
-    //         if (items.isArray() && items.size() > 0) {
-    //             GoogleBooks book = new GoogleBooks();
-    //             JsonNode item = items.get(0); // Get the first item
-    //             JsonNode volumeInfo = item.path("volumeInfo");
-    //             book = new GoogleBooks();
-    //             book.setId(item.path("id").asText());
-    //             book.setTitle(volumeInfo.path("title").asText());
-    //             book.setAuthors(mapper.convertValue(volumeInfo.path("authors"), List.class));
-    //             book.setPublisher(volumeInfo.path("publisher").asText());
-    //             book.setPublishedDate(volumeInfo.path("publishedDate").asText());
-    //             book.setDescription(volumeInfo.path("description").asText());
-    //             book.setThumbnail(volumeInfo.path("imageLinks").path("thumbnail").asText());
-    //             books.add(book);
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return books;
+    // if (items.isArray() && items.size() > 0) {
+    // GoogleBooks book = new GoogleBooks();
+    // JsonNode item = items.get(0); // Get the first item
+    // JsonNode volumeInfo = item.path("volumeInfo");
+    // book = new GoogleBooks();
+    // book.setId(item.path("id").asText());
+    // book.setTitle(volumeInfo.path("title").asText());
+    // book.setAuthors(mapper.convertValue(volumeInfo.path("authors"), List.class));
+    // book.setPublisher(volumeInfo.path("publisher").asText());
+    // book.setPublishedDate(volumeInfo.path("publishedDate").asText());
+    // book.setDescription(volumeInfo.path("description").asText());
+    // book.setThumbnail(volumeInfo.path("imageLinks").path("thumbnail").asText());
+    // books.add(book);
     // }
-
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // return books;
+    // }
 
     private List<GoogleBooks> parseBooks(String response) {
         List<GoogleBooks> books = new ArrayList<>();
@@ -83,13 +81,23 @@ public class GoogleBooksService {
 
                     book.setId(item.path("id").asText());
                     book.setTitle(volumeInfo.path("title").asText());
-                    book.setAuthors(mapper.convertValue(volumeInfo.path("authors"), List.class));
+                    JsonNode authorsNode = volumeInfo.path("authors");
+                    if (authorsNode.isArray()) {
+                        List<String> authorsList = new ArrayList<>();
+                        for (JsonNode authorNode : authorsNode) {
+                            authorsList.add(authorNode.asText());
+                        }
+                        book.setAuthors(String.join(", ", authorsList));
+                    } else {
+                        book.setAuthors(""); // Set empty string if authors are not available
+                    }
                     book.setPublisher(volumeInfo.path("publisher").asText());
                     book.setPublishedDate(volumeInfo.path("publishedDate").asText());
                     book.setDescription(volumeInfo.path("description").asText());
                     book.setThumbnail(volumeInfo.path("imageLinks").path("thumbnail").asText());
-
+                    System.out.println(book.getAuthors());
                     books.add(book);
+                    
                 }
             }
         } catch (Exception e) {
@@ -97,24 +105,26 @@ public class GoogleBooksService {
         }
         return books;
     }
-    //  public void processBookLendDetails(Lend book, UserEntity user) {
-    //     Lend lendDetail = new Lend();
-    //     lendDetail.setUser(user);
-    //     lendDetail.setId(book.getId());
-    //     lendDetail.setLendDate(book.getLendDate());
-    //     lendDetail.setReturnDate(book.getReturnDate());
-    //     lendDetail.setRenewDate(null);
-    //     lendDetail.setRenewCount(0);
-    //     lendDetail.setFine(0.0);
+    // public void processBookLendDetails(Lend book, UserEntity user) {
+    // Lend lendDetail = new Lend();
+    // lendDetail.setUser(user);
+    // lendDetail.setId(book.getId());
+    // lendDetail.setLendDate(book.getLendDate());
+    // lendDetail.setReturnDate(book.getReturnDate());
+    // lendDetail.setRenewDate(null);
+    // lendDetail.setRenewCount(0);
+    // lendDetail.setFine(0.0);
 
-    //     GoogleBooks bookEntity = GoogleBooksService.searchBook(book.getId());
-    //     lendDetail.setBookname(bookEntity.getBookname());
-    //     lendDetail.setAuthor(bookEntity.getAuthor());
-    //     lendDetail.setInfo(bookEntity.getInfo());
-    //     lendDetail.setSubject(bookEntity.getSubject());
+    
 
-    //     bookEntity.setBookcount(bookEntity.getBookcount() - 1);
-    //     createLendDetails(lendDetail);
-    //     booksService.updateBook(book.getBookid(), bookEntity);
+    // GoogleBooks bookEntity = GoogleBooksService.searchBook(book.getId());
+    // lendDetail.setBookname(bookEntity.getBookname());
+    // lendDetail.setAuthor(bookEntity.getAuthor());
+    // lendDetail.setInfo(bookEntity.getInfo());
+    // lendDetail.setSubject(bookEntity.getSubject());
+
+    // bookEntity.setBookcount(bookEntity.getBookcount() - 1);
+    // createLendDetails(lendDetail);
+    // booksService.updateBook(book.getBookid(), bookEntity);
     // }
 }

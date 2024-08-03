@@ -15,9 +15,11 @@
             <h2>Sign Up</h2>
             <form:form class="signup-form-container" action="${pageContext.request.contextPath}/submitRegistration" method="post" modelAttribute="user">
                 <div class="form-group">
+                    <form:errors path="*" cssClass="error" element="div"/>
+                </div>
+                <div class="form-group">
                     <form:label path="name" for="name">Your name:</form:label>
-                    <form:input path="name" id="name" />
-                    <form:errors path="name" cssClass="error"/>
+                    <form:input path="name" id="name" required="True"/>
                 </div>
                 <div class="form-group">
                     <form:label path="role" for="role">Role:</form:label>
@@ -26,22 +28,18 @@
                         <form:option value="teacher">Teacher</form:option>
                         <form:option value="librarian">Librarian</form:option>
                     </form:select>
-                    <form:errors path="role" cssClass="error"/>
                 </div>
                 <div class="form-group">
                     <form:label path="id" for="id">ID Number:</form:label>
-                    <form:input path="id" id="id" />
-                    <form:errors path="id" cssClass="error"/>
+                    <form:input path="id" id="id" required="True"/>
                 </div>
                 <div class="form-group">
                     <form:label path="password" for="password">Password:</form:label>
-                    <form:password path="password" id="password" />
-                    <form:errors path="password" cssClass="error"/>
+                    <form:password path="password" id="password" required="True"/>
                 </div>
                 <div class="form-group">
                     <form:label path="confirmPassword" for="confirmPassword">Confirm Password:</form:label>
-                    <form:password path="confirmPassword" id="confirmPassword" />
-                    <form:errors path="confirmPassword" cssClass="error"/>
+                    <form:password path="confirmPassword" id="confirmPassword" required="True"/>
                 </div>
                 <div>
                     <button type="submit">Sign Up</button>

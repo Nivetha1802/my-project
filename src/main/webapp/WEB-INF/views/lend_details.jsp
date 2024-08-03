@@ -30,7 +30,7 @@
                     <p>No books selected for lending.</p>
                 </c:if>
                 <c:if test="${not empty selectedBooks}">
-                   <table>
+                    <table id="lendDetailsTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -61,7 +61,7 @@
             <form id="lendDetForm" action="submitlenddetails" method="post">
                 <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
             </form>
-            <h3>"${selectedBooks}"</h3>
+            
 
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -92,7 +92,7 @@
                         const book = {
                             id: row.querySelector('td:nth-child(1)').textContent,
                             title: row.querySelector('td:nth-child(2)').textContent,
-                            authors: authors,
+                            authors: row.querySelector('td:nth-child(3)').textContent,
                             publisher: row.querySelector('td:nth-child(4)').textContent,
                             lendDate: row.querySelector('.lending-date').textContent,
                             returnDate: row.querySelector('.return-date').textContent

@@ -59,3 +59,9 @@ function displayResults(books) {
         resultsContainer.innerHTML = "<p>No books found.</p>";
     }
 }
+
+function showPopup(message) {
+    if (message) {
+        alert(message);
+    }
+}
