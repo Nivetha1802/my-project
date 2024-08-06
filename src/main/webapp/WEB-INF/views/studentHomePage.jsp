@@ -26,18 +26,11 @@
         <button onclick="window.location.href='/returntable'">Return books</button>
         <button onclick="window.location.href='/renewtable'">Renew books</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
-        <button onclick="window.location.href='/allBooks'">View All Books</button>
         <button onclick="window.location.href='/search'">Search Books</button>
         
     </div>
 
-    <div>
-        <c:if  test="${empty message}">
-
-        </c:if>
-        <c:if  test="${empty error}">
-            
-        </c:if>
+    <!-- <div>
         <c:if test="${not empty error}">
             <script>
                 showMessage("${error}", 'error');
@@ -48,7 +41,7 @@
                 showMessage("${message}", 'success');
             </script>
         </c:if>
-</div>
+</div> -->
 </body>
 
 </html>

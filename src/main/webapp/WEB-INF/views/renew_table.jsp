@@ -7,12 +7,11 @@
     <meta charset="UTF-8">
     <title>Book Renew</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
 </head>
 <body class="library-page">
    
     <div class="header">
-        <button class="back-button" onclick="history.back()">
+        <button class="back-button" onclick="window.location.href='/studentHomePage'">
             &#8592;
         </button>
         <h1>Digital Library</h1>
@@ -74,8 +73,9 @@
     <form id="RenewForm" action="submitRenewtable" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
     </form>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
 </body>
-<script>
+<!-- <script>
     let selectedBooks = [];
 
 function toggleBook(button, lendId) {
@@ -98,5 +98,5 @@ function submitRenewBooks() {
     document.getElementById('RenewForm').submit();
 }
 
-</script>
+</script> -->
 </html>

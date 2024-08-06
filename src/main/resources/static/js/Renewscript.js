@@ -1,8 +1,8 @@
 let selectedBooks = [];
 
 function toggleBook(button, lendId) {
-    if (selectedBooks.some(book => book.bookid === bookid)) {
-        selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
+    if (selectedBooks.some(book => book.id === id)) {
+        selectedBooks = selectedBooks.filter(book => book.id !==id);
         button.textContent = 'Renew';
         button.classList.remove('Added');
     } else {

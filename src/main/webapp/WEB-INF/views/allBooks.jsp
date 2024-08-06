@@ -12,12 +12,13 @@
 <body class="library-page">
    
     <div class="header">
-        <button class="back-button" onclick="history.back()">
+        <button class="back-button" onclick="window.location.href='/librarianHomePage'">
             &#8592;
         </button>
         <h1>Digital Library</h1>
         
         <div class="nav">
+            <a href="/librarianHomePage">Home</a>
             <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>

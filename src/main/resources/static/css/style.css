@@ -7,7 +7,7 @@
 
 .login-main-container, .signup-main-container{
     font-family: Arial, sans-serif;
-    background-image: url('./../lib.jpg');
+    background-image: url('./../images/lib.jpg');
     background-size: cover;
     background-position: center; 
     margin: 0;
@@ -107,7 +107,7 @@ select {
     position: fixed;
     top: 40px;
     left: 40px;
-    padding: 20px;
+    padding: 0px;
     background-color: red;
     color: white;
     border-radius: 5px;
@@ -117,7 +117,7 @@ select {
     position: fixed;
     top: 40px;
     left: 40px;
-    padding: 20px;
+    padding: 0px;
     background-color: green;
     color: white;
     border-radius: 5px;

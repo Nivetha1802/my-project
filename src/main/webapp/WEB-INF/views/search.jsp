@@ -9,7 +9,7 @@
 </head>
 <body class="library-page">
     <div class="header">
-        <button class="back-button" onclick="history.back()">
+        <button class="back-button" onclick="window.location.href='/studentHomePage'">
             &#8592;
         </button>
         <h1>Digital Library</h1>

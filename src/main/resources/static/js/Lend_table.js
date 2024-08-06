@@ -6,7 +6,7 @@ function toggleBook(button, id, title, authors, publisher, publishedDate) {
         button.textContent = 'Add';
         button.classList.remove('added');
     } else {
-        selectedBooks.push({ button, id, title, authors, publisher, publishedDate });
+        selectedBooks.push({id, title, authors, publisher, publishedDate });
         button.textContent = 'Added';
         button.classList.add('added');
     }
