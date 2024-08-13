@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -42,8 +43,7 @@ public class LibrarianControllerTest {
     @InjectMocks
     private LibrarianController librarianController;
 
-
-     @BeforeEach
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
@@ -70,10 +70,10 @@ public class LibrarianControllerTest {
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(true);
-        
+
         String viewName = librarianController.submitAddBook(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("redirect:/bookManagement", viewName);
-        verify(booksService, times(0)).createBook(any(Books.class));
+        verify(booksService, times(0)).create(any(Books.class));
     }
 
     @Test
@@ -82,10 +82,10 @@ public class LibrarianControllerTest {
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(false);
-        
+
         String viewName = librarianController.submitAddBook(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("redirect:/librarianHomePage", viewName);
-        verify(booksService, times(1)).createBook(any(Books.class));
+        verify(booksService, times(1)).create(any(Books.class));
     }
 
     @Test
@@ -101,10 +101,10 @@ public class LibrarianControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         when(bindingResult.hasErrors()).thenReturn(true);
-        
+
         String viewName = librarianController.submitUpdateBook(new Books(), redirectAttributes, bindingResult);
         assertEquals("redirect:/updateBook", viewName);
-        verify(booksService, times(0)).updateBook(anyInt(), any(Books.class));
+        verify(booksService, times(0)).update(anyInt(), any(Books.class));
     }
 
     @Test
@@ -112,12 +112,12 @@ public class LibrarianControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         when(bindingResult.hasErrors()).thenReturn(false);
-        
+
         Books updateBook = new Books();
         updateBook.setBookid(1);
         String viewName = librarianController.submitUpdateBook(updateBook, redirectAttributes, bindingResult);
         assertEquals("redirect:/librarianHomePage", viewName);
-        verify(booksService, times(1)).updateBook(eq(1), any(Books.class));
+        verify(booksService, times(1)).update(eq(1), any(Books.class));
     }
 
     @Test
@@ -133,10 +133,10 @@ public class LibrarianControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         when(bindingResult.hasErrors()).thenReturn(true);
-        
+
         String viewName = librarianController.submitDeleteBook(new Books(), redirectAttributes, bindingResult);
         assertEquals("redirect:/deleteBook", viewName);
-        verify(booksService, times(0)).deleteBook(anyInt());
+        verify(booksService, times(0)).delete(anyInt());
     }
 
     @Test
@@ -144,47 +144,46 @@ public class LibrarianControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         when(bindingResult.hasErrors()).thenReturn(false);
-        
+
         Books deleteBook = new Books();
         deleteBook.setBookid(1);
-        String viewName = librarianController.submitDeleteBook(deleteBook, redirectAttributes, bindingResult
-        );
+        String viewName = librarianController.submitDeleteBook(deleteBook, redirectAttributes, bindingResult);
         assertEquals("redirect:/librarianHomePage", viewName);
-        verify(booksService, times(1)).deleteBook(eq(1));
+        verify(booksService, times(1)).delete(eq(1));
     }
 
     @Test
     public void testShowAllBookPage() {
         Model model = new ConcurrentModel();
         List<Books> books = Collections.singletonList(new Books());
-        when(booksService.getAllBooks()).thenReturn(books);
+        when(booksService.getAll()).thenReturn(books);
 
         String viewName = librarianController.showAllBookPage(model);
         assertEquals("allBooks", viewName);
         assertTrue(model.containsAttribute("books"));
-        verify(booksService, times(1)).getAllBooks();
+        verify(booksService, times(1)).getAll();
     }
 
     @Test
     public void testGetBookDetails_Success() {
         Books book = new Books();
         book.setBookid(1);
-        when(booksService.getBookById(1)).thenReturn(book);
+        Optional<Books> optionalBook = Optional.of(book);
+        when(booksService.getById(1)).thenReturn(optionalBook);
 
         ResponseEntity<Books> response = librarianController.getBookDetails(1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(book, response.getBody());
-        verify(booksService, times(1)).getBookById(1);
+        verify(booksService, times(1)).getById(1);
     }
 
     @Test
     public void testGetBookDetails_NotFound() {
-        when(booksService.getBookById(1)).thenReturn(null);
+        when(booksService.getById(1)).thenReturn(Optional.empty());
 
         ResponseEntity<Books> response = librarianController.getBookDetails(1);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(booksService, times(1)).getBookById(1);
+        verify(booksService, times(1)).getById(1);
     }
 
-    
 }

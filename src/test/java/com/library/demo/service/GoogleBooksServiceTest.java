@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class GoogleBooksServiceTest {
 
     @InjectMocks
-    private GoogleBooksServiceImpl googleBooksService; // Changed to the implementation class
+    private GoogleBooksServiceImpl googleBooksService;
 
     @Mock
     private RestTemplate restTemplate;

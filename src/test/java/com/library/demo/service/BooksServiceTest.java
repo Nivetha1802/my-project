@@ -37,7 +37,7 @@ public class BooksServiceTest {
         when(booksRepository.findAll()).thenReturn(Arrays.asList(book1, book2));
 
         // Act
-        List<Books> result = booksService.getAllBooks();
+        List<Books> result = booksService.getAll();
 
         // Assert
         assertNotNull(result);
@@ -49,55 +49,71 @@ public class BooksServiceTest {
     @Test
     public void testGetBookById_BookExists() {
         // Arrange
-        Books mockBook = new Books(1, "Book 1", "Author 1", "Subject 1", "Info 1", 10);
+        Books mockBook = new Books();
+        mockBook.setBookid(1);
+        mockBook.setBookname("Book 1");
+        mockBook.setAuthor("Author 1");
+        mockBook.setSubject("Subject 1");
+        mockBook.setInfo("Info 1");
+        mockBook.setBookcount(10);
         when(booksRepository.findById(anyInt())).thenReturn(Optional.of(mockBook));
 
         // Act
-        Books result = booksService.getBookById(1);
+        Optional<Books> result = booksService.getById(1);
+        assertTrue(result.isPresent(), "Book should be present");
+        Books book = result.get();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(1, result.getBookid());
-        assertEquals("Book 1", result.getBookname());
+        assertNotNull(book, "Book should not be null");
+        assertEquals(1, book.getBookid());
+        assertEquals("Book 1", book.getBookname());
     }
 
     @Test
     public void testGetBookById_BookDoesNotExist() {
         // Arrange
         when(booksRepository.findById(anyInt())).thenReturn(Optional.empty());
-
+    
         // Act
-        Books result = booksService.getBookById(1);
-
+        Optional<Books> result = booksService.getById(1);
+    
         // Assert
-        assertNull(result);
+        assertFalse(result.isPresent(), "Book should not be present");
     }
+    
 
     @Test
     public void testCreateBook() {
         // Arrange
         Books mockBook = new Books(1, "Book 1", "Author 1", "Subject 1", "Info 1", 10);
         when(booksRepository.save(any(Books.class))).thenReturn(mockBook);
-
+    
         // Act
-        Books result = booksService.createBook(mockBook);
-
+        Books result = booksService.create(mockBook);
+    
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getBookid());
-        assertEquals("Book 1", result.getBookname());
+        assertEquals(1, result.getBookid()); 
+        assertEquals("Book 1", result.getBookname()); 
+        
+        assertEquals("Author 1", result.getAuthor());
+        assertEquals("Subject 1", result.getSubject());
+        assertEquals("Info 1", result.getInfo());
+        assertEquals(10, result.getBookcount());
     }
+    
 
     @Test
     public void testUpdateBook_BookExists() {
         // Arrange
         Books existingBook = new Books(1, "Book 1", "Author 1", "Subject 1", "Info 1", 10);
-        Books updatedBook = new Books(1, "Updated Book 1", "Updated Author 1", "Updated Subject 1", "Updated Info 1", 15);
+        Books updatedBook = new Books(1, "Updated Book 1", "Updated Author 1", "Updated Subject 1", "Updated Info 1",
+                15);
         when(booksRepository.findById(anyInt())).thenReturn(Optional.of(existingBook));
         when(booksRepository.save(any(Books.class))).thenReturn(updatedBook);
 
         // Act
-        Books result = booksService.updateBook(1, updatedBook);
+        Books result = booksService.update(1, updatedBook);
 
         // Assert
         assertNotNull(result);
@@ -115,8 +131,9 @@ public class BooksServiceTest {
         when(booksRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Act
-        Books updatedBook = new Books(1, "Updated Book 1", "Updated Author 1", "Updated Subject 1", "Updated Info 1", 15);
-        Books result = booksService.updateBook(1, updatedBook);
+        Books updatedBook = new Books(1, "Updated Book 1", "Updated Author 1", "Updated Subject 1", "Updated Info 1",
+                15);
+        Books result = booksService.update(1, updatedBook);
 
         // Assert
         assertNull(result);
@@ -125,7 +142,7 @@ public class BooksServiceTest {
     @Test
     public void testDeleteBook() {
         // Act
-        booksService.deleteBook(1);
+        booksService.delete(1);
 
         // Assert
         verify(booksRepository, times(1)).deleteById(1);

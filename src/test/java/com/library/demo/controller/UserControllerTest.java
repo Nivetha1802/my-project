@@ -14,9 +14,13 @@ import com.library.entity.UserEntity;
 import com.library.model.LoginUser;
 import com.library.model.User;
 import com.library.service.UserService;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class UserControllerTest {
@@ -92,8 +96,9 @@ public class UserControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         User user = new User();
-        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes, session);
-        
+        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes,
+                session);
+
         assertEquals("signup", viewName);
         verify(userService, never()).saveUser(any(User.class));
     }
@@ -106,8 +111,9 @@ public class UserControllerTest {
         user.setId(1);
         user.setRole("student");
 
-        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes, session);
-        
+        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes,
+                session);
+
         assertEquals("redirect:/home?role=student", viewName);
         verify(userService, times(1)).saveUser(user);
         verify(session, times(1)).setAttribute("userId", 1);
@@ -127,7 +133,7 @@ public class UserControllerTest {
 
         LoginUser loginUser = new LoginUser();
         String viewName = userController.submitLoginFormDetails(loginUser, bindingResult, redirectAttributes, session);
-        
+
         assertEquals("login", viewName);
         verify(userService, never()).authenticate(anyInt(), anyString());
     }
@@ -135,7 +141,8 @@ public class UserControllerTest {
     @Test
     public void testSubmitLoginFormDetails_WithoutErrors_InvalidCredentials() {
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(userService.authenticate(anyInt(), anyString())).thenReturn(null);
+        when(userService.authenticate(anyInt(), anyString())).thenReturn(Optional.empty()); // Change to
+                                                                                            // Optional.empty()
 
         LoginUser loginUser = new LoginUser();
         loginUser.setId(1);
@@ -155,8 +162,8 @@ public class UserControllerTest {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1);
         userEntity.setRole("student");
-
-        when(userService.authenticate(anyInt(), anyString())).thenReturn(userEntity);
+        Optional<UserEntity> optionalBook = Optional.of(userEntity);
+        when(userService.authenticate(anyInt(), anyString())).thenReturn(optionalBook);
 
         LoginUser loginUser = new LoginUser();
         loginUser.setId(1);

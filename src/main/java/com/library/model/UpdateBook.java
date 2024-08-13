@@ -1,13 +1,13 @@
 package com.library.model;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import com.library.validation.IsInteger;
 
 public class UpdateBook {
-    
+
     @NotNull(message = "Book Id is required")
-    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")
+    @IsInteger
     private Integer bookid;
 
     @NotEmpty(message = "Book name is required")
@@ -46,7 +46,6 @@ public class UpdateBook {
         this.author = author;
     }
 
-
     public String getSubject() {
         return subject;
     }
@@ -68,5 +67,5 @@ public class UpdateBook {
         return "UpdateBook [bookid=" + bookid + ", bookName=" + bookName + ", subject=" + subject + ", info=" + info
                 + "]";
     }
-    
+
 }

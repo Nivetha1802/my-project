@@ -1,12 +1,12 @@
 package com.library.model;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import com.library.validation.IsInteger;
 
 public class FineDetails {
-    
+
     @NotNull(message = "ID is required")
-    @Digits(integer = 10, fraction = 0, message = "ID must be a number")
+    @IsInteger
     private Integer id;
 
     public Integer getId() {
@@ -22,5 +22,4 @@ public class FineDetails {
         return "FineDetails [id=" + id + "]";
     }
 
-    
 }

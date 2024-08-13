@@ -8,6 +8,7 @@ function fetchBookDetails() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const book = JSON.parse(xhr.responseText);
+                console.log(book);
                 document.getElementById("bookname").value = book.bookname;
                 document.getElementById("author").value = book.author;
                 document.getElementById("subject").value = book.subject;

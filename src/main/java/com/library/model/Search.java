@@ -1,10 +1,12 @@
 package com.library.model;
 
 import javax.validation.constraints.NotNull;
+import com.library.validation.IsInteger;
 
 public class Search {
 
     @NotNull(message = "Book Id is required")
+    @IsInteger
     private String query;
 
     public String getQuery() {

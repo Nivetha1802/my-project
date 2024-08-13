@@ -14,6 +14,7 @@ import com.library.service.UserServiceImpl;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
@@ -38,12 +39,13 @@ public class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(mockUser));
 
         // Act
-        UserEntity result = userService.getUserById(1);
+        Optional<UserEntity> result = userService.getById(1);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(1, result.getId());
-        assertEquals("John Doe", result.getName());
+        assertTrue(result.isPresent());
+        UserEntity user = result.get();
+        assertEquals(1, user.getId());
+        assertEquals("John Doe", user.getName());
     }
 
     @Test
@@ -52,10 +54,11 @@ public class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act
-        UserEntity result = userService.getUserById(1);
+        Optional<UserEntity> result = userService.getById(1);
 
         // Assert
-        assertNull(result);
+        assertTrue(result.isEmpty());
+
     }
 
     @Test
@@ -67,7 +70,7 @@ public class UserServiceTest {
         when(userRepository.save(any(UserEntity.class))).thenReturn(mockUser);
 
         // Act
-        UserEntity result = userService.createUser(mockUser);
+        UserEntity result = userService.create(mockUser);
 
         // Assert
         assertNotNull(result);
@@ -100,20 +103,22 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticate_Successful() {
-        // Arrange
-        UserEntity mockUser = new UserEntity();
-        mockUser.setId(1);
-        mockUser.setPassword("password");
-        when(userRepository.findById(1)).thenReturn(Optional.of(mockUser));
+public void testAuthenticate_Successful() {
+    // Arrange
+    UserEntity mockUser = new UserEntity();
+    mockUser.setId(1);
+    mockUser.setPassword("password");
+    when(userRepository.findById(1)).thenReturn(Optional.of(mockUser));
 
-        // Act
-        UserEntity result = userService.authenticate(1, "password");
+    // Act
+    Optional<UserEntity> result = userService.authenticate(1, "password");
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(1, result.getId());
-    }
+    // Assert
+    assertTrue(result.isPresent());
+    UserEntity user = result.get();
+    assertEquals(1, user.getId());
+}
+
 
     @Test
     public void testAuthenticate_Unsuccessful() {
@@ -124,7 +129,7 @@ public class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(mockUser));
 
         // Act
-        UserEntity result = userService.authenticate(1, "wrongpassword");
+        Optional<UserEntity> result = userService.authenticate(1, "wrongpassword");
 
         // Assert
         assertNull(result);
@@ -136,7 +141,7 @@ public class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act
-        UserEntity result = userService.authenticate(1, "password");
+        Optional<UserEntity> result = userService.authenticate(1, "password");
 
         // Assert
         assertNull(result);

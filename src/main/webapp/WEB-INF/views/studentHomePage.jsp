@@ -9,7 +9,7 @@
 
 </head>
 
-<body class="library-page" >
+<body class="library-page" onload="showPopup('${message}')">
    
     <div class="header">
         

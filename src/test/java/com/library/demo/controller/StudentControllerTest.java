@@ -10,7 +10,7 @@ import com.library.model.GoogleBooks;
 import com.library.service.GoogleBooksService;
 import com.library.service.LendDetailsService;
 import com.library.service.UserService;
-
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -110,26 +110,28 @@ public class StudentControllerTest {
         verify(model, times(1)).addAttribute("selectedBooks", books);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testSubmitLendDetail() throws Exception {
+        // Arrange
         String selectedBooks = "[{\"lendId\":1,\"bookname\":\"Test Book\"}]";
         List<LendDetails> lendDetailsList = Collections.singletonList(new LendDetails());
         Integer userId = 1;
         UserEntity user = new UserEntity();
-
-        // Mock the objectMapper.readValue method
+        Optional<UserEntity> optionalUser = Optional.of(user);
         doReturn(lendDetailsList).when(objectMapper).readValue(eq(selectedBooks), any(TypeReference.class));
 
         when(session.getAttribute("userId")).thenReturn(userId);
-        when(userService.getUserById(userId)).thenReturn(user);
-
+        when(userService.getById(userId)).thenReturn(optionalUser);
+    
+        // Act
         String viewName = studentController.submitLendDetail(selectedBooks, session, redirectAttributes);
-
+    
+        // Assert
         assertEquals("redirect:/studentHomePage", viewName);
-        verify(lendDetailsService, times(1)).processBookLendDetails(any(LendDetails.class), eq(user));
+        verify(lendDetailsService, times(1)).processBookLendDetails(any(LendDetails.class), eq(optionalUser));
         verify(redirectAttributes, times(1)).addFlashAttribute("message", "Successfully Lent Books!");
     }
+    
 
     @Test
     public void testShowReturnBooksPage() {
@@ -157,7 +159,7 @@ public class StudentControllerTest {
         String viewName = studentController.submitReturnBooks(selectedBooks, redirectAttributes, session);
     
         assertEquals("redirect:/studentHomePage", viewName);
-        verify(lendDetailsService, times(1)).deleteLendDetails(eq(1));
+        verify(lendDetailsService, times(1)).delete(eq(1));
         verify(session, times(1)).removeAttribute("selectedBooks");
         verify(redirectAttributes, times(1)).addFlashAttribute("message", "Successfully Returned Books!");
     }
@@ -204,9 +206,9 @@ public class StudentControllerTest {
         List<LendDetails> lendBooks = Collections.singletonList(lendDetail);
         List<LendDetails> lendBooksWithFine = lendBooks.stream().filter(ld -> ld.getFine() > 0.0)
                 .collect(Collectors.toList());
-
+        Optional<UserEntity> optionalUser = Optional.of(user);
         when(session.getAttribute("userId")).thenReturn(userId);
-        when(userService.getUserById(userId)).thenReturn(user);
+        when(userService.getById(userId)).thenReturn(optionalUser);
         when(lendDetailsService.getLendDetailsByUserId(userId)).thenReturn(lendBooks);
 
         String viewName = studentController.showFineDetailsPage(model, session);

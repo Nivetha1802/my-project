@@ -1,13 +1,12 @@
 package com.library.model;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import com.library.validation.IsInteger;
 
 public class DeleteBook {
-    
 
-   @NotNull(message = "Book Id is required")
-    @Digits(integer = 10, fraction = 0, message = "Book ID must be a number")
+    @NotNull(message = "Book Id is required")
+    @IsInteger
     private Integer bookid;
 
     public int getBookid() {
@@ -22,5 +21,5 @@ public class DeleteBook {
     public String toString() {
         return "DeleteBook [bookid=" + bookid + "]";
     }
-    
+
 }

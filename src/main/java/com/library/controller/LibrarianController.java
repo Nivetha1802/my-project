@@ -1,6 +1,8 @@
 package com.library.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class LibrarianController {
 
     public LibrarianController(BooksService booksService) {
         this.booksService = booksService;
-        
+
     }
 
     @GetMapping("/bookManagement")
@@ -49,7 +51,7 @@ public class LibrarianController {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookManagement";
         } else {
-            booksService.createBook(addBook);
+            booksService.create(addBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Added Books");
             return "redirect:/librarianHomePage";
         }
@@ -63,11 +65,12 @@ public class LibrarianController {
     }
 
     @PostMapping("/submitUpdateBook")
-    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook,
+            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "redirect:/updateBook";
         } else {
-            booksService.updateBook(updateBook.getBookid(), updateBook);
+            booksService.update(updateBook.getBookid(), updateBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
             return "redirect:/librarianHomePage";
         }
@@ -81,11 +84,12 @@ public class LibrarianController {
     }
 
     @PostMapping("/submitDeleteBook")
-    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook,
+            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "redirect:/deleteBook";
         } else {
-            booksService.deleteBook(deleteBook.getBookid());
+            booksService.delete(deleteBook.getBookid());
             redirectAttributes.addFlashAttribute("message", "Successfully Deleted Book!");
             return "redirect:/librarianHomePage";
         }
@@ -93,16 +97,19 @@ public class LibrarianController {
 
     @GetMapping("/allBooks")
     public String showAllBookPage(Model model) {
-        List<Books> availableBooks = booksService.getAllBooks();
+        List<Books> availableBooks = booksService.getAll();
         model.addAttribute("books", availableBooks);
         return "allBooks";
     }
-
+    
     @GetMapping("/getBookDetails")
-    public ResponseEntity<Books> getBookDetails(@RequestParam Integer query) {
-        Books book = booksService.getBookById(query);
-        return book != null ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+    public ResponseEntity<Books> getBookDetails(@RequestParam("bookid") Integer bookid) {
+        Optional<Books> optionalBook = booksService.getById(bookid);
+        if (optionalBook.isPresent()) {
+            return new ResponseEntity<>(optionalBook.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

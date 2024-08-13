@@ -33,7 +33,6 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Authors</th>
                     <th>Publisher</th>
@@ -44,7 +43,7 @@
             </thead>
             <tbody>
                 <c:forEach var="book" items="${books}">
-                    <tr><td>${book.id}</td>
+                    <tr>
                         <td>${book.title}</td>
                         <td>${book.authors}</td>
                         <td>${book.publisher}</td>

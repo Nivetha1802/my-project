@@ -5,19 +5,19 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity extends BaseEntity {
 
     @Id
     private Integer id;
-
     private String name;
     private String role;
     private String password;
+
     @OneToMany(mappedBy = "user")
     private List<LendDetails> lendDetails;
 
-    
-    public Integer getId() {            
+    // Getters and Setters
+    public Integer getId() {
         return id;
     }
 
@@ -47,5 +47,13 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<LendDetails> getLendDetails() {
+        return lendDetails;
+    }
+
+    public void setLendDetails(List<LendDetails> lendDetails) {
+        this.lendDetails = lendDetails;
     }
 }

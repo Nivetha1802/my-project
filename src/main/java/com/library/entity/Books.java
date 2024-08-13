@@ -1,22 +1,23 @@
 package com.library.entity;
 
 import javax.persistence.*;
-import java.io.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "books")
-public class Books implements Serializable{
+public class Books extends BaseEntity implements Serializable {
 
     @Id
     private Integer bookid;
-
     private String bookname;
     private String author;
     private String subject;
     private String info;
+
     @Column(nullable = false, columnDefinition = "int default 10")
     private Integer bookcount = 10;
 
+    // Constructors, Getters, Setters, and Methods
     public Books(Integer bookid, String bookname, String author, String subject, String info, Integer bookcount) {
         this.bookid = bookid;
         this.bookname = bookname;
@@ -28,21 +29,21 @@ public class Books implements Serializable{
 
     public Books() {
     }
-
-    public Integer getBookcount() {
-		return bookcount;
-	}
-
-	public void setBookcount(Integer bookcount) {
-		this.bookcount = bookcount;
-	}
-
-	public Integer getBookid() {
+    
+    public Integer getBookid() {
         return bookid;
     }
 
     public void setBookid(Integer bookid) {
         this.bookid = bookid;
+    }
+
+    public Integer getBookcount() {
+        return bookcount;
+    }
+
+    public void setBookcount(Integer bookcount) {
+        this.bookcount = bookcount;
     }
 
     public String getBookname() {
@@ -77,4 +78,3 @@ public class Books implements Serializable{
         this.info = info;
     }
 }
-

@@ -10,18 +10,16 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
-public class LendDetailsServiceImpl implements LendDetailsService{
-    
-    
+public class LendDetailsServiceImpl implements LendDetailsService {
+
     private LendDetailsRepository lendDetailsRepository;
 
-   
-    public LendDetailsServiceImpl (LendDetailsRepository lendDetailsRepository){
+    public LendDetailsServiceImpl(LendDetailsRepository lendDetailsRepository) {
         this.lendDetailsRepository = lendDetailsRepository;
     }
 
     @Override
-    public List<LendDetails> getAllLendDetails() {
+    public List<LendDetails> getAll() {
         return lendDetailsRepository.findAll();
     }
 
@@ -32,7 +30,7 @@ public class LendDetailsServiceImpl implements LendDetailsService{
 
     @Override
     @Transactional
-    public LendDetails addLendDetails(LendDetails lendDetails) {
+    public LendDetails create(LendDetails lendDetails) {
         return lendDetailsRepository.save(lendDetails);
     }
 
@@ -50,22 +48,27 @@ public class LendDetailsServiceImpl implements LendDetailsService{
 
     @Override
     @Transactional
-    public void deleteLendDetails(Integer lendId) {
+    public void delete(Integer lendId) {
         lendDetailsRepository.deleteById(lendId);
     }
 
     @Override
-    public void processBookLendDetails(LendDetails book, UserEntity user) {
-        LendDetails lendDetail = new LendDetails();
-        lendDetail.setUser(user);
-        lendDetail.setId(book.getId());
-        lendDetail.setTitle(book.getTitle());
-        lendDetail.setAuthors(book.getAuthors());
-        lendDetail.setLendDate(book.getLendDate());
-        lendDetail.setReturnDate(book.getReturnDate());
-        lendDetail.setRenewCount(0);
-        lendDetail.setFine(0.0);
-        addLendDetails(lendDetail);
+    public void processBookLendDetails(LendDetails book, Optional<UserEntity> user) {
+        if (user.isPresent()) {
+            UserEntity userEntity = user.get();
+            LendDetails lendDetail = new LendDetails();
+            lendDetail.setUser(userEntity);
+            lendDetail.setId(book.getId());
+            lendDetail.setTitle(book.getTitle());
+            lendDetail.setAuthors(book.getAuthors());
+            lendDetail.setLendDate(book.getLendDate());
+            lendDetail.setReturnDate(book.getReturnDate());
+            lendDetail.setRenewCount(0);
+            lendDetail.setFine(0.0);
+            create(lendDetail);
+        } else {
+            throw new IllegalArgumentException("User must be present");
+        }
     }
 
     @Override
@@ -81,9 +84,23 @@ public class LendDetailsServiceImpl implements LendDetailsService{
     @Override
     @Transactional
     public void renewBook(Integer lendId) {
-        LendDetails lendDetails = lendDetailsRepository.findById(lendId).orElseThrow(() -> new IllegalArgumentException("Invalid lend ID"));
+        LendDetails lendDetails = lendDetailsRepository.findById(lendId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid lend ID"));
         lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
-        lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14)); 
+        lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14));
         lendDetailsRepository.save(lendDetails);
     }
+
+    @Override
+    public Optional<LendDetails> getById(Integer id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+    }
+
+    @Override
+    public LendDetails update(Integer id, LendDetails entityDetails) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
 }

@@ -39,7 +39,7 @@ public class LendDetailsServiceTest {
 
         when(lendDetailsRepository.findAll()).thenReturn(lendDetailsList);
 
-        List<LendDetails> result = lendDetailsService.getAllLendDetails();
+        List<LendDetails> result = lendDetailsService.getAll();
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -48,7 +48,8 @@ public class LendDetailsServiceTest {
 
     @Test
     public void testGetLendDetailsById() {
-        LendDetails lendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(), LocalDate.now().plusDays(10));
+        LendDetails lendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(),
+                LocalDate.now().plusDays(10));
 
         when(lendDetailsRepository.findById(1)).thenReturn(Optional.of(lendDetails));
 
@@ -69,11 +70,12 @@ public class LendDetailsServiceTest {
 
     @Test
     public void testAddLendDetails() {
-        LendDetails lendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(), LocalDate.now().plusDays(10));
+        LendDetails lendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(),
+                LocalDate.now().plusDays(10));
 
         when(lendDetailsRepository.save(lendDetails)).thenReturn(lendDetails);
 
-        LendDetails result = lendDetailsService.addLendDetails(lendDetails);
+        LendDetails result = lendDetailsService.create(lendDetails);
 
         assertNotNull(result);
         assertEquals("Book 1", result.getTitle());
@@ -81,8 +83,10 @@ public class LendDetailsServiceTest {
 
     @Test
     public void testUpdateLendDetails() {
-        LendDetails existingLendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(), LocalDate.now().plusDays(10));
-        LendDetails updatedLendDetails = new LendDetails("1", "Updated Book", "Updated Author", LocalDate.now(), LocalDate.now().plusDays(15));
+        LendDetails existingLendDetails = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(),
+                LocalDate.now().plusDays(10));
+        LendDetails updatedLendDetails = new LendDetails("1", "Updated Book", "Updated Author", LocalDate.now(),
+                LocalDate.now().plusDays(15));
 
         when(lendDetailsRepository.findById(1)).thenReturn(Optional.of(existingLendDetails));
         when(lendDetailsRepository.save(updatedLendDetails)).thenReturn(updatedLendDetails);
@@ -95,7 +99,8 @@ public class LendDetailsServiceTest {
 
     @Test
     public void testUpdateLendDetailsNotFound() {
-        LendDetails updatedLendDetails = new LendDetails("1", "Updated Book", "Updated Author", LocalDate.now(), LocalDate.now().plusDays(15));
+        LendDetails updatedLendDetails = new LendDetails("1", "Updated Book", "Updated Author", LocalDate.now(),
+                LocalDate.now().plusDays(15));
 
         when(lendDetailsRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -108,22 +113,24 @@ public class LendDetailsServiceTest {
 
     @Test
     public void testDeleteLendDetails() {
-        lendDetailsService.deleteLendDetails(1);
+        lendDetailsService.delete(1);
 
         verify(lendDetailsRepository, times(1)).deleteById(1);
     }
 
     @Test
     public void testProcessBookLendDetails() {
+        // Arrange
         LendDetails book = new LendDetails("1", "Book 1", "Author 1", LocalDate.now(), LocalDate.now().plusDays(10));
 
         UserEntity user = new UserEntity();
         user.setId(1);
 
+        Optional<UserEntity> optionalUser = Optional.of(user);
         when(lendDetailsRepository.save(any(LendDetails.class))).thenReturn(book);
-
-        lendDetailsService.processBookLendDetails(book, user);
-
+        // Act
+        lendDetailsService.processBookLendDetails(book, optionalUser);
+        // Assert
         verify(lendDetailsRepository, times(1)).save(any(LendDetails.class));
     }
 

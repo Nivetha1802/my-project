@@ -1,6 +1,7 @@
 package com.library.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,14 @@ import com.library.service.UserService;
 
 @Controller
 public class StudentController {
-    
+
     private final UserService userService;
     private final LendDetailsService lendDetailsService;
     private final GoogleBooksService googleBooksService;
     private final ObjectMapper objectMapper;
 
-    public StudentController(UserService userService, LendDetailsService lendDetailsService, GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
+    public StudentController(UserService userService, LendDetailsService lendDetailsService,
+            GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.googleBooksService = googleBooksService;
@@ -37,22 +39,25 @@ public class StudentController {
     }
 
     @GetMapping("/lendtable")
-    public String showLendtablePage(@RequestParam(value = "query", required = false) String query,Model model) {
+    public String showLendtablePage(@RequestParam(value = "query", required = false) String query, Model model) {
         if (query != null && !query.isEmpty()) {
             List<GoogleBooks> books = googleBooksService.searchBook(query);
             model.addAttribute("books", books);
             model.addAttribute("query", query);
         }
-        
+
         return "lend_table";
     }
 
     @PostMapping("/submitlendtable")
-    public String submitLendTable(@RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonProcessingException {
+    public String submitLendTable(@RequestParam("selectedBooks") String selectedBooks, HttpSession session)
+            throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/lendtable";
         }
-        List<GoogleBooks> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<GoogleBooks>>() {});
+        List<GoogleBooks> selectedBooksList = objectMapper.readValue(selectedBooks,
+                new TypeReference<List<GoogleBooks>>() {
+                });
         session.setAttribute("selectedBooks", selectedBooksList);
         return "redirect:/lendDetails";
     }
@@ -68,28 +73,36 @@ public class StudentController {
     }
 
     @PostMapping("/submitlenddetails")
-    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,RedirectAttributes redirectAttributes) throws JsonMappingException, JsonProcessingException {
+    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,
+            RedirectAttributes redirectAttributes) throws JsonMappingException, JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/lendDetails";
         }
-        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<LendDetails>>() {});
+        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
+                new TypeReference<List<LendDetails>>() {
+                });
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
             redirectAttributes.addFlashAttribute("error", "User not logged in!");
             return "redirect:/login";
         }
-        UserEntity user = userService.getUserById(userId);
+        Optional<UserEntity> optionalUser = userService.getById(userId);
+        if (!optionalUser.isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "User not found!");
+            return "redirect:/login";
+        }
+        UserEntity user = optionalUser.get();
+
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "User not found!");
             return "redirect:/login";
         }
         for (LendDetails book : selectedBooksList) {
-           lendDetailsService.processBookLendDetails(book, user);
+            lendDetailsService.processBookLendDetails(book, optionalUser);
         }
         redirectAttributes.addFlashAttribute("message", "Successfully Lent Books!");
         return "redirect:/studentHomePage";
     }
-
 
     @GetMapping("/returntable")
     public String showReturnBooksPage(Model model, HttpSession session) {
@@ -102,13 +115,16 @@ public class StudentController {
     }
 
     @PostMapping("/submitReturnBooks")
-    public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,RedirectAttributes redirectAttributes, HttpSession session) throws JsonProcessingException {
+    public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,
+            RedirectAttributes redirectAttributes, HttpSession session) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/returntable";
         }
-        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks, new TypeReference<List<LendDetails>>() {});
+        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
+                new TypeReference<List<LendDetails>>() {
+                });
         for (LendDetails book : selectedBooksList) {
-            lendDetailsService.deleteLendDetails(book.getLendId());
+            lendDetailsService.delete(book.getLendId());
         }
         session.removeAttribute("selectedBooks");
         redirectAttributes.addFlashAttribute("message", "Successfully Returned Books!");
@@ -121,15 +137,19 @@ public class StudentController {
         if (userId != null) {
             List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
             model.addAttribute("lendBooks", lendBooks);
-        }return "renew_table";
+        }
+        return "renew_table";
     }
 
     @PostMapping("/submitRenewtable")
-    public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,
+            RedirectAttributes redirectAttributes) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/renewtable";
         }
-        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,new TypeReference<List<LendDetails>>() {});
+        List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
+                new TypeReference<List<LendDetails>>() {
+                });
         for (LendDetails book : selectedBooksList) {
             lendDetailsService.renewBook(book.getLendId());
         }
@@ -141,8 +161,9 @@ public class StudentController {
     public String showFineDetailsPage(Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId != null) {
-            UserEntity user = userService.getUserById(userId);
-            if (user != null) {
+            Optional<UserEntity> optionalUser = userService.getById(userId);
+            if (optionalUser.isPresent()) {
+                UserEntity user = optionalUser.get();
                 String username = user.getName();
                 List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
                 List<LendDetails> lendBooksWithFine = lendBooks.stream()
@@ -150,20 +171,24 @@ public class StudentController {
                         .collect(Collectors.toList());
                 model.addAttribute("books", lendBooksWithFine);
                 model.addAttribute("user", username);
+            } else {
+                
+                model.addAttribute("error", "User not found!");
+                return "error";
             }
         }
         return "fine_table";
     }
-
+    
 
     @GetMapping("/search")
     public String search(@RequestParam(value = "query", required = false) String query, Model model) {
-    if (query != null && !query.isEmpty()) {
-        List<GoogleBooks> books = googleBooksService.searchBook(query);
-        model.addAttribute("books", books);
-        model.addAttribute("query", query);
+        if (query != null && !query.isEmpty()) {
+            List<GoogleBooks> books = googleBooksService.searchBook(query);
+            model.addAttribute("books", books);
+            model.addAttribute("query", query);
+        }
+        return "search";
     }
-    return "search";
-}
 
 }

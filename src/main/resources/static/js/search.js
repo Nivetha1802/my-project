@@ -1,9 +1,9 @@
 function searchBooks(event) {
     event.preventDefault();
 
-    const query = document.getElementById("query").value;
+    const bookid = document.getElementById("query").value;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `/getBookDetails?query=${query}`, true);
+    xhr.open("GET", `/getBookDetails?bookid=${bookid}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function() {
@@ -11,8 +11,8 @@ function searchBooks(event) {
             if (xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 displayResults(response);
-            } else {
-                displayResults(null); // handle case when no book is found
+            } else if (xhr.readyState === 4) {
+                alert("Book not found");
             }
         }
     };

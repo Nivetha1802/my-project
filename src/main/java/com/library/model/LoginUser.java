@@ -1,12 +1,14 @@
 package com.library.model;
 
 import javax.validation.constraints.*;
+import com.library.validation.IsInteger;
 
 public class LoginUser {
     @NotEmpty(message = "Role is required")
     private String role;
 
     @NotNull(message = "ID is required")
+    @IsInteger
     private int id;
 
     @NotEmpty(message = "Password is required")

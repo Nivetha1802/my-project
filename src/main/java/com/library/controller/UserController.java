@@ -6,6 +6,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.library.entity.*;
 import com.library.model.*;
 import com.library.service.*;
+
+import java.util.Optional;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
@@ -32,7 +35,7 @@ public class UserController {
     public String getStudentHomePage() {
         return "studentHomePage";
     }
-    
+
     @GetMapping("/librarianHomePage")
     public String getLibrarianHomePage() {
         return "librarianHomePage";
@@ -44,8 +47,9 @@ public class UserController {
     }
 
     @PostMapping("/submitRegistration")
-    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,RedirectAttributes redirectAttributes,
-             HttpSession session) {
+    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "signup";
         } else {
@@ -58,19 +62,22 @@ public class UserController {
 
     }
 
-    @GetMapping({"/login","/"})
+    @GetMapping({ "/login", "/" })
     public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginuser) {
         return "login";
     }
 
     @PostMapping("/submitLogin")
-    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser, BindingResult bindingResult,RedirectAttributes redirectAttributes,
-             HttpSession session) {
+    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "login";
         } else {
-            UserEntity user = userService.authenticate(loginuser.getId(), loginuser.getPassword());
-            if (user != null) {
+            Optional<UserEntity> optionalUser = userService.authenticate(loginuser.getId(), loginuser.getPassword());
+            if (optionalUser.isPresent()) {
+                UserEntity user = optionalUser.get();
                 session.setAttribute("userId", user.getId());
                 redirectAttributes.addFlashAttribute("message", "Login successful!");
                 String role = user.getRole();
@@ -82,10 +89,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/logout" )
+    @GetMapping("/logout")
     public String returnToHomePage() {
         return "login";
     }
 }
-    
-   
