@@ -2,7 +2,8 @@ package com.library.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import com.library.model.User;
+
+import com.library.Dto.User;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, User> {
     @Override

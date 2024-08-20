@@ -1,5 +1,13 @@
 function fetchBookDetails() {
     const bookId = document.getElementById("bookid").value;
+    if (isNaN(bookId) || bookId.trim() === "") {
+        // Display error message
+        document.getElementById("bookid-error").textContent = "Please enter a valid Book ID (number).";
+        return; // Exit the function to prevent the AJAX call
+    } else {
+        // Clear any previous error message
+        document.getElementById("bookid-error").textContent = "";
+    }
     if (bookId) {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `/getBookDetails?bookid=${bookId}`, true);

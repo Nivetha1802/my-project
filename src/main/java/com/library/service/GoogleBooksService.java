@@ -1,7 +1,8 @@
 package com.library.service;
 
 import java.util.*;
-import com.library.model.GoogleBooks;
+
+import com.library.Dto.GoogleBooks;
 
 
 public interface GoogleBooksService {

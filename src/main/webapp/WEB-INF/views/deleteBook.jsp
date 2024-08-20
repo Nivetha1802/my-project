@@ -42,12 +42,13 @@
                                 <div class="form-group">
                                     <form:errors path="*" cssClass="error" element="div" />
                                 </div>
-                                <label for="bookid">Book ID</label>
-                                <input type="text" id="bookid" name="bookid" required>
+                                <label path="bookid" for="bookid">Book ID</label>
+                                <input path="bookid" type="text" id="bookid" name="bookid" required>
                                 <div>
-                                    <button type="submit">Delete</button>
+                                    <button type="submit">Add</button>
                                 </div>
                             </form:form>
+
                         </div>
                     </div>
                 </div>

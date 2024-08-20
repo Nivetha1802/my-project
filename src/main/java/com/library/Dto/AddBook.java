@@ -1,19 +1,19 @@
-package com.library.model;
+package com.library.Dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.library.validation.IsInteger;
 
-public class UpdateBook {
+public class AddBook {
 
     @NotNull(message = "Book Id is required")
     @IsInteger
     private Integer bookid;
 
     @NotEmpty(message = "Book name is required")
-    private String bookName;
+    private String bookname;
 
-    @NotEmpty(message = "Author Name is required")
+    @NotEmpty(message = "Author name is required")
     private String author;
 
     @NotEmpty(message = "Subject is required")
@@ -21,6 +21,26 @@ public class UpdateBook {
 
     @NotEmpty(message = "Info is required")
     private String info;
+
+    @NotNull(message = "Book Id is required")
+    @IsInteger
+    private Integer bookcount;
+
+    public String getBookname() {
+        return bookname;
+    }
+
+    public void setBookname(String bookname) {
+        this.bookname = bookname;
+    }
+
+    public Integer getBookcount() {
+        return bookcount;
+    }
+
+    public void setBookcount(Integer bookcount) {
+        this.bookcount = bookcount;
+    }
 
     public Integer getBookid() {
         return bookid;
@@ -31,11 +51,11 @@ public class UpdateBook {
     }
 
     public String getBookName() {
-        return bookName;
+        return bookname;
     }
 
     public void setBookName(String bookName) {
-        this.bookName = bookName;
+        this.bookname = bookName;
     }
 
     public String getAuthor() {
@@ -64,8 +84,9 @@ public class UpdateBook {
 
     @Override
     public String toString() {
-        return "UpdateBook [bookid=" + bookid + ", bookName=" + bookName + ", subject=" + subject + ", info=" + info
-                + "]";
+        return "AddBook [bookid=" + bookid + ", bookname=" + bookname + ", author=" + author + ", subject=" + subject
+                + ", info=" + info + ", bookcount=" + bookcount + "]";
     }
+
 
 }

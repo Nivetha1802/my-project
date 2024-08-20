@@ -7,7 +7,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.library.model.GoogleBooks;
+import com.library.Dto.GoogleBooks;
+
 import java.util.List;
 import java.util.ArrayList;
 

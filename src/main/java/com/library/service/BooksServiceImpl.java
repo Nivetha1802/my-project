@@ -4,15 +4,17 @@ import com.library.entity.Books;
 import com.library.repository.BooksRepository;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BooksServiceImpl implements BooksService{
    
-    @Autowired
+    
     private BooksRepository booksRepository;
+
+    public BooksServiceImpl(BooksRepository booksRepository){
+        this.booksRepository = booksRepository;
+    }
 
     @Override
     public List<Books> getAll() {

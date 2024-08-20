@@ -3,7 +3,7 @@ package com.library.demo.validation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.library.model.User;
+import com.library.Dto.User;
 import com.library.validation.PasswordMatchesValidator;
 
 import javax.validation.ConstraintValidatorContext;

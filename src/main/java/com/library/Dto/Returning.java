@@ -1,13 +1,13 @@
-package com.library.model;
+package com.library.Dto;
 import java.util.Date;
 
-public class Renew{
-    
+public class Returning {
+
     private int id;
     private int bookid;
     private Date date_of_lending;
     private Date date_of_return;
-    private Date extended_return_date;
+    private Date actual_date_of_return;
     private int fine;
     private int fine_amount_left;
     
@@ -17,7 +17,7 @@ public class Renew{
     public void setId(int id) {
         this.id = id;
     }
-    public int getBookid() {
+    public int getbookid() {
         return bookid;
     }
     public void setBookid(int bookid) {
@@ -35,11 +35,11 @@ public class Renew{
     public void setDate_of_return(Date date_of_return) {
         this.date_of_return = date_of_return;
     }
-    public Date getExtended_return_date() {
-        return extended_return_date;
+    public Date getActual_date_of_returning() {
+        return actual_date_of_return;
     }
-    public void setExtended_return_date(Date extended_return_date) {
-        this.extended_return_date = extended_return_date;
+    public void setActual_date_of_returning(Date actual_date_of_return) {
+        this.actual_date_of_return = actual_date_of_return;
     }
     public int getFine() {
         return fine;
@@ -55,8 +55,8 @@ public class Renew{
     }
     @Override
     public String toString() {
-        return "Renew [id=" + id + ", bookid=" + bookid + ", date_of_lending=" + date_of_lending
-                + ", date_of_return=" + date_of_return + ", extended_return_date=" + extended_return_date
+        return "Return [id=" + id + ", bookid=" + bookid + ", date_of_lending=" + date_of_lending
+                + ", date_of_return=" + date_of_return + ", actual_date_of_returning=" + actual_date_of_return
                 + ", fine=" + fine + ", fine_amount_left=" + fine_amount_left + "]";
     }
     

@@ -2,8 +2,8 @@ package com.library.service;
 
 import java.util.Optional;
 
+import com.library.Dto.User;
 import com.library.entity.UserEntity;
-import com.library.model.User;
 
 public interface UserService extends BaseService<UserEntity, Integer> {
    

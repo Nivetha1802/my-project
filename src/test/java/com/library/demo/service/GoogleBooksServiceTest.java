@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.library.model.GoogleBooks;
+import com.library.Dto.GoogleBooks;
 import com.library.service.GoogleBooksServiceImpl;
 
 import java.util.List;
