@@ -1,13 +1,14 @@
 package com.library.service;
 
 import com.library.entity.Books;
+import com.library.entity.LendDetails;
 import com.library.repository.BooksRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BooksServiceImpl implements BooksService{
+public class BooksServiceImpl implements BaseService<Books, Integer>{
    
     
     private BooksRepository booksRepository;

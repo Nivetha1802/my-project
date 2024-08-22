@@ -7,9 +7,9 @@ import com.library.Dto.GoogleBooks;
 import com.library.controller.LendController;
 import com.library.entity.LendDetails;
 import com.library.entity.UserEntity;
-import com.library.service.GoogleBooksService;
-import com.library.service.LendDetailsService;
-import com.library.service.UserService;
+import com.library.service.GoogleBooksServiceImpl;
+import com.library.service.LendDetailsServiceImpl;
+import com.library.service.UserServiceImpl;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,13 @@ import static org.mockito.Mockito.*;
 public class StudentControllerTest {
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
-    private LendDetailsService lendDetailsService;
+    private LendDetailsServiceImpl lendDetailsService;
 
     @Mock
-    private GoogleBooksService googleBooksService;
+    private GoogleBooksServiceImpl googleBooksService;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -124,7 +124,7 @@ public class StudentControllerTest {
         when(userService.getById(userId)).thenReturn(optionalUser);
     
         // Act
-        String viewName = studentController.submitLendDetail(selectedBooks, session, redirectAttributes);
+        String viewName = studentController.create(selectedBooks, session, redirectAttributes);
     
         // Assert
         assertEquals("redirect:/studentHomePage", viewName);
@@ -151,12 +151,12 @@ public class StudentControllerTest {
     public void testSubmitReturnBooks() throws Exception {
         String selectedBooks = "[{\"lendId\":1,\"bookname\":\"Test Book\"}]";
         LendDetails lendDetails = new LendDetails();
-        lendDetails.setLendId(1);
+        lendDetails.setId(1);
         List<LendDetails> lendDetailsList = Collections.singletonList(lendDetails);
         
         doReturn(lendDetailsList).when(objectMapper).readValue(eq(selectedBooks), any(TypeReference.class));
     
-        String viewName = studentController.submitReturnBooks(selectedBooks, redirectAttributes, session);
+        String viewName = studentController.delete(selectedBooks, redirectAttributes, session);
     
         assertEquals("redirect:/studentHomePage", viewName);
         verify(lendDetailsService, times(1)).delete(eq(1));
@@ -183,11 +183,11 @@ public class StudentControllerTest {
     public void testSubmitRenewtable() throws JsonProcessingException {
         String selectedBooks = "[{\"lendId\":1,\"bookname\":\"Test Book\"}]";
         LendDetails lendDetails = new LendDetails();
-        lendDetails.setLendId(1);
+        lendDetails.setId(1);
         List<LendDetails> lendDetailsList = Collections.singletonList(lendDetails);
         doReturn(lendDetailsList).when(objectMapper).readValue(eq(selectedBooks), any(TypeReference.class));
 
-        String viewName = studentController.submitRenewtable(selectedBooks, redirectAttributes);
+        String viewName = studentController.create(selectedBooks, redirectAttributes);
 
         assertEquals("redirect:/studentHomePage", viewName);
         verify(lendDetailsService, times(1)).renewBook(anyInt());

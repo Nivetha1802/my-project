@@ -5,10 +5,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseEntity<Integer> {
 
-    @Id
-    private Integer id;
+    
     private String name;
     private String role;
     private String password;
@@ -17,13 +16,6 @@ public class UserEntity extends BaseEntity {
     private List<LendDetails> lendDetails;
 
     // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

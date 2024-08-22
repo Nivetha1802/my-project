@@ -4,11 +4,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.library.validation.IsInteger;
 
-public class AddBook {
 
-    @NotNull(message = "Book Id is required")
-    @IsInteger
-    private Integer bookid;
+public class AddBook extends BaseDto<Integer>{
+
+   
 
     @NotEmpty(message = "Book name is required")
     private String bookname;
@@ -22,7 +21,7 @@ public class AddBook {
     @NotEmpty(message = "Info is required")
     private String info;
 
-    @NotNull(message = "Book Id is required")
+    @NotNull(message = "Book Count is required")
     @IsInteger
     private Integer bookcount;
 
@@ -40,14 +39,6 @@ public class AddBook {
 
     public void setBookcount(Integer bookcount) {
         this.bookcount = bookcount;
-    }
-
-    public Integer getBookid() {
-        return bookid;
-    }
-
-    public void setBookid(Integer bookid) {
-        this.bookid = bookid;
     }
 
     public String getBookName() {
@@ -84,7 +75,7 @@ public class AddBook {
 
     @Override
     public String toString() {
-        return "AddBook [bookid=" + bookid + ", bookname=" + bookname + ", author=" + author + ", subject=" + subject
+        return "AddBook [bookid=" + id + ", bookname=" + bookname + ", author=" + author + ", subject=" + subject
                 + ", info=" + info + ", bookcount=" + bookcount + "]";
     }
 

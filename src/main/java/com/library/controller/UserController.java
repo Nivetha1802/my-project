@@ -1,6 +1,7 @@
 package com.library.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -15,11 +16,11 @@ import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 
 @Controller
-public class UserController {
+public class UserController implements BaseController<UserEntity>{
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/submitRegistration")
-    public String submitRegistrationFormDetails(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+    public String create(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -63,7 +64,6 @@ public class UserController {
                     } else {
                         return "librarianHomePage";
                     }
-            
         }
 
     }
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/submitLogin")
-    public String submitLoginFormDetails(@Valid @ModelAttribute("loginuser") LoginUser loginuser,
+    public String get(@Valid @ModelAttribute("loginuser") LoginUser loginuser,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
@@ -103,5 +103,29 @@ public class UserController {
     @GetMapping("/logout")
     public String returnToHomePage() {
         return "login";
+    }
+
+    @Override
+    public String create(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    }
+
+    @Override
+    public String update(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public String delete(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    @Override
+    public String get(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
     }
 }

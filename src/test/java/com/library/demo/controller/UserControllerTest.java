@@ -13,7 +13,7 @@ import com.library.Dto.LoginUser;
 import com.library.Dto.User;
 import com.library.controller.UserController;
 import com.library.entity.UserEntity;
-import com.library.service.UserService;
+import com.library.service.UserServiceImpl;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 public class UserControllerTest {
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private BindingResult bindingResult;
@@ -96,7 +96,7 @@ public class UserControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         User user = new User();
-        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes,
+        String viewName = userController.create(user, bindingResult, redirectAttributes,
                 session);
 
         assertEquals("signup", viewName);
@@ -111,7 +111,7 @@ public class UserControllerTest {
         user.setId(1);
         user.setRole("student");
 
-        String viewName = userController.submitRegistrationFormDetails(user, bindingResult, redirectAttributes,
+        String viewName = userController.create(user, bindingResult, redirectAttributes,
                 session);
 
         assertEquals("redirect:/home?role=student", viewName);
@@ -132,7 +132,7 @@ public class UserControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         LoginUser loginUser = new LoginUser();
-        String viewName = userController.submitLoginFormDetails(loginUser, bindingResult, redirectAttributes, session);
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
 
         assertEquals("login", viewName);
         verify(userService, never()).authenticate(anyInt(), anyString());
@@ -148,7 +148,7 @@ public class UserControllerTest {
         loginUser.setId(1);
         loginUser.setPassword("password");
 
-        String viewName = userController.submitLoginFormDetails(loginUser, bindingResult, redirectAttributes, session);
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
 
         assertEquals("redirect:/login", viewName);
         verify(userService, times(1)).authenticate(1, "password");
@@ -169,7 +169,7 @@ public class UserControllerTest {
         loginUser.setId(1);
         loginUser.setPassword("password");
 
-        String viewName = userController.submitLoginFormDetails(loginUser, bindingResult, redirectAttributes, session);
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
 
         assertEquals("redirect:/home?role=student", viewName);
         verify(userService, times(1)).authenticate(1, "password");

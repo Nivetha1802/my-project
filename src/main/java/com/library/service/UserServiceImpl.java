@@ -8,7 +8,7 @@ import com.library.entity.UserEntity;
 import com.library.repository.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements BaseService<UserEntity, Integer>{
     
     
     private final UserRepository userRepository;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user);
     }
 
-    @Override
+    
     public void saveUser(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
         create(userEntity);
     }
 
-    @Override
+    
     public Optional<UserEntity> authenticate(Integer id, String password) {
         Optional<UserEntity> userOptional = getById(id);
         if (userOptional.isPresent()) {

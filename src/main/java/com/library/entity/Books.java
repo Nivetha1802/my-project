@@ -5,10 +5,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "books")
-public class Books extends BaseEntity implements Serializable {
+public class Books extends BaseEntity<Integer> implements Serializable {
 
-    @Id
-    private Integer bookid;
+    
     private String bookname;
     private String author;
     private String subject;
@@ -18,8 +17,8 @@ public class Books extends BaseEntity implements Serializable {
     private Integer bookcount = 10;
 
     // Constructors, Getters, Setters, and Methods
-    public Books(Integer bookid, String bookname, String author, String subject, String info, Integer bookcount) {
-        this.bookid = bookid;
+    public Books(Integer id, String bookname, String author, String subject, String info, Integer bookcount) {
+        this.id = id;
         this.bookname = bookname;
         this.author = author;
         this.subject = subject;
@@ -30,14 +29,6 @@ public class Books extends BaseEntity implements Serializable {
     public Books() {
     }
     
-    public Integer getBookid() {
-        return bookid;
-    }
-
-    public void setBookid(Integer bookid) {
-        this.bookid = bookid;
-    }
-
     public Integer getBookcount() {
         return bookcount;
     }

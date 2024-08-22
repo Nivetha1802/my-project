@@ -1,13 +1,13 @@
-package com.library.service;
+// package com.library.service;
 
-import java.util.*;
+// import java.util.*;
 
-import com.library.Dto.GoogleBooks;
+// import com.library.Dto.GoogleBooks;
 
 
-public interface GoogleBooksService {
+// public interface GoogleBooksService {
 
-    List<GoogleBooks> searchBook(String query);
-    List<GoogleBooks> parseBooks(String response);
+//     List<GoogleBooks> searchBook(String query);
+//     List<GoogleBooks> parseBooks(String response);
   
-}
+// }

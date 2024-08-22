@@ -1,19 +1,19 @@
-package com.library.service;
+// package com.library.service;
 
-import com.library.entity.Books;
+// import com.library.entity.Books;
 
-public interface BooksService extends BaseService<Books, Integer> {
+// public interface BooksService extends BaseService<Books, Integer> {
 
 
-    // List<Books> getAllBooks();
+//     List<Books> getAllBooks();
 
-    // Books getBookById(Integer bookid);
+//     Books getBookById(Integer bookid);
 
-    // Books createBook(Books book);
+//     Books createBook(Books book);
 
-    // Books updateBook(Integer bookid, Books bookDetails);
+//     Books updateBook(Integer bookid, Books bookDetails);
 
-    // void deleteBook(Integer bookid);
+//     void deleteBook(Integer bookid);
  
-}
+// }
 

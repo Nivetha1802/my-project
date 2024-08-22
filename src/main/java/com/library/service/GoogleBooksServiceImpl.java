@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Service
-public class GoogleBooksServiceImpl implements GoogleBooksService{
+public class GoogleBooksServiceImpl {
     
     private final String GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
@@ -25,7 +25,7 @@ public class GoogleBooksServiceImpl implements GoogleBooksService{
     public GoogleBooksServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    @Override
+    
     public List<GoogleBooks> searchBook(String query) {
         String url = UriComponentsBuilder.fromHttpUrl(GOOGLE_BOOKS_API_BASE_URL)
                 .queryParam("q", query)
@@ -36,7 +36,7 @@ public class GoogleBooksServiceImpl implements GoogleBooksService{
         return parseBooks(response.getBody());
     }
 
-    @Override
+    
     public List<GoogleBooks> parseBooks(String response) {
         List<GoogleBooks> books = new ArrayList<>();
         try {

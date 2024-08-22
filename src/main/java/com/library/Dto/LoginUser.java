@@ -1,15 +1,12 @@
 package com.library.Dto;
 
 import javax.validation.constraints.*;
-import com.library.validation.IsInteger;
 
-public class LoginUser {
+public class LoginUser extends BaseDto<Integer>{
+    
     @NotEmpty(message = "Role is required")
     private String role;
 
-    @NotNull(message = "ID is required")
-    @IsInteger
-    private int id;
 
     @NotEmpty(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
@@ -22,14 +19,6 @@ public class LoginUser {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPassword() {

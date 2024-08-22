@@ -17,8 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import com.library.controller.BooksController;
 import com.library.entity.Books;
-import com.library.service.BooksService;
-import com.library.service.GoogleBooksService;
+import com.library.service.BooksServiceImpl;
+import com.library.service.GoogleBooksServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,10 +35,10 @@ import org.junit.runner.RunWith;
 public class LibrarianControllerTest {
 
     @Mock
-    private BooksService booksService;
+    private BooksServiceImpl booksService;
 
     @Mock
-    private GoogleBooksService googleBooksService;
+    private GoogleBooksServiceImpl googleBooksService;
 
     @InjectMocks
     private BooksController librarianController;
@@ -71,7 +71,7 @@ public class LibrarianControllerTest {
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.submitAddBook(new Books(), bindingResult, redirectAttributes, model);
+        String viewName = librarianController.create(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("bookManagement", viewName);
         verify(booksService, times(0)).create(any(Books.class));
     }
@@ -83,7 +83,7 @@ public class LibrarianControllerTest {
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        String viewName = librarianController.submitAddBook(new Books(), bindingResult, redirectAttributes, model);
+        String viewName = librarianController.create(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("redirect:/librarianHomePage", viewName);
         verify(booksService, times(1)).create(any(Books.class));
     }
@@ -104,7 +104,7 @@ public class LibrarianControllerTest {
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.submitUpdateBook(new Books(), bindingResult, redirectAttributes, model);
+        String viewName = librarianController.update(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("redirect:/updateBook", viewName);
         verify(booksService, times(0)).update(anyInt(), any(Books.class));
     }
@@ -119,10 +119,10 @@ public class LibrarianControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false); // Mock that there are no errors in binding
 
         Books updateBook = new Books();
-        updateBook.setBookid(1);
+        updateBook.setId(1);
 
         // Act
-        String viewName = librarianController.submitUpdateBook(updateBook, bindingResult, redirectAttributes, model);
+        String viewName = librarianController.update(updateBook, bindingResult, redirectAttributes, model);
 
         // Assert
         assertEquals("redirect:/librarianHomePage", viewName);
@@ -150,7 +150,7 @@ public class LibrarianControllerTest {
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.submitDeleteBook(new Books(), bindingResult, redirectAttributes, model);
+        String viewName = librarianController.delete(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("deleteBook", viewName);
         verify(booksService, times(0)).delete(anyInt());
     }
@@ -164,8 +164,8 @@ public class LibrarianControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
 
         Books deleteBook = new Books();
-        deleteBook.setBookid(1);
-        String viewName = librarianController.submitDeleteBook(deleteBook, bindingResult, redirectAttributes, model);
+        deleteBook.setId(1);
+        String viewName = librarianController.delete(deleteBook, bindingResult, redirectAttributes, model);
         assertEquals("redirect:/librarianHomePage", viewName);
         verify(booksService, times(1)).delete(eq(1));
     }
@@ -185,7 +185,7 @@ public class LibrarianControllerTest {
     @Test
     public void testGetBookDetails_Success() {
         Books book = new Books();
-        book.setBookid(1);
+        book.setId(1);
         Optional<Books> optionalBook = Optional.of(book);
         when(booksService.getById(1)).thenReturn(optionalBook);
 

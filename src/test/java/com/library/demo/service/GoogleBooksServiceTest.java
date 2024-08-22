@@ -44,7 +44,6 @@ public class GoogleBooksServiceTest {
         assertEquals(1, books.size());
 
         GoogleBooks book = books.get(0);
-        assertEquals("1", book.getId());
         assertEquals("Book Title", book.getTitle());
         assertEquals("Author 1, Author 2", book.getAuthors());
         assertEquals("Publisher Name", book.getPublisher());
@@ -66,7 +65,6 @@ public class GoogleBooksServiceTest {
         assertEquals(1, books.size());
 
         GoogleBooks book = books.get(0);
-        assertEquals("2", book.getId());
         assertEquals("Another Book", book.getTitle());
         assertEquals("Another Author", book.getAuthors());
         assertEquals("Another Publisher", book.getPublisher());

@@ -1,14 +1,9 @@
 package com.library.Dto;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import com.library.validation.IsInteger;
 
-public class UpdateBook {
+public class UpdateBook extends BaseDto<Integer>{
 
-    @NotNull(message = "Book Id is required")
-    @IsInteger
-    private Integer bookid;
 
     @NotEmpty(message = "Book name is required")
     private String bookName;
@@ -21,14 +16,6 @@ public class UpdateBook {
 
     @NotEmpty(message = "Info is required")
     private String info;
-
-    public Integer getBookid() {
-        return bookid;
-    }
-
-    public void setBookid(Integer bookid) {
-        this.bookid = bookid;
-    }
 
     public String getBookName() {
         return bookName;
@@ -64,7 +51,7 @@ public class UpdateBook {
 
     @Override
     public String toString() {
-        return "UpdateBook [bookid=" + bookid + ", bookName=" + bookName + ", subject=" + subject + ", info=" + info
+        return "UpdateBook [bookid=" + id + ", bookName=" + bookName + ", subject=" + subject + ", info=" + info
                 + "]";
     }
 

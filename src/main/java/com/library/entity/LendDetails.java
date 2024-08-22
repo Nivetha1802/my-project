@@ -5,15 +5,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @Entity
-public class LendDetails extends BaseEntity {
+public class LendDetails extends BaseEntity<Integer> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer lendId;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
-    private String id;
     private String title;
     private String authors;
     private LocalDate lendDate;
@@ -22,8 +18,8 @@ public class LendDetails extends BaseEntity {
     private Double fine;
 
     // Constructors, Getters, Setters, and Methods
-    public LendDetails(String id, String title, String authors, LocalDate lendDate, LocalDate returnDate) {
-        this.id = id;
+    public LendDetails( String title, String authors, LocalDate lendDate, LocalDate returnDate) {
+        
         this.title = title;
         this.authors = authors;
         this.lendDate = lendDate;
@@ -31,14 +27,6 @@ public class LendDetails extends BaseEntity {
     }
 
     public LendDetails() {
-    }
-
-    public Integer getLendId() {
-        return lendId;
-    }
-
-    public void setLendId(Integer lendId) {
-        this.lendId = lendId;
     }
 
     public UserEntity getUser() {
@@ -97,12 +85,7 @@ public class LendDetails extends BaseEntity {
         this.fine = fine;
     }
 
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
+ 
 
     public void calculateFine(LocalDate actualReturnDate) {
         if (this.returnDate != null && actualReturnDate.isAfter(returnDate)) {

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
-public class LendDetailsServiceImpl implements LendDetailsService {
+public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>{
 
     private LendDetailsRepository lendDetailsRepository;
 
@@ -24,7 +24,7 @@ public class LendDetailsServiceImpl implements LendDetailsService {
     }
 
     @Override
-    public Optional<LendDetails> getLendDetailsById(Integer lendId) {
+    public Optional<LendDetails> getById(Integer lendId) {
         return lendDetailsRepository.findById(lendId);
     }
 
@@ -36,10 +36,10 @@ public class LendDetailsServiceImpl implements LendDetailsService {
 
     @Override
     @Transactional
-    public LendDetails updateLendDetails(Integer lendId, LendDetails lendDetails) {
+    public LendDetails update(Integer lendId, LendDetails lendDetails) {
         Optional<LendDetails> existingLendDetails = lendDetailsRepository.findById(lendId);
         if (existingLendDetails.isPresent()) {
-            lendDetails.setLendId(lendId);
+            lendDetails.setId(lendId);
             return lendDetailsRepository.save(lendDetails);
         } else {
             throw new RuntimeException("LendDetails not found with id " + lendId);
@@ -52,7 +52,7 @@ public class LendDetailsServiceImpl implements LendDetailsService {
         lendDetailsRepository.deleteById(lendId);
     }
 
-    @Override
+    
     public void processBookLendDetails(LendDetails book, Optional<UserEntity> user) {
         if (user.isPresent()) {
             UserEntity userEntity = user.get();
@@ -71,7 +71,7 @@ public class LendDetailsServiceImpl implements LendDetailsService {
         }
     }
 
-    @Override
+    
     public List<LendDetails> getLendDetailsByUserId(Integer id) {
         List<LendDetails> lendDetailsList = lendDetailsRepository.findLendDetailsById(id);
         LocalDate actualReturnDate = LocalDate.now();
@@ -81,7 +81,6 @@ public class LendDetailsServiceImpl implements LendDetailsService {
         return lendDetailsList;
     }
 
-    @Override
     @Transactional
     public void renewBook(Integer lendId) {
         LendDetails lendDetails = lendDetailsRepository.findById(lendId)
@@ -91,16 +90,6 @@ public class LendDetailsServiceImpl implements LendDetailsService {
         lendDetailsRepository.save(lendDetails);
     }
 
-    @Override
-    public Optional<LendDetails> getById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
-    }
 
-    @Override
-    public LendDetails update(Integer id, LendDetails entityDetails) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
 
 }

@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,20 +21,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.Dto.GoogleBooks;
 import com.library.entity.LendDetails;
 import com.library.entity.UserEntity;
-import com.library.service.GoogleBooksService;
-import com.library.service.LendDetailsService;
-import com.library.service.UserService;
+import com.library.service.GoogleBooksServiceImpl;
+import com.library.service.LendDetailsServiceImpl;
+import com.library.service.UserServiceImpl;
 
 @Controller
-public class LendController {
+public class LendController implements BaseController<LendDetails>{
 
-    private final UserService userService;
-    private final LendDetailsService lendDetailsService;
-    private final GoogleBooksService googleBooksService;
+    private final UserServiceImpl userService;
+    private final LendDetailsServiceImpl lendDetailsService;
+    private final GoogleBooksServiceImpl googleBooksService;
     private final ObjectMapper objectMapper;
 
-    public LendController(UserService userService, LendDetailsService lendDetailsService,
-            GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
+    public LendController(UserServiceImpl userService, LendDetailsServiceImpl lendDetailsService,
+            GoogleBooksServiceImpl googleBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;
         this.googleBooksService = googleBooksService;
@@ -73,7 +76,7 @@ public class LendController {
     }
 
     @PostMapping("/submitlenddetails")
-    public String submitLendDetail(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,
+    public String create(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,
             RedirectAttributes redirectAttributes) throws JsonMappingException, JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/lendDetails";
@@ -115,7 +118,7 @@ public class LendController {
     }
 
     @PostMapping("/submitReturnBooks")
-    public String submitReturnBooks(@RequestParam("selectedBooks") String selectedBooks,
+    public String delete(@RequestParam("selectedBooks") String selectedBooks,
             RedirectAttributes redirectAttributes, HttpSession session) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/returntable";
@@ -124,7 +127,7 @@ public class LendController {
                 new TypeReference<List<LendDetails>>() {
                 });
         for (LendDetails book : selectedBooksList) {
-            lendDetailsService.delete(book.getLendId());
+            lendDetailsService.delete(book.getId());
         }
         session.removeAttribute("selectedBooks");
         redirectAttributes.addFlashAttribute("message", "Successfully Returned Books!");
@@ -142,7 +145,7 @@ public class LendController {
     }
 
     @PostMapping("/submitRenewtable")
-    public String submitRenewtable(@RequestParam("selectedBooks") String selectedBooks,
+    public String create(@RequestParam("selectedBooks") String selectedBooks,
             RedirectAttributes redirectAttributes) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/renewtable";
@@ -151,7 +154,7 @@ public class LendController {
                 new TypeReference<List<LendDetails>>() {
                 });
         for (LendDetails book : selectedBooksList) {
-            lendDetailsService.renewBook(book.getLendId());
+            lendDetailsService.renewBook(book.getId());
         }
         redirectAttributes.addFlashAttribute("message", "Successfully Renewed Books!");
         return "redirect:/studentHomePage";
@@ -189,6 +192,34 @@ public class LendController {
             model.addAttribute("query", query);
         }
         return "search";
+    }
+
+    @Override
+    public String create(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    }
+
+    @Override
+    public String update(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public String delete(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    @Override
+    public String get(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
     }
 
 }

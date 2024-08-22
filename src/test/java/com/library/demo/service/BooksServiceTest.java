@@ -50,7 +50,7 @@ public class BooksServiceTest {
     public void testGetBookById_BookExists() {
         // Arrange
         Books mockBook = new Books();
-        mockBook.setBookid(1);
+        mockBook.setId(1);
         mockBook.setBookname("Book 1");
         mockBook.setAuthor("Author 1");
         mockBook.setSubject("Subject 1");
@@ -65,7 +65,7 @@ public class BooksServiceTest {
 
         // Assert
         assertNotNull(book, "Book should not be null");
-        assertEquals(1, book.getBookid());
+        assertEquals(1, book.getId());
         assertEquals("Book 1", book.getBookname());
     }
 
@@ -93,7 +93,7 @@ public class BooksServiceTest {
     
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getBookid()); 
+        assertEquals(1, result.getId()); 
         assertEquals("Book 1", result.getBookname()); 
         
         assertEquals("Author 1", result.getAuthor());
@@ -117,7 +117,7 @@ public class BooksServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getBookid());
+        assertEquals(1, result.getId());
         assertEquals("Updated Book 1", result.getBookname());
         assertEquals("Updated Author 1", result.getAuthor());
         assertEquals("Updated Subject 1", result.getSubject());

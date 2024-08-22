@@ -3,6 +3,7 @@ package com.library.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.library.Dto.AddBook;
 import com.library.entity.Books;
-import com.library.service.BooksService;
+import com.library.service.BooksServiceImpl;
 
 @Controller
-public class BooksController {
+public class BooksController implements BaseController<Books> {
 
-    private final BooksService booksService;
+    private final BooksServiceImpl booksService;
 
-    public BooksController(BooksService booksService) {
+    public BooksController(BooksServiceImpl booksService) {
         this.booksService = booksService;
 
     }
@@ -44,7 +45,7 @@ public class BooksController {
     }
 
     @PostMapping("/submitAddBook")
-    public String submitAddBook(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult,
+    public String create(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
         if (bindingResult.hasErrors()) {
@@ -64,12 +65,12 @@ public class BooksController {
     }
 
     @PostMapping("/submitUpdateBook")
-    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook, BindingResult bindingResult,
+    public String update(@Valid @ModelAttribute("updateBook") Books updateBook, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             return "updateBook";
         } else {
-            booksService.update(updateBook.getBookid(), updateBook);
+            booksService.update(updateBook.getId(), updateBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
             return "redirect:/librarianHomePage";
         }
@@ -83,13 +84,13 @@ public class BooksController {
     }
 
     @PostMapping("/submitDeleteBook")
-    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook, BindingResult bindingResult,
+    public String delete(@Valid @ModelAttribute("deleteBook") Books deleteBook, BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "deleteBook";
         } else {
-            booksService.delete(deleteBook.getBookid());
+            booksService.delete(deleteBook.getId());
             redirectAttributes.addFlashAttribute("message", "Successfully Deleted Book!");
             return "redirect:/librarianHomePage";
         }
@@ -110,6 +111,13 @@ public class BooksController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public String get(@Valid Books entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
     }
 
 }
