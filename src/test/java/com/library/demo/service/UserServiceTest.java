@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.library.Dto.User;
 import com.library.entity.UserEntity;
-import com.library.model.User;
 import com.library.repository.UserRepository;
 import com.library.service.UserServiceImpl;
 

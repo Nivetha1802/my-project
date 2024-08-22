@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import com.library.controller.LibrarianController;
+import com.library.controller.BooksController;
 import com.library.entity.Books;
 import com.library.service.BooksService;
 import com.library.service.GoogleBooksService;
@@ -41,7 +41,7 @@ public class LibrarianControllerTest {
     private GoogleBooksService googleBooksService;
 
     @InjectMocks
-    private LibrarianController librarianController;
+    private BooksController librarianController;
 
     @BeforeEach
     public void setup() {
@@ -72,7 +72,7 @@ public class LibrarianControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String viewName = librarianController.submitAddBook(new Books(), bindingResult, redirectAttributes, model);
-        assertEquals("redirect:/bookManagement", viewName);
+        assertEquals("bookManagement", viewName);
         verify(booksService, times(0)).create(any(Books.class));
     }
 
@@ -100,24 +100,38 @@ public class LibrarianControllerTest {
     public void testSubmitUpdateBook_WithErrors() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Model model = mock(Model.class); // Add mock for Model
+
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.submitUpdateBook(new Books(), redirectAttributes, bindingResult);
+        String viewName = librarianController.submitUpdateBook(new Books(), bindingResult, redirectAttributes, model);
         assertEquals("redirect:/updateBook", viewName);
         verify(booksService, times(0)).update(anyInt(), any(Books.class));
     }
 
     @Test
     public void testSubmitUpdateBook_Success() {
+        // Arrange
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        when(bindingResult.hasErrors()).thenReturn(false);
+        Model model = mock(Model.class); // Add mock for Model
+
+        when(bindingResult.hasErrors()).thenReturn(false); // Mock that there are no errors in binding
 
         Books updateBook = new Books();
         updateBook.setBookid(1);
-        String viewName = librarianController.submitUpdateBook(updateBook, redirectAttributes, bindingResult);
+
+        // Act
+        String viewName = librarianController.submitUpdateBook(updateBook, bindingResult, redirectAttributes, model);
+
+        // Assert
         assertEquals("redirect:/librarianHomePage", viewName);
-        verify(booksService, times(1)).update(eq(1), any(Books.class));
+        verify(booksService, times(1)).update(eq(1), any(Books.class)); // Verify that update method is called with the
+                                                                        // correct arguments
+        verify(redirectAttributes, times(1)).addFlashAttribute("message", "Successfully Updated Book!"); // Verify that
+                                                                                                         // flash
+                                                                                                         // attribute is
+                                                                                                         // added
     }
 
     @Test
@@ -132,10 +146,12 @@ public class LibrarianControllerTest {
     public void testSubmitDeleteBook_WithErrors() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Model model = mock(Model.class); // Add mock for Model
+
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.submitDeleteBook(new Books(), redirectAttributes, bindingResult);
-        assertEquals("redirect:/deleteBook", viewName);
+        String viewName = librarianController.submitDeleteBook(new Books(), bindingResult, redirectAttributes, model);
+        assertEquals("deleteBook", viewName);
         verify(booksService, times(0)).delete(anyInt());
     }
 
@@ -143,11 +159,13 @@ public class LibrarianControllerTest {
     public void testSubmitDeleteBook_Success() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Model model = mock(Model.class); // Add mock for Model
+
         when(bindingResult.hasErrors()).thenReturn(false);
 
         Books deleteBook = new Books();
         deleteBook.setBookid(1);
-        String viewName = librarianController.submitDeleteBook(deleteBook, redirectAttributes, bindingResult);
+        String viewName = librarianController.submitDeleteBook(deleteBook, bindingResult, redirectAttributes, model);
         assertEquals("redirect:/librarianHomePage", viewName);
         verify(booksService, times(1)).delete(eq(1));
     }

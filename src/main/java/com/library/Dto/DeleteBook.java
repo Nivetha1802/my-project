@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.Dto;
 
 import javax.validation.constraints.NotNull;
 import com.library.validation.IsInteger;
@@ -9,11 +9,11 @@ public class DeleteBook {
     @IsInteger
     private Integer bookid;
 
-    public int getBookid() {
+    public Integer getBookid() {
         return bookid;
     }
 
-    public void setBookid(int bookid) {
+    public void setBookid(Integer bookid) {
         this.bookid = bookid;
     }
 

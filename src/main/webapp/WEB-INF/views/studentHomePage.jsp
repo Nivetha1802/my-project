@@ -10,24 +10,25 @@
 </head>
 
 <body class="library-page" onload="showPopup('${message}')">
-   
+
+<!-- <body class="library-page"> -->
     <div class="header">
-        
+
         <h1>Digital Library</h1>
-        
+
         <div class="nav">
-            <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
+            <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>
-    <h2> Menu </h2>  
+    <h2> Menu </h2>
     <div class="button-container">
         <button onclick="window.location.href='/lendtable'">Lend books</button>
         <button onclick="window.location.href='/returntable'">Return books</button>
         <button onclick="window.location.href='/renewtable'">Renew books</button>
         <button onclick="window.location.href='/fineDetails'">Fine Details</button>
         <button onclick="window.location.href='/search'">Search Books</button>
-        
+
     </div>
 
     <!-- <div>
@@ -41,7 +42,7 @@
                 showMessage("${message}", 'success');
             </script>
         </c:if>
-</div> -->
+    </div> -->
 </body>
 
 </html>

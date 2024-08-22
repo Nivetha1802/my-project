@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.Dto;
 
 import javax.validation.constraints.*;
 import com.library.validation.IsInteger;

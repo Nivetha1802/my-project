@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<!DOCTYPE html>
+            <!DOCTYPE html>
             <html>
 
             <head>
@@ -12,8 +12,9 @@
                 <script src="${pageContext.request.contextPath}/js/search.js"></script>
             </head>
 
-            <body class="library-page" onload="showPopup('${message}')">
+            <!-- <body class="library-page" onload="showPopup('${message}')"> -->
 
+            <body class="library-page">
                 <div class="header">
                     <h1>Digital Library</h1>
 
@@ -29,7 +30,7 @@
                         </div>
                         <input type="text" id="query" placeholder="Search a book">
                         <button type="submit">&#128269;</button>
-                        </form:form>
+                    </form:form>
                 </div>
                 <div id="search-results"></div>
                 <div class="button-container">
@@ -43,6 +44,18 @@
                                 <p style="color: red;">${error.defaultMessage}</p>
                             </c:forEach>
                         </div>
+                    </c:if>
+                </div>
+                <div>
+                    <c:if test="${not empty error}">
+                        <script>
+                            showMessage("${error}", 'error');
+                        </script>
+                    </c:if>
+                    <c:if test="${not empty message}">
+                        <script>
+                            showMessage("${message}", 'success');
+                        </script>
                     </c:if>
                 </div>
             </body>

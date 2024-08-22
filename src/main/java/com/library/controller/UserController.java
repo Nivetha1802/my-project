@@ -3,8 +3,9 @@ package com.library.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.library.Dto.*;
 import com.library.entity.*;
-import com.library.model.*;
 import com.library.service.*;
 
 import java.util.Optional;
@@ -22,14 +23,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/home")
-    public String getHomePage(@RequestParam("role") String role) {
-        if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
-            return "studentHomePage";
-        } else {
-            return "librarianHomePage";
-        }
-    }
+    // @GetMapping("/home")
+    // public String getHomePage(@RequestParam("role") String role) {
+    //     if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
+    //         return "studentHomePage";
+    //     } else {
+    //         return "librarianHomePage";
+    //     }
+    // }
 
     @GetMapping("/studentHomePage")
     public String getStudentHomePage() {
@@ -57,7 +58,12 @@ public class UserController {
             userService.saveUser(user);
             redirectAttributes.addFlashAttribute("message", "Registration successful!");
             String role = user.getRole();
-            return "redirect:/home?role=" + role;
+            if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
+                        return "studentHomePage";
+                    } else {
+                        return "librarianHomePage";
+                    }
+            
         }
 
     }
@@ -81,7 +87,12 @@ public class UserController {
                 session.setAttribute("userId", user.getId());
                 redirectAttributes.addFlashAttribute("message", "Login successful!");
                 String role = user.getRole();
-                return "redirect:/home?role=" + role;
+                if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
+                    return "studentHomePage";
+                } else {
+                    return "librarianHomePage";
+                }
+        
             } else {
                 redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
                 return "redirect:/login";

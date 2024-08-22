@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.Dto;
 
 public class GoogleBooks {
     private String id;

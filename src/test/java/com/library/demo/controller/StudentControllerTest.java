@@ -3,10 +3,10 @@ package com.library.demo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.library.controller.StudentController;
+import com.library.Dto.GoogleBooks;
+import com.library.controller.LendController;
 import com.library.entity.LendDetails;
 import com.library.entity.UserEntity;
-import com.library.model.GoogleBooks;
 import com.library.service.GoogleBooksService;
 import com.library.service.LendDetailsService;
 import com.library.service.UserService;
@@ -57,7 +57,7 @@ public class StudentControllerTest {
     private Model model;
 
     @InjectMocks
-    private StudentController studentController;
+    private LendController studentController;
 
     @BeforeEach
     public void setup() {

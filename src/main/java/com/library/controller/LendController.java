@@ -15,22 +15,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.library.Dto.GoogleBooks;
 import com.library.entity.LendDetails;
 import com.library.entity.UserEntity;
-import com.library.model.GoogleBooks;
 import com.library.service.GoogleBooksService;
 import com.library.service.LendDetailsService;
 import com.library.service.UserService;
 
 @Controller
-public class StudentController {
+public class LendController {
 
     private final UserService userService;
     private final LendDetailsService lendDetailsService;
     private final GoogleBooksService googleBooksService;
     private final ObjectMapper objectMapper;
 
-    public StudentController(UserService userService, LendDetailsService lendDetailsService,
+    public LendController(UserService userService, LendDetailsService lendDetailsService,
             GoogleBooksService googleBooksService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.lendDetailsService = lendDetailsService;

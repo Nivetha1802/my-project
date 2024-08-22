@@ -2,17 +2,17 @@ package com.library.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
+import com.library.Dto.User;
 import com.library.entity.UserEntity;
-import com.library.model.User;
 import com.library.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService{
     
     
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    // private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
         userEntity.setId(user.getId());
         userEntity.setName(user.getName());
         userEntity.setRole(user.getRole().toUpperCase());
-        userEntity.setPassword(user.getPassword());
+        userEntity.setPassword((user.getPassword()));
         create(userEntity);
     }
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService{
                 return Optional.ofNullable(user);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

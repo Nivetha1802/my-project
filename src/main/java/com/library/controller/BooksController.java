@@ -14,18 +14,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.library.Dto.AddBook;
 import com.library.entity.Books;
-import com.library.model.AddBook;
-import com.library.model.DeleteBook;
-import com.library.model.UpdateBook;
 import com.library.service.BooksService;
 
 @Controller
-public class LibrarianController {
+public class BooksController {
 
     private final BooksService booksService;
 
-    public LibrarianController(BooksService booksService) {
+    public BooksController(BooksService booksService) {
         this.booksService = booksService;
 
     }
@@ -39,7 +38,7 @@ public class LibrarianController {
 
     @GetMapping("/addBook")
     public String showAddBookPage(Model model) {
-        AddBook addBook = new AddBook();
+        Books addBook = new Books();
         model.addAttribute(addBook);
         return "bookManagement";
     }
@@ -49,7 +48,7 @@ public class LibrarianController {
             RedirectAttributes redirectAttributes,
             Model model) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/bookManagement";
+            return "bookManagement";
         } else {
             booksService.create(addBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Added Books");
@@ -59,16 +58,16 @@ public class LibrarianController {
 
     @GetMapping("/updateBook")
     public String showUpdateBookPage(Model model) {
-        UpdateBook updateBook = new UpdateBook();
+        Books updateBook = new Books();
         model.addAttribute(updateBook);
         return "updateBook";
     }
 
     @PostMapping("/submitUpdateBook")
-    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook,
-            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+    public String submitUpdateBook(@Valid @ModelAttribute("updateBook") Books updateBook, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/updateBook";
+            return "updateBook";
         } else {
             booksService.update(updateBook.getBookid(), updateBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
@@ -78,16 +77,17 @@ public class LibrarianController {
 
     @GetMapping("/deleteBook")
     public String showDeleteBookPage(Model model) {
-        DeleteBook deleteBook = new DeleteBook();
+        Books deleteBook = new Books();
         model.addAttribute(deleteBook);
         return "deleteBook";
     }
 
     @PostMapping("/submitDeleteBook")
-    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook,
-            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+    public String submitDeleteBook(@Valid @ModelAttribute("deleteBook") Books deleteBook, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/deleteBook";
+            return "deleteBook";
         } else {
             booksService.delete(deleteBook.getBookid());
             redirectAttributes.addFlashAttribute("message", "Successfully Deleted Book!");
