@@ -50,7 +50,7 @@
                         <td>${book.lendDate}</td>
                         <td>${book.returnDate}</td>
                         <td>
-                            <button type="button" onclick="toggleBook(this, '${book.lendId}')">
+                            <button type="button" onclick="toggleBook(this, '${book.id}')">
                                 Renew
                             </button>
                         </td>

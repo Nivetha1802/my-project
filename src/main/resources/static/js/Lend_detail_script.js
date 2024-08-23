@@ -25,11 +25,12 @@ function submitLendDetails() {
     rows.forEach(row => {
         const book = {
             id: 1,
-            title: row.querySelector('td:nth-child(1)').textContent,
-            authors: row.querySelector('td:nth-child(2)').textContent,
-            publisher: row.querySelector('td:nth-child(3)').textContent,
+            title: row.querySelector('td:nth-child(2)').textContent,
+            authors: row.querySelector('td:nth-child(3)').textContent,
+            publisher: row.querySelector('td:nth-child(4)').textContent,
             lendDate: row.querySelector('.lending-date').textContent,
-            returnDate: row.querySelector('.return-date').textContent
+            returnDate: row.querySelector('.return-date').textContent,
+            bookid: row.querySelector('td:nth-child(1)').textContent
         };
         selectedBooks.push(book);
     });

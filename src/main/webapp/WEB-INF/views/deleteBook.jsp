@@ -42,8 +42,8 @@
                                 <div class="form-group">
                                     <form:errors path="*" cssClass="error" element="div" />
                                 </div>
-                                <label path="bookid" for="bookid">Book ID</label>
-                                <input path="bookid" type="text" id="bookid" name="bookid" required>
+                                <label path="id" for="id">Book ID</label>
+                                <input path="id" type="text" id="id" name="id" required>
                                 <div>
                                     <button type="submit">Add</button>
                                 </div>

@@ -10,6 +10,7 @@ import java.io.Serializable;
 public abstract class BaseEntity<T extends Serializable> {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected T id;
 
     public T getId() {

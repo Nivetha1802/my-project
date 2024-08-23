@@ -10,7 +10,7 @@ function fetchBookDetails() {
     }
     if (bookId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/getBookDetails?bookid=${bookId}`, true);
+        xhr.open("GET", `/getBookDetails?id=${bookId}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function() {

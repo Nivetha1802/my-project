@@ -24,14 +24,6 @@ public class UserController implements BaseController<UserEntity>{
         this.userService = userService;
     }
 
-    // @GetMapping("/home")
-    // public String getHomePage(@RequestParam("role") String role) {
-    //     if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
-    //         return "studentHomePage";
-    //     } else {
-    //         return "librarianHomePage";
-    //     }
-    // }
 
     @GetMapping("/studentHomePage")
     public String getStudentHomePage() {
@@ -108,24 +100,22 @@ public class UserController implements BaseController<UserEntity>{
     @Override
     public String create(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
     public String update(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public String delete(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
-    @Override
-    public String get(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
-    }
 }

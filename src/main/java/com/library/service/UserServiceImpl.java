@@ -12,7 +12,6 @@ public class UserServiceImpl implements BaseService<UserEntity, Integer>{
     
     
     private final UserRepository userRepository;
-    // private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository){
         this.userRepository = userRepository;

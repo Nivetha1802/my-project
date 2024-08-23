@@ -6,9 +6,9 @@ import java.time.temporal.ChronoUnit;
 
 @Entity
 public class LendDetails extends BaseEntity<Integer> {
-
+    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer lendId = id;
+    protected Integer id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
@@ -18,10 +18,12 @@ public class LendDetails extends BaseEntity<Integer> {
     private LocalDate returnDate;
     private Integer renewCount;
     private Double fine;
+    private String bookid;
+    
 
     // Constructors, Getters, Setters, and Methods
-    public LendDetails( Integer lendId, String title, String authors, LocalDate lendDate, LocalDate returnDate) {
-        this.lendId = lendId;
+    public LendDetails( Integer id, String title, String authors, LocalDate lendDate, LocalDate returnDate) {
+        this.id = id;
         this.title = title;
         this.authors = authors;
         this.lendDate = lendDate;
@@ -31,12 +33,20 @@ public class LendDetails extends BaseEntity<Integer> {
     public LendDetails() {
     }
     
-    public Integer getLendId() {
-        return lendId;
+    public String getBookid() {
+        return bookid;
     }
 
-    public void setLendId(Integer lendId) {
-        this.lendId = lendId;
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public UserEntity getUser() {

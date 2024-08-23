@@ -1,7 +1,6 @@
 package com.library.service;
 
 import com.library.entity.Books;
-import com.library.entity.LendDetails;
 import com.library.repository.BooksRepository;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +22,8 @@ public class BooksServiceImpl implements BaseService<Books, Integer>{
     }
 
     @Override
-    public Optional<Books> getById(Integer bookid) {
-        return Optional.ofNullable(booksRepository.findById(bookid).orElse(null));
+    public Optional<Books> getById(Integer id) {
+        return Optional.ofNullable(booksRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -33,8 +32,8 @@ public class BooksServiceImpl implements BaseService<Books, Integer>{
     }
 
     @Override
-    public Books update(Integer bookid, Books bookDetails) {
-        Books book = booksRepository.findById(bookid).orElse(null);
+    public Books update(Integer id, Books bookDetails) {
+        Books book = booksRepository.findById(id).orElse(null);
         if (book != null) {
             book.setBookname(bookDetails.getBookname());
             book.setAuthor(bookDetails.getAuthor());

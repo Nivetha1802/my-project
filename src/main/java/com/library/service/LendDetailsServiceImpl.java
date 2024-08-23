@@ -24,8 +24,8 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
     }
 
     @Override
-    public Optional<LendDetails> getById(Integer lendId) {
-        return lendDetailsRepository.findById(lendId);
+    public Optional<LendDetails> getById(Integer id) {
+        return lendDetailsRepository.findById(id);
     }
 
     @Override
@@ -36,20 +36,20 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
 
     @Override
     @Transactional
-    public LendDetails update(Integer lendId, LendDetails lendDetails) {
-        Optional<LendDetails> existingLendDetails = lendDetailsRepository.findById(lendId);
+    public LendDetails update(Integer id, LendDetails lendDetails) {
+        Optional<LendDetails> existingLendDetails = lendDetailsRepository.findById(id);
         if (existingLendDetails.isPresent()) {
-            lendDetails.setId(lendId);
+            lendDetails.setId(id);
             return lendDetailsRepository.save(lendDetails);
         } else {
-            throw new RuntimeException("LendDetails not found with id " + lendId);
+            throw new RuntimeException("LendDetails not found with id " + id);
         }
     }
 
     @Override
     @Transactional
-    public void delete(Integer lendId) {
-        lendDetailsRepository.deleteById(lendId);
+    public void delete(Integer id) {
+        lendDetailsRepository.deleteById(id);
     }
 
     
@@ -58,13 +58,13 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
             UserEntity userEntity = user.get();
             LendDetails lendDetail = new LendDetails();
             lendDetail.setUser(userEntity);
-            lendDetail.setId(book.getId());
             lendDetail.setTitle(book.getTitle());
             lendDetail.setAuthors(book.getAuthors());
             lendDetail.setLendDate(book.getLendDate());
             lendDetail.setReturnDate(book.getReturnDate());
             lendDetail.setRenewCount(0);
             lendDetail.setFine(0.0);
+            lendDetail.setBookid(book.getBookid());
             create(lendDetail);
         } else {
             throw new IllegalArgumentException("User must be present");
@@ -82,8 +82,8 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
     }
 
     @Transactional
-    public void renewBook(Integer lendId) {
-        LendDetails lendDetails = lendDetailsRepository.findByLendId(lendId)
+    public void renewBook(Integer id) {
+        LendDetails lendDetails = lendDetailsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lend ID"));
         lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
         lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14));

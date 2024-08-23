@@ -1,8 +1,10 @@
 package com.library.service;
 
+import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +29,7 @@ public class GoogleBooksServiceImpl {
     }
     
     public List<GoogleBooks> searchBook(String query) {
+       try {
         String url = UriComponentsBuilder.fromHttpUrl(GOOGLE_BOOKS_API_BASE_URL)
                 .queryParam("q", query)
                 .queryParam("key", apiKey) 
@@ -34,6 +37,11 @@ public class GoogleBooksServiceImpl {
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         return parseBooks(response.getBody());
+    } catch (ResourceAccessException e) {
+        // Handle the error, maybe log it and return an empty list or a specific message
+        System.err.println("Failed to access Google Books API: " + e.getMessage());
+        return Collections.emptyList();
+    }
     }
 
     

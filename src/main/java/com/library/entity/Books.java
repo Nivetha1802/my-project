@@ -7,7 +7,8 @@ import java.io.Serializable;
 @Table(name = "books")
 public class Books extends BaseEntity<Integer> implements Serializable {
 
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Integer id;
     private String bookname;
     private String author;
     private String subject;
@@ -29,6 +30,14 @@ public class Books extends BaseEntity<Integer> implements Serializable {
     public Books() {
     }
     
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getBookcount() {
         return bookcount;
     }

@@ -44,8 +44,8 @@
                                 <div class="form-group">
                                     <form:errors path="*" cssClass="error" element="div" />
                                 </div>
-                                <label for="bookid">Book ID</label>
-                                <input type="text" id="bookid" name="bookid" onblur="fetchBookDetails()" required>
+                                <label for="id">Book ID</label>
+                                <input type="text" id="bookid" name="id" onblur="fetchBookDetails()" required>
                                 <div id="bookid-error" class="error"></div>
 
                                 <label for="bookname">Book Name</label>

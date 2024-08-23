@@ -70,6 +70,8 @@ public class BooksController implements BaseController<Books> {
         if (bindingResult.hasErrors()) {
             return "updateBook";
         } else {
+            System.out.println(updateBook.getId());
+            System.out.println(updateBook.getBookname());
             booksService.update(updateBook.getId(), updateBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
             return "redirect:/librarianHomePage";
@@ -104,8 +106,8 @@ public class BooksController implements BaseController<Books> {
     }
     
     @GetMapping("/getBookDetails")
-    public ResponseEntity<Books> getBookDetails(@RequestParam("bookid") Integer bookid) {
-        Optional<Books> optionalBook = booksService.getById(bookid);
+    public ResponseEntity<Books> getBookDetails(@RequestParam("id") Integer id) {
+        Optional<Books> optionalBook = booksService.getById(id);
         if (optionalBook.isPresent()) {
             return new ResponseEntity<>(optionalBook.get(), HttpStatus.OK);
         } else {
@@ -113,11 +115,7 @@ public class BooksController implements BaseController<Books> {
         }
     }
 
-    @Override
-    public String get(@Valid Books entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
-    }
+
+
 
 }

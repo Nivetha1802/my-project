@@ -13,14 +13,14 @@ function populateDates() {
     });
 }
 
-function toggleBook(button, bookid, lendId) {
+function toggleBook(button, bookid, id) {
     
     if (selectedBooks.some(book => book.bookid === bookid)) {
         selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
         button.textContent = 'Return';
         button.classList.remove('Added');
     } else {
-        selectedBooks.push({ button, bookid, lendId});
+        selectedBooks.push({ button, bookid, id});
         button.textContent = 'Added';
         button.classList.add('Added');
     }

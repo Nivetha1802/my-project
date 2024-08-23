@@ -42,7 +42,7 @@
                 </div>
             </form:form>
         </div>
-        <!-- <div>
+        <div>
             <c:if test="${not empty error}">
                 <script>
                     showMessage("${error}", 'error');
@@ -53,6 +53,6 @@
                     showMessage("${message}", 'success');
                 </script>
             </c:if>
-    </div> -->
+    </div>
 </body>
 </html>

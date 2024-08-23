@@ -48,11 +48,11 @@
                         <tr>
                             <td>${book.title}</td>
                             <td>${book.authors}</td>
-                            <td id="date_of_lending_${book.id}">${book.lendDate}</td>
-                            <td id="due_date_${book.id}">${book.returnDate}</td>
+                            <td id="date_of_lending_${book.bookid}">${book.lendDate}</td>
+                            <td id="due_date_${book.bookid}">${book.returnDate}</td>
                             <td class="actual_return_date"></td>
                             <td>
-                                <button type="button" onclick="toggleBook(this, '${book.id}', '${book.lendId}')">Return</button>
+                                <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.id}')">Return</button>
                             </td>
                             <td>${book.fine}</td>
                             <td>

@@ -14,5 +14,5 @@ public interface LendDetailsRepository extends BaseRepository<LendDetails, Integ
     @Query(value = "SELECT * FROM lend_details WHERE user_id = :id", nativeQuery = true)
     List<LendDetails> findLendDetailsById(@Param("id") Integer id);
 
-    Optional<LendDetails> findByLendId(Integer lendId);
+
 }

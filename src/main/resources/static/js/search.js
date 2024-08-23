@@ -3,7 +3,7 @@ function searchBooks(event) {
 
     const bookid = document.getElementById("query").value;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `/getBookDetails?bookid=${bookid}`, true);
+    xhr.open("GET", `/getBookDetails?id=${bookid}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function() {
@@ -37,7 +37,7 @@ function displayResults(book) {
             </thead>
             <tbody>
                 <tr>
-                    <td>${book.bookid}</td>
+                    <td>${book.id}</td>
                     <td>${book.bookname}</td>
                     <td>${book.author}</td>
                     <td>${book.subject}</td>

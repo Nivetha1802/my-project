@@ -112,7 +112,6 @@ public class LendController implements BaseController<LendDetails>{
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId != null) {
             List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
-            System.out.println(lendBooks.toString());
             model.addAttribute("lendBooks", lendBooks);
         }
         return "return_table";
@@ -128,7 +127,7 @@ public class LendController implements BaseController<LendDetails>{
                 new TypeReference<List<LendDetails>>() {
                 });
         for (LendDetails book : selectedBooksList) {
-            lendDetailsService.delete(book.getLendId());
+            lendDetailsService.delete(book.getId());
         }
         session.removeAttribute("selectedBooks");
         redirectAttributes.addFlashAttribute("message", "Successfully Returned Books!");
@@ -155,7 +154,7 @@ public class LendController implements BaseController<LendDetails>{
                 new TypeReference<List<LendDetails>>() {
                 });
         for (LendDetails book : selectedBooksList) {
-            lendDetailsService.renewBook(book.getLendId());
+            lendDetailsService.renewBook(book.getId());
         }
         redirectAttributes.addFlashAttribute("message", "Successfully Renewed Books!");
         return "redirect:/studentHomePage";
@@ -198,29 +197,24 @@ public class LendController implements BaseController<LendDetails>{
     @Override
     public String create(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
-     
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
     public String update(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
-
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public String delete(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model) {
-       
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
-    @Override
-    public String get(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
-    }
+   
 
 }
