@@ -83,7 +83,7 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
 
     @Transactional
     public void renewBook(Integer lendId) {
-        LendDetails lendDetails = lendDetailsRepository.findById(lendId)
+        LendDetails lendDetails = lendDetailsRepository.findByLendId(lendId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lend ID"));
         lendDetails.setRenewCount(lendDetails.getRenewCount() + 1);
         lendDetails.setReturnDate(lendDetails.getReturnDate().plusDays(14));

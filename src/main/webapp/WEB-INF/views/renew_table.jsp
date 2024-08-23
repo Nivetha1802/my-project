@@ -32,7 +32,6 @@
         <table id="renewTable">
             <thead>
                 <tr>
-                    <th>Book Id</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Lend date</th>
@@ -46,7 +45,6 @@
             <tbody>
                 <c:forEach var="book" items="${lendBooks}">
                     <tr>
-                        <td>${book.id}</td>
                         <td>${book.title}</td>
                         <td>${book.authors}</td>
                         <td>${book.lendDate}</td>
@@ -75,28 +73,4 @@
     </form>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
 </body>
-<!-- <script>
-    let selectedBooks = [];
-
-function toggleBook(button, lendId) {
-    if (selectedBooks.some(book => book.id === id)) {
-        selectedBooks = selectedBooks.filter(book => book.id !== id);
-        button.textContent = 'Renew';
-        button.classList.remove('Added');
-    } else {
-        selectedBooks.push({ button, lendId});
-        button.textContent = 'Added';
-        button.classList.add('Added');
-    }
-    console.log(selectedBooks);
-}
-
-function submitRenewBooks() {
-    const selectedBooksInput = document.getElementById('selectedBooks');
-    selectedBooksInput.value = JSON.stringify(selectedBooks);
-    console.log(selectedBooksInput.value);
-    document.getElementById('RenewForm').submit();
-}
-
-</script> -->
 </html>

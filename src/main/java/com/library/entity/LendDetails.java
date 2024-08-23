@@ -7,6 +7,8 @@ import java.time.temporal.ChronoUnit;
 @Entity
 public class LendDetails extends BaseEntity<Integer> {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer lendId = id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
@@ -18,8 +20,8 @@ public class LendDetails extends BaseEntity<Integer> {
     private Double fine;
 
     // Constructors, Getters, Setters, and Methods
-    public LendDetails( String title, String authors, LocalDate lendDate, LocalDate returnDate) {
-        
+    public LendDetails( Integer lendId, String title, String authors, LocalDate lendDate, LocalDate returnDate) {
+        this.lendId = lendId;
         this.title = title;
         this.authors = authors;
         this.lendDate = lendDate;
@@ -27,6 +29,14 @@ public class LendDetails extends BaseEntity<Integer> {
     }
 
     public LendDetails() {
+    }
+    
+    public Integer getLendId() {
+        return lendId;
+    }
+
+    public void setLendId(Integer lendId) {
+        this.lendId = lendId;
     }
 
     public UserEntity getUser() {
@@ -99,4 +109,5 @@ public class LendDetails extends BaseEntity<Integer> {
     public LocalDate calculateExtendedReturnDate() {
         return this.returnDate.plusDays(14);
     }
+
 }

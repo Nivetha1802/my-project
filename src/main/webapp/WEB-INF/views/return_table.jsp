@@ -33,7 +33,6 @@
         <table id="returnTable">
                 <thead>
                     <tr>
-                        <th>Book Id</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Lend Date</th>
@@ -47,7 +46,6 @@
                 <tbody>
                     <c:forEach var="book" items="${lendBooks}">
                         <tr>
-                            <td>${book.id}</td>
                             <td>${book.title}</td>
                             <td>${book.authors}</td>
                             <td id="date_of_lending_${book.id}">${book.lendDate}</td>
@@ -73,19 +71,5 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Returnscript.js"></script>
    
 </body>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    populateDates();
-});
 
-function populateDates() {
-    const returnDate = new Date();
-    const returnDatestr = returnDate.toISOString().split('T')[0];
-    const rows = document.querySelectorAll('#returnTable tbody tr');
-    console.log("loaded dates")
-    rows.forEach(row => {
-        row.querySelector('.actual_return_date').textContent = returnDatestr;
-    });
-}
-</script> -->
 </html>
