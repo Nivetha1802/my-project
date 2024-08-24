@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -49,7 +47,7 @@ public class LendController implements BaseController<LendDetails>{
             model.addAttribute("query", query);
         }
 
-        return "lend_table";
+        return "lendTablePage";
     }
 
     @PostMapping("/submitlendtable")
@@ -72,12 +70,12 @@ public class LendController implements BaseController<LendDetails>{
         if (selectedBooks != null) {
             model.addAttribute("selectedBooks", selectedBooks);
         }
-        return "lend_details";
+        return "lendDetailsPage";
     }
 
     @PostMapping("/submitlenddetails")
-    public String create(@RequestParam("selectedBooks") String selectedBooks, HttpSession session,
-            RedirectAttributes redirectAttributes) throws JsonMappingException, JsonProcessingException {
+    public String create(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model, @RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/lendDetails";
         }
@@ -114,12 +112,12 @@ public class LendController implements BaseController<LendDetails>{
             List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
             model.addAttribute("lendBooks", lendBooks);
         }
-        return "return_table";
+        return "returnPage";
     }
 
     @PostMapping("/submitReturnBooks")
-    public String delete(@RequestParam("selectedBooks") String selectedBooks,
-            RedirectAttributes redirectAttributes, HttpSession session) throws JsonProcessingException {
+    public String delete(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model, @RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/returntable";
         }
@@ -141,12 +139,12 @@ public class LendController implements BaseController<LendDetails>{
             List<LendDetails> lendBooks = lendDetailsService.getLendDetailsByUserId(userId);
             model.addAttribute("lendBooks", lendBooks);
         }
-        return "renew_table";
+        return "renewPage";
     }
 
     @PostMapping("/submitRenewtable")
-    public String create(@RequestParam("selectedBooks") String selectedBooks,
-            RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    public String update(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model, @RequestParam("selectedBooks") String selectedBooks) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
             return "redirect:/renewtable";
         }
@@ -180,7 +178,7 @@ public class LendController implements BaseController<LendDetails>{
                 return "error";
             }
         }
-        return "fine_table";
+        return "finePage";
     }
     
 
@@ -193,28 +191,5 @@ public class LendController implements BaseController<LendDetails>{
         }
         return "search";
     }
-
-    @Override
-    public String create(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
-
-    @Override
-    public String update(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public String delete(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-   
 
 }

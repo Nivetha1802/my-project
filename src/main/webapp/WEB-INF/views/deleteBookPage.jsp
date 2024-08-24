@@ -4,11 +4,11 @@
 
             <!DOCTYPE html>
             <html>
-
             <head>
                 <meta charset="UTF-8">
                 <title>Delete Book</title>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+                <script src="${pageContext.request.contextPath}/js/signup.js"></script>
             </head>
 
             <body class="library-page">
@@ -45,13 +45,25 @@
                                 <label path="id" for="id">Book ID</label>
                                 <input path="id" type="text" id="id" name="id" required>
                                 <div>
-                                    <button type="submit">Add</button>
+                                    <button type="submit">Delete</button>
                                 </div>
                             </form:form>
 
                         </div>
                     </div>
                 </div>
+                <div>
+                    <c:if test="${not empty error}">
+                        <script>
+                            showMessage("${error}", 'error');
+                        </script>
+                    </c:if>
+                    <c:if test="${not empty message}">
+                        <script>
+                            showMessage("${message}", 'success');
+                        </script>
+                    </c:if>
+            </div>
             </body>
 
             </html>

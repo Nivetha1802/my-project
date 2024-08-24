@@ -1,6 +1,6 @@
 package com.library.Dto;
 
-public class GoogleBooks {
+public class GoogleBooks extends BaseDto<String>{
     private String id;
     private String title;
     private String authors;

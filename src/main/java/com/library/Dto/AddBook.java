@@ -7,8 +7,6 @@ import com.library.validation.IsInteger;
 
 public class AddBook extends BaseDto<Integer>{
 
-   
-
     @NotEmpty(message = "Book name is required")
     private String bookname;
 
@@ -78,6 +76,4 @@ public class AddBook extends BaseDto<Integer>{
         return "AddBook [bookid=" + id + ", bookname=" + bookname + ", author=" + author + ", subject=" + subject
                 + ", info=" + info + ", bookcount=" + bookcount + "]";
     }
-
-
 }

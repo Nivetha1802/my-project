@@ -9,7 +9,7 @@
 
 </head>
 
-<body class="library-page" onload="showPopup('${message}')">
+<body class="library-page">
     <div class="header">
 
         <h1>Digital Library</h1>
@@ -28,6 +28,18 @@
         <button onclick="window.location.href='/search'">Search Books</button>
 
     </div>
+    <div>
+        <c:if test="${not empty error}">
+            <script>
+                showMessage("${error}", 'error');
+            </script>
+        </c:if>
+        <c:if test="${not empty message}">
+            <script>
+                showMessage("${message}", 'message');
+            </script>
+        </c:if>
+</div>
 
 </body>
 

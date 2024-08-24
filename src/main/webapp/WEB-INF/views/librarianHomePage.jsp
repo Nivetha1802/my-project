@@ -11,9 +11,6 @@
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
                 <script src="${pageContext.request.contextPath}/js/search.js"></script>
             </head>
-
-            <!-- <body class="library-page" onload="showPopup('${message}')"> -->
-
             <body class="library-page">
                 <div class="header">
                     <h1>Digital Library</h1>
@@ -54,7 +51,7 @@
                     </c:if>
                     <c:if test="${not empty message}">
                         <script>
-                            showMessage("${message}", 'success');
+                            showMessage("${message}", 'message');
                         </script>
                     </c:if>
                 </div>

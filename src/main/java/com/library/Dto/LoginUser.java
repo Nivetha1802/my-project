@@ -6,8 +6,7 @@ public class LoginUser extends BaseDto<Integer>{
     
     @NotEmpty(message = "Role is required")
     private String role;
-
-
+    
     @NotEmpty(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$", message = "Password must be at least 8 characters long and must contain at least one digit, one uppercase letter, one lowercase letter, and one special character (@#$%^&+=).")

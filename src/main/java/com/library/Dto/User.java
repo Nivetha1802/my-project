@@ -10,7 +10,6 @@ public class User extends BaseDto<Integer>{
 
     private String role;
 
-
     @NotEmpty(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     @Pattern(

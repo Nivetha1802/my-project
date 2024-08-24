@@ -4,7 +4,6 @@ import javax.validation.constraints.NotEmpty;
 
 public class UpdateBook extends BaseDto<Integer>{
 
-
     @NotEmpty(message = "Book name is required")
     private String bookName;
 

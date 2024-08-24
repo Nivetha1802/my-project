@@ -14,17 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
-
 import com.library.controller.BooksController;
 import com.library.entity.Books;
 import com.library.service.BooksServiceImpl;
 import com.library.service.GoogleBooksServiceImpl;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.junit.runner.RunWith;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LibrarianControllerTest {
+public class BooksControllerTest {
 
     @Mock
     private BooksServiceImpl booksService;
@@ -41,7 +38,7 @@ public class LibrarianControllerTest {
     private GoogleBooksServiceImpl googleBooksService;
 
     @InjectMocks
-    private BooksController librarianController;
+    private BooksController booksController;
 
     @BeforeEach
     public void setup() {
@@ -51,16 +48,16 @@ public class LibrarianControllerTest {
     @Test
     public void testShowBookManagementPage() {
         Model model = new ConcurrentModel();
-        String viewName = librarianController.showBookManagementPage(model);
-        assertEquals("bookManagement", viewName);
+        String viewName = booksController.showBookManagementPage(model);
+        assertEquals("bookManagementPage", viewName);
         assertTrue(model.containsAttribute("addBook"));
     }
 
     @Test
     public void testShowAddBookPage() {
         Model model = new ConcurrentModel();
-        String viewName = librarianController.showAddBookPage(model);
-        assertEquals("bookManagement", viewName);
+        String viewName = booksController.showAddBookPage(model);
+        assertEquals("bookManagementPage", viewName);
         assertTrue(model.containsAttribute("addBook"));
     }
 
@@ -71,8 +68,8 @@ public class LibrarianControllerTest {
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.create(new Books(), bindingResult, redirectAttributes, model);
-        assertEquals("bookManagement", viewName);
+        String viewName = booksController.create(new Books(), bindingResult, redirectAttributes, model, null, null);
+        assertEquals("bookManagementPage", viewName);
         verify(booksService, times(0)).create(any(Books.class));
     }
 
@@ -83,7 +80,7 @@ public class LibrarianControllerTest {
         Model model = new ConcurrentModel();
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        String viewName = librarianController.create(new Books(), bindingResult, redirectAttributes, model);
+        String viewName = booksController.create(new Books(), bindingResult, redirectAttributes, model, null, null);
         assertEquals("redirect:/librarianHomePage", viewName);
         verify(booksService, times(1)).create(any(Books.class));
     }
@@ -91,8 +88,8 @@ public class LibrarianControllerTest {
     @Test
     public void testShowUpdateBookPage() {
         Model model = new ConcurrentModel();
-        String viewName = librarianController.showUpdateBookPage(model);
-        assertEquals("updateBook", viewName);
+        String viewName = booksController.showUpdateBookPage(model);
+        assertEquals("updateBookPage", viewName);
         assertTrue(model.containsAttribute("updateBook"));
     }
 
@@ -100,12 +97,12 @@ public class LibrarianControllerTest {
     public void testSubmitUpdateBook_WithErrors() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        Model model = mock(Model.class); // Add mock for Model
+        Model model = mock(Model.class); 
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.update(new Books(), bindingResult, redirectAttributes, model);
-        assertEquals("redirect:/updateBook", viewName);
+        String viewName = booksController.update(new Books(), bindingResult, redirectAttributes, model, null);
+        assertEquals("updateBookPage", viewName);
         verify(booksService, times(0)).update(anyInt(), any(Books.class));
     }
 
@@ -113,45 +110,40 @@ public class LibrarianControllerTest {
     public void testSubmitUpdateBook_Success() {
         // Arrange
         BindingResult bindingResult = mock(BindingResult.class);
-        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        Model model = mock(Model.class); // Add mock for Model
-
-        when(bindingResult.hasErrors()).thenReturn(false); // Mock that there are no errors in binding
-
+        RedirectAttributes redirectAttributes =  mock(RedirectAttributes.class);
+        Model model = mock(Model.class); 
+        when(bindingResult.hasErrors()).thenReturn(false); 
         Books updateBook = new Books();
         updateBook.setId(1);
-
         // Act
-        String viewName = librarianController.update(updateBook, bindingResult, redirectAttributes, model);
-
+        String viewName = booksController.update(updateBook, bindingResult, redirectAttributes, model, null);
         // Assert
         assertEquals("redirect:/librarianHomePage", viewName);
-        verify(booksService, times(1)).update(eq(1), any(Books.class)); // Verify that update method is called with the
-                                                                        // correct arguments
-        verify(redirectAttributes, times(1)).addFlashAttribute("message", "Successfully Updated Book!"); // Verify that
-                                                                                                         // flash
-                                                                                                         // attribute is
-                                                                                                         // added
+        verify(booksService, times(1)).update(eq(1), eq(updateBook)); 
+        verify(redirectAttributes, times(1)).addFlashAttribute("message", "Successfully Updated Book!"); 
+                                                                                                         
     }
 
     @Test
     public void testShowDeleteBookPage() {
+        // Arrange
         Model model = new ConcurrentModel();
-        String viewName = librarianController.showDeleteBookPage(model);
-        assertEquals("deleteBook", viewName);
+        // Act
+        String viewName = booksController.showDeleteBookPage(model);
+        // Assert
+        assertEquals("deleteBookPage", viewName);
         assertTrue(model.containsAttribute("deleteBook"));
     }
-
     @Test
     public void testSubmitDeleteBook_WithErrors() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        Model model = mock(Model.class); // Add mock for Model
+        Model model = mock(Model.class); 
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        String viewName = librarianController.delete(new Books(), bindingResult, redirectAttributes, model);
-        assertEquals("deleteBook", viewName);
+        String viewName = booksController.delete(new Books(), bindingResult, redirectAttributes, model, null, null);
+        assertEquals("deleteBookPage", viewName);
         verify(booksService, times(0)).delete(anyInt());
     }
 
@@ -159,13 +151,13 @@ public class LibrarianControllerTest {
     public void testSubmitDeleteBook_Success() {
         BindingResult bindingResult = mock(BindingResult.class);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-        Model model = mock(Model.class); // Add mock for Model
+        Model model = mock(Model.class); 
 
         when(bindingResult.hasErrors()).thenReturn(false);
 
         Books deleteBook = new Books();
         deleteBook.setId(1);
-        String viewName = librarianController.delete(deleteBook, bindingResult, redirectAttributes, model);
+        String viewName = booksController.delete(deleteBook, bindingResult, redirectAttributes, model, null, null);
         assertEquals("redirect:/librarianHomePage", viewName);
         verify(booksService, times(1)).delete(eq(1));
     }
@@ -176,8 +168,8 @@ public class LibrarianControllerTest {
         List<Books> books = Collections.singletonList(new Books());
         when(booksService.getAll()).thenReturn(books);
 
-        String viewName = librarianController.showAllBookPage(model);
-        assertEquals("allBooks", viewName);
+        String viewName = booksController.showAllBookPage(model);
+        assertEquals("allBooksPage", viewName);
         assertTrue(model.containsAttribute("books"));
         verify(booksService, times(1)).getAll();
     }
@@ -189,7 +181,7 @@ public class LibrarianControllerTest {
         Optional<Books> optionalBook = Optional.of(book);
         when(booksService.getById(1)).thenReturn(optionalBook);
 
-        ResponseEntity<Books> response = librarianController.getBookDetails(1);
+        ResponseEntity<Books> response = booksController.getBookDetails(1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(book, response.getBody());
         verify(booksService, times(1)).getById(1);
@@ -199,7 +191,7 @@ public class LibrarianControllerTest {
     public void testGetBookDetails_NotFound() {
         when(booksService.getById(1)).thenReturn(Optional.empty());
 
-        ResponseEntity<Books> response = librarianController.getBookDetails(1);
+        ResponseEntity<Books> response = booksController.getBookDetails(1);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(booksService, times(1)).getById(1);
     }

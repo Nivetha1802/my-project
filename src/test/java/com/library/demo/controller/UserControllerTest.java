@@ -8,7 +8,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.library.Dto.LoginUser;
 import com.library.Dto.User;
 import com.library.controller.UserController;
@@ -50,27 +53,9 @@ public class UserControllerTest {
 
     @Test
     public void testLogout() {
-        String viewName = userController.returnToHomePage();
-        assertEquals("login", viewName);
+        String viewName = userController.showLoginPage(null);
+        assertEquals("loginPage", viewName);
     }
-
-    // @Test
-    // public void testGetHomePage_Student() {
-    //     String viewName = userController.getHomePage("student");
-    //     assertEquals("studentHomePage", viewName);
-    // }
-
-    // @Test
-    // public void testGetHomePage_Teacher() {
-    //     String viewName = userController.getHomePage("teacher");
-    //     assertEquals("studentHomePage", viewName);
-    // }
-
-    // @Test
-    // public void testGetHomePage_Librarian() {
-    //     String viewName = userController.getHomePage("librarian");
-    //     assertEquals("librarianHomePage", viewName);
-    // }
 
     @Test
     public void testGetStudentHomePage() {
@@ -88,33 +73,32 @@ public class UserControllerTest {
     public void testShowSignupPage() {
         User user = new User();
         String viewName = userController.showSignupPage(user);
-        assertEquals("signup", viewName);
+        assertEquals("signupPage", viewName);
     }
 
     @Test
-    public void testSubmitRegistrationFormDetails_WithErrors() {
+    public void testSubmitRegistrationFormDetails_WithErrors() throws JsonMappingException, JsonProcessingException {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         User user = new User();
         String viewName = userController.create(user, bindingResult, redirectAttributes,
-                session);
+                model, null, session);
 
-        assertEquals("signup", viewName);
+        assertEquals("signupPage", viewName);
         verify(userService, never()).saveUser(any(User.class));
     }
 
     @Test
-    public void testSubmitRegistrationFormDetails_WithoutErrors() {
+    public void testSubmitRegistrationFormDetails_WithoutErrors() throws JsonMappingException, JsonProcessingException {
         when(bindingResult.hasErrors()).thenReturn(false);
 
         User user = new User();
         user.setId(1);
         user.setRole("student");
 
-        String viewName = userController.create(user, bindingResult, redirectAttributes,
-                session);
+        String viewName = userController.create(user, bindingResult, redirectAttributes, null, null, session);
 
-        assertEquals("redirect:/home?role=student", viewName);
+        assertEquals("studentHomePage", viewName);
         verify(userService, times(1)).saveUser(user);
         verify(session, times(1)).setAttribute("userId", 1);
         verify(redirectAttributes, times(1)).addFlashAttribute("message", "Registration successful!");
@@ -124,7 +108,7 @@ public class UserControllerTest {
     public void testShowLoginPage() {
         LoginUser loginUser = new LoginUser();
         String viewName = userController.showLoginPage(loginUser);
-        assertEquals("login", viewName);
+        assertEquals("loginPage", viewName);
     }
 
     @Test
@@ -134,15 +118,14 @@ public class UserControllerTest {
         LoginUser loginUser = new LoginUser();
         String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
 
-        assertEquals("login", viewName);
+        assertEquals("loginPage", viewName);
         verify(userService, never()).authenticate(anyInt(), anyString());
     }
 
     @Test
     public void testSubmitLoginFormDetails_WithoutErrors_InvalidCredentials() {
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(userService.authenticate(anyInt(), anyString())).thenReturn(Optional.empty()); // Change to
-                                                                                            // Optional.empty()
+        when(userService.authenticate(anyInt(), anyString())).thenReturn(Optional.empty());
 
         LoginUser loginUser = new LoginUser();
         loginUser.setId(1);
@@ -171,9 +154,85 @@ public class UserControllerTest {
 
         String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
 
-        assertEquals("redirect:/home?role=student", viewName);
+        assertEquals("studentHomePage", viewName);
         verify(userService, times(1)).authenticate(1, "password");
         verify(session, times(1)).setAttribute("userId", 1);
         verify(redirectAttributes, times(1)).addFlashAttribute("message", "Login successful!");
     }
+    @Test
+    public void testSubmitLogin_SuccessfulLogin_StudentRole() throws Exception {
+        // Arrange
+        BindingResult bindingResult = mock(BindingResult.class);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        HttpSession session = mock(HttpSession.class);
+
+        LoginUser loginUser = new LoginUser();
+        loginUser.setId(1);
+        loginUser.setPassword("password");
+
+        UserEntity user = new UserEntity();
+        user.setId(1);
+        user.setRole("student");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(userService.authenticate(loginUser.getId(), loginUser.getPassword())).thenReturn(Optional.of(user));
+
+        // Act
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
+
+        // Assert
+        assertEquals("studentHomePage", viewName);
+        verify(session).setAttribute("userId", user.getId());
+        assertEquals("Login successful!", redirectAttributes.getFlashAttributes().get("message"));
+    }
+
+    @Test
+    public void testSubmitLogin_SuccessfulLogin_LibrarianRole() throws Exception {
+        // Arrange
+        BindingResult bindingResult = mock(BindingResult.class);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        HttpSession session = mock(HttpSession.class);
+
+        LoginUser loginUser = new LoginUser();
+        loginUser.setId(1);
+        loginUser.setPassword("password");
+
+        UserEntity user = new UserEntity();
+        user.setId(1);
+        user.setRole("librarian");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(userService.authenticate(loginUser.getId(), loginUser.getPassword())).thenReturn(Optional.of(user));
+
+        // Act
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
+
+        // Assert
+        assertEquals("librarianHomePage", viewName);
+        verify(session).setAttribute("userId", user.getId());
+        assertEquals("Login successful!", redirectAttributes.getFlashAttributes().get("message"));
+    }
+
+    @Test
+    public void testSubmitLogin_InvalidCredentials() throws Exception {
+        // Arrange
+        BindingResult bindingResult = mock(BindingResult.class);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        HttpSession session = mock(HttpSession.class);
+
+        LoginUser loginUser = new LoginUser();
+        loginUser.setId(1);
+        loginUser.setPassword("wrongPassword");
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(userService.authenticate(loginUser.getId(), loginUser.getPassword())).thenReturn(Optional.empty());
+
+        // Act
+        String viewName = userController.get(loginUser, bindingResult, redirectAttributes, session);
+
+        // Assert
+        assertEquals("redirect:/login", viewName);
+        assertEquals("Invalid credentials!", redirectAttributes.getFlashAttributes().get("error"));
+    }
+
 }
