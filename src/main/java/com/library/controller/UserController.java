@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 
 @Controller
-public class UserController implements BaseController<UserEntity>{
+public class UserController {
 
     private final UserServiceImpl userService;
 
@@ -79,9 +79,9 @@ public class UserController implements BaseController<UserEntity>{
                 redirectAttributes.addFlashAttribute("message", "Login successful!");
                 String role = user.getRole();
                 if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
-                    return "studentHomePage";
+                    return "redirect:/studentHomePage";
                 } else {
-                    return "librarianHomePage";
+                    return "redirect:/librarianHomePage";
                 }
         
             } else {
@@ -90,29 +90,4 @@ public class UserController implements BaseController<UserEntity>{
             }
         }
     }
-
-
-    @Override
-    public String update(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model, String selectedEntities) throws JsonProcessingException {
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-
-    @Override
-    public String delete(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model, String selectedEntities, HttpSession session) throws JsonProcessingException {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
-
-
-    @Override
-    public String create(@Valid UserEntity entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model, String selectedEntities, HttpSession session)
-            throws JsonMappingException, JsonProcessingException {
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
-    }
-
-
-    
 }

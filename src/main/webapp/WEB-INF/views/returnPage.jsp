@@ -52,7 +52,7 @@
                             <td id="due_date_${book.bookid}">${book.returnDate}</td>
                             <td class="actual_return_date"></td>
                             <td>
-                                <button type="button" onclick="toggleBook(this, '${book.bookid}', '${book.id}')">Return</button>
+                                <button type="button" onclick="toggleBookForReturn(this, '${book.bookid}', '${book.id}')">Return</button>
                             </td>
                             <td>${book.fine}</td>
                             <td>
@@ -68,7 +68,7 @@
     <form id="returnBooksForm" action="submitReturnBooks" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
     </form>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Returnscript.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>
    
 </body>
 

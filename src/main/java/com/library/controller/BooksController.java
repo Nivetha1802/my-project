@@ -36,14 +36,14 @@ public class BooksController implements BaseController<Books> {
         return "bookManagementPage";
     }
 
-    @GetMapping("/addBook")
+    @GetMapping("/bookManagement/addBook")
     public String showAddBookPage(Model model) {
         Books addBook = new Books();
         model.addAttribute("addBook", addBook);
         return "bookManagementPage";
     }
 
-    @PostMapping("/submitAddBook")
+    @PostMapping("/bookManagement/submitAddBook")
     public String create(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -55,14 +55,14 @@ public class BooksController implements BaseController<Books> {
         }
     }
 
-    @GetMapping("/updateBook")
+    @GetMapping("/bookManagement/updateBook")
     public String showUpdateBookPage(Model model) {
         Books updateBook = new Books();
         model.addAttribute("updateBook", updateBook);
         return "updateBookPage";
     }
 
-    @PostMapping("/submitUpdateBook")
+    @PostMapping("/bookManagement/submitUpdateBook")
     public String update(@Valid @ModelAttribute("updateBook") Books updateBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities) {
         if (bindingResult.hasErrors()) {
@@ -74,14 +74,14 @@ public class BooksController implements BaseController<Books> {
         }
     }
 
-    @GetMapping("/deleteBook")
+    @GetMapping("/bookManagement/deleteBook")
     public String showDeleteBookPage(Model model) {
         Books deleteBook = new Books();
         model.addAttribute("deleteBook", deleteBook);
         return "deleteBookPage";
     }
 
-    @PostMapping("/submitDeleteBook")
+    @PostMapping("/bookManagement/submitDeleteBook")
     public String delete(@Valid @ModelAttribute("deleteBook") Books deleteBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities, HttpSession session) {
         if (bindingResult.hasErrors()) {

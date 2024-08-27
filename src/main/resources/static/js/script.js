@@ -1,6 +1,35 @@
 document.addEventListener('DOMContentLoaded', function () {
-    populateDates();
+    populateDatesForLendPage();
+    populateDatesForReturnPage();
 });
+
+
+function populateDatesForLendPage() {
+    const lendingDate = new Date();
+    const returnDate = new Date();
+    returnDate.setDate(lendingDate.getDate() + 14);
+
+    const lendingDateStr = lendingDate.toISOString().split('T')[0];
+    const returnDateStr = returnDate.toISOString().split('T')[0];
+
+    const rows = document.querySelectorAll('#lendDetailsTable tbody tr');
+
+    rows.forEach(row => {
+        row.querySelector('.lending-date').textContent = lendingDateStr;
+        row.querySelector('.return-date').textContent = returnDateStr;
+    });
+}
+
+function populateDatesForReturnPage() {
+    const returnDate = new Date();
+    const returnDatestr = returnDate.toISOString().split('T')[0];
+    const rows = document.querySelectorAll('#returnTable tbody tr');
+    console.log("loaded dates")
+    rows.forEach(row => {
+        row.querySelector('.actual_return_date').textContent = returnDatestr;
+    });
+}
+
 
 function fetchBookDetails() {
     const bookId = document.getElementById("bookid").value;
@@ -32,21 +61,6 @@ function fetchBookDetails() {
     }
 }
 
-function populateDates() {
-    const lendingDate = new Date();
-    const returnDate = new Date();
-    returnDate.setDate(lendingDate.getDate() + 14);
-
-    const lendingDateStr = lendingDate.toISOString().split('T')[0];
-    const returnDateStr = returnDate.toISOString().split('T')[0];
-
-    const rows = document.querySelectorAll('#lendDetailsTable tbody tr');
-
-    rows.forEach(row => {
-        row.querySelector('.lending-date').textContent = lendingDateStr;
-        row.querySelector('.return-date').textContent = returnDateStr;
-    });
-}
 
 function submitLendDetails() {
     const selectedBooks = [];
@@ -78,11 +92,11 @@ function toggleBookForAdd(button, id, title, authors, publisher, publishedDate) 
     if (selectedBooks.some(book => book.id === id)) {
         selectedBooks = selectedBooks.filter(book => book.id !== id);
         button.textContent = 'Add';
-        button.classList.remove('added');
+        button.classList.remove('Added');
     } else {
         selectedBooks.push({id, title, authors, publisher, publishedDate });
         button.textContent = 'Added';
-        button.classList.add('added');
+        button.classList.add('Added');
     }
 }
 
@@ -168,6 +182,28 @@ function displayResultsForSearch(book) {
     } else {
         resultsContainer.innerHTML = "<p>No books found.</p>";
     }
+}
+
+function toggleBookForReturn(button, bookid, id) {
+    
+    if (selectedBooks.some(book => book.bookid === bookid)) {
+        selectedBooks = selectedBooks.filter(book => book.bookid !== bookid);
+        button.textContent = 'Return';
+        button.classList.remove('Added');
+    } else {
+        selectedBooks.push({ button, bookid, id});
+        button.textContent = 'Added';
+        button.classList.add('Added');
+    }
+    console.log(selectedBooks);
+}
+
+function submitReturnBooks() {
+    var selectedBooksInput = document.getElementById('selectedBooks');
+    selectedBooksInput.value = JSON.stringify(selectedBooks);
+    console.log(selectedBooksInput.value);
+    const form = document.getElementById('returnBooksForm');
+    form.submit();
 }
 
 function showPopup(message) {

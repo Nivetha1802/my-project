@@ -11,6 +11,7 @@
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
                 <script src="${pageContext.request.contextPath}/js/script.js"></script>
             </head>
+
             <body class="library-page">
                 <div class="header">
                     <h1>Digital Library</h1>
@@ -51,10 +52,11 @@
                     </c:if>
                     <c:if test="${not empty message}">
                         <script>
-                            showMessage("${message}", 'message');
+                            showMessage("${message}", 'success');
                         </script>
                     </c:if>
                 </div>
+
             </body>
 
             </html>

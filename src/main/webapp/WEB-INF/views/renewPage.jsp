@@ -50,7 +50,7 @@
                         <td>${book.lendDate}</td>
                         <td>${book.returnDate}</td>
                         <td>
-                            <button type="button" onclick="toggleBook(this, '${book.id}')">
+                            <button type="button" onclick="toggleBookForRenew(this, '${book.id}')">
                                 Renew
                             </button>
                         </td>
@@ -71,6 +71,6 @@
     <form id="RenewForm" action="submitRenewtable" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
     </form>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/Renewscript.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>

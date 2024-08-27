@@ -36,9 +36,10 @@
         </c:if>
         <c:if test="${not empty message}">
             <script>
-                showMessage("${message}", 'message');
+                showMessage("${message}", 'success');
             </script>
         </c:if>
+        
 </div>
 
 </body>

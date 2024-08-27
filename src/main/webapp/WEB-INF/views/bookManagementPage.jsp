@@ -30,8 +30,8 @@
                             <h2>Book Management</h2>
                             <ul>
                                 <li><a href="/bookManagement">Add Book</a></li>
-                                <li><a href="/updateBook">Update book</a></li>
-                                <li><a href="/deleteBook">Delete Book</a></li>
+                                <li><a href="/bookManagement/updateBook">Update book</a></li>
+                                <li><a href="/bookManagement/deleteBook">Delete Book</a></li>
                         </div>
                         <div class="form-container">
                             <h2> Add Book</h2>
