@@ -61,7 +61,7 @@
             <form id="lendDetForm" action="submitlenddetails" method="post">
                 <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
             </form>
-            <script src="${pageContext.request.contextPath}/js/Lend_detail_script.js"></script>
+            <script src="${pageContext.request.contextPath}/js/script.js"></script>
 
         </body>
 

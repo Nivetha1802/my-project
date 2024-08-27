@@ -68,8 +68,6 @@ public class BooksController implements BaseController<Books> {
         if (bindingResult.hasErrors()) {
             return "updateBookPage";
         } else {
-            System.out.println(updateBook.getId());
-            System.out.println(updateBook.getBookname());
             booksService.update(updateBook.getId(), updateBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Updated Book!");
             return "redirect:/librarianHomePage";

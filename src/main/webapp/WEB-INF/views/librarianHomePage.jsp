@@ -9,7 +9,7 @@
                 <meta charset="UTF-8">
                 <title>Digital Library</title>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-                <script src="${pageContext.request.contextPath}/js/search.js"></script>
+                <script src="${pageContext.request.contextPath}/js/script.js"></script>
             </head>
             <body class="library-page">
                 <div class="header">

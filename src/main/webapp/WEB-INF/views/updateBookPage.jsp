@@ -9,7 +9,7 @@
                 <meta charset="UTF-8">
                 <title>Delete Book</title>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-                <script src="${pageContext.request.contextPath}/js/updateBook.js"></script>
+                <script src="${pageContext.request.contextPath}/js/script.js"></script>
             </head>
 
             <body class="library-page">

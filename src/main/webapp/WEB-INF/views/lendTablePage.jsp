@@ -7,7 +7,7 @@
             <meta charset="UTF-8">
             <title>Book Lending</title>
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-            <script src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
+            <script src="${pageContext.request.contextPath}/js/script.js"></script>
         </head>
 
         <body class="library-page">
@@ -58,7 +58,7 @@
                                         <td><img src="${book.thumbnail}" alt="Thumbnail" /></td>
                                         <td>
                                         <button type="button"
-                                            onclick="toggleBook(this, '${book.id}', '${book.title}', '${book.authors}', '${book.publisher}', '${book.publishedDate}')">Add</button>
+                                            onclick="toggleBookForAdd(this, '${book.id}', '${book.title}', '${book.authors}', '${book.publisher}', '${book.publishedDate}')">Add</button>
                                         </td>
                                     </tr>
                                 </c:forEach>

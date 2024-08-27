@@ -7,7 +7,7 @@
 <head>
     <title>Digital Library - Sign In</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-    <script src="${pageContext.request.contextPath}/js/signup.js"></script>
+    <script src="${pageContext.request.contextPath}/js/script.js"></script>
 </head>
 <body class="signing">
     <div class="login-main-container">

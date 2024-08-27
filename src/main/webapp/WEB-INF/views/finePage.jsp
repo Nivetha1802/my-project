@@ -8,7 +8,7 @@
             <meta charset="UTF-8">
             <title>Fine Details</title>
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-            <script type="text/javascript" src="${pageContext.request.contextPath}/js/Lend_table.js"></script>
+            <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>
         </head>
 
         <body class="library-page">
