@@ -32,9 +32,9 @@
                         <div class="sidebar">
                             <h2>Book Management</h2>
                             <ul>
-                                <li><a href="/bookManagement">Add Book</a></li>
-                                <li><a href="/bookManagement/updateBook">Update book</a></li>
-                                <li><a href="/bookManagement/deleteBook">Delete Book</a></li>
+                                <li><a href="/books/">Add Book</a></li>
+                                <li><a href="/books/update">Update book</a></li>
+                                <li><a href="/books/delete">Delete Book</a></li>
                             </ul>
                         </div>
                         <div class="form-container">

@@ -41,7 +41,6 @@
                             <th>Book Id</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Subject</th>
                             <th>Fine</th>
                         </tr>
                     </thead>
@@ -49,9 +48,8 @@
                         <c:forEach var="book" items="${books}">
                             <tr>
                                 <td>${book.bookid}</td>
-                                <td>${book.bookname}</td>
-                                <td>${book.author}</td>
-                                <td>${book.subject}</td>
+                                <td>${book.title}</td>
+                                <td>${book.authors}</td>
                                 <td>${book.fine}</td>
                             </tr>
                         </c:forEach>

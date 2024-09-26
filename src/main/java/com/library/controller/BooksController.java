@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.library.Dto.AddBook;
@@ -20,6 +21,7 @@ import com.library.entity.Books;
 import com.library.service.BooksServiceImpl;
 
 @Controller
+@RequestMapping("/books")
 public class BooksController implements BaseController<Books> {
 
     private final BooksServiceImpl booksService;
@@ -29,21 +31,21 @@ public class BooksController implements BaseController<Books> {
 
     }
 
-    @GetMapping("/bookManagement")
+    @GetMapping("")
     public String showBookManagementPage(Model model) {
         AddBook addBook = new AddBook();
         model.addAttribute(addBook);
         return "bookManagementPage";
     }
 
-    @GetMapping("/bookManagement/addBook")
+    @GetMapping("/add")
     public String showAddBookPage(Model model) {
         Books addBook = new Books();
         model.addAttribute("addBook", addBook);
         return "bookManagementPage";
     }
 
-    @PostMapping("/bookManagement/submitAddBook")
+    @PostMapping("/add")
     public String create(@Valid @ModelAttribute("addBook") Books addBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -55,14 +57,14 @@ public class BooksController implements BaseController<Books> {
         }
     }
 
-    @GetMapping("/bookManagement/updateBook")
+    @GetMapping("/update")
     public String showUpdateBookPage(Model model) {
         Books updateBook = new Books();
         model.addAttribute("updateBook", updateBook);
         return "updateBookPage";
     }
 
-    @PostMapping("/bookManagement/submitUpdateBook")
+    @PostMapping("/update")
     public String update(@Valid @ModelAttribute("updateBook") Books updateBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities) {
         if (bindingResult.hasErrors()) {
@@ -74,14 +76,14 @@ public class BooksController implements BaseController<Books> {
         }
     }
 
-    @GetMapping("/bookManagement/deleteBook")
+    @GetMapping("/delete")
     public String showDeleteBookPage(Model model) {
         Books deleteBook = new Books();
         model.addAttribute("deleteBook", deleteBook);
         return "deleteBookPage";
     }
 
-    @PostMapping("/bookManagement/submitDeleteBook")
+    @PostMapping("/delete")
     public String delete(@Valid @ModelAttribute("deleteBook") Books deleteBook, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam(required = false) String selectedEntities, HttpSession session) {
         if (bindingResult.hasErrors()) {
@@ -92,7 +94,7 @@ public class BooksController implements BaseController<Books> {
             redirectAttributes.addFlashAttribute("message", "Successfully Deleted Book!");
         } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("error", "Book not found!");
-            return "redirect:/deleteBook";
+            return "redirect:/delete";
         }
         return "redirect:/librarianHomePage";
     }
@@ -105,7 +107,7 @@ public class BooksController implements BaseController<Books> {
         return "allBooksPage";
     }
     
-    @GetMapping("/getBookDetails")
+    @GetMapping("/getBook")
     public ResponseEntity<Books> getBookDetails(@RequestParam("id") Integer id) {
         Optional<Books> optionalBook = booksService.getById(id);
         if (optionalBook.isPresent()) {

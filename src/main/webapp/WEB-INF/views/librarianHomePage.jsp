@@ -32,8 +32,8 @@
                 </div>
                 <div id="search-results"></div>
                 <div class="button-container">
-                    <button onclick="window.location.href='/bookManagement'">Manage Books</button>
-                    <button onclick="window.location.href='/allBooks'">View All Books</button>
+                    <button onclick="window.location.href='/books'">Manage Books</button>
+                    <button onclick="window.location.href='/books/allBooks'">View All Books</button>
                 </div>
                 <div>
                     <c:if test="${not empty errors}">

@@ -29,14 +29,15 @@
                         <div class="sidebar">
                             <h2>Book Management</h2>
                             <ul>
-                                <li><a href="/bookManagement">Add Book</a></li>
-                                <li><a href="/bookManagement/updateBook">Update book</a></li>
-                                <li><a href="/bookManagement/deleteBook">Delete Book</a></li>
+                                <li><a href="/books/">Add Book</a></li>
+                                <li><a href="/books/update">Update book</a></li>
+                                <li><a href="/books/delete">Delete Book</a></li>
+                            </ul>
                         </div>
                         <div class="form-container">
                             <h2> Add Book</h2>
                             <h3>Enter Book Details</h3>
-                            <form:form action="submitAddBook" method="post" modelAttribute="addBook">
+                            <form:form action="add" method="post" modelAttribute="addBook">
                                 <div class="form-group">
                                     <form:errors path="*" cssClass="error" element="div" />
                                 </div>

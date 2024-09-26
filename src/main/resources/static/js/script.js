@@ -41,7 +41,7 @@ function fetchBookDetails() {
     }
     if (bookId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/getBookDetails?id=${bookId}`, true);
+        xhr.open("GET", `/books/getBook?id=${bookId}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function() {
@@ -135,7 +135,7 @@ function searchBooks(event) {
 
     const bookid = document.getElementById("query").value;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `/getBookDetails?id=${bookid}`, true);
+    xhr.open("GET", `/books/getBook?id=${bookid}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function() {
