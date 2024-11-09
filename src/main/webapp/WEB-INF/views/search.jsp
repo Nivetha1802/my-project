@@ -9,20 +9,20 @@
 </head>
 <body class="library-page">
     <div class="header">
-        <button class="back-button" onclick="window.location.href='/studentHomePage'">
+        <button class="back-button" onclick="window.location.href='/studentHome'">
             &#8592;
         </button>
         <h1>Digital Library</h1>
         
         <div class="nav">
-            <a href="/studentHomePage">Home</a>
+            <a href="/studentHome">Home</a>
             <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
     </div>
 
     <div class="search-container">
-        <form class="search-bar" action="search" method="get">
+        <form class="search-bar" action="/services/search" method="get">
             <input type="text" id="query" name="query" value="${query}" placeholder="Search a book">
             <button type="submit">&#128269;</button>
         </form>

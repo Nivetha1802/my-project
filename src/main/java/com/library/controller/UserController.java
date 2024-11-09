@@ -24,23 +24,25 @@ public class UserController {
     }
 
 
-    @GetMapping("/studentHomePage")
+    @GetMapping("/studentHome")
     public String getStudentHomePage() {
         return "studentHomePage";
     }
 
-    @GetMapping("/librarianHomePage")
+    @GetMapping("/librarianHome")
     public String getLibrarianHomePage() {
         return "librarianHomePage";
     }
 
     @GetMapping("/signup")
-    public String showSignupPage(@ModelAttribute("user") User user) {
+    public String showSignupPage(Model model) {
+        UserDto user = new UserDto();
+        model.addAttribute(user);
         return "signupPage";
     }
 
-    @PostMapping("/submitRegistration")
-    public String create(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+    @PostMapping("/register")
+    public String create(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, String selectedEntities, HttpSession session)
             throws JsonMappingException, JsonProcessingException {
         if (bindingResult.hasErrors()) {
@@ -49,22 +51,18 @@ public class UserController {
             session.setAttribute("userId", user.getId());
             userService.saveUser(user);
             redirectAttributes.addFlashAttribute("message", "Registration successful!");
-            String role = user.getRole();
-            if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
-                        return "studentHomePage";
-                    } else {
-                        return "librarianHomePage";
-                    }
+            return "redirect:" + getRedirectUrlBasedOnRole(user.getRole());
+
         }
 
     }
 
-    @GetMapping({ "/login", "/", "/logout" })
+    @GetMapping({ "", "/", "/logout" })
     public String showLoginPage(@ModelAttribute("loginuser") LoginUser loginuser) {
         return "loginPage";
     }
 
-    @PostMapping("/submitLogin")
+    @PostMapping("/login")
     public String get(@Valid @ModelAttribute("loginuser") LoginUser loginuser,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
@@ -77,17 +75,20 @@ public class UserController {
                 UserEntity user = optionalUser.get();
                 session.setAttribute("userId", user.getId());
                 redirectAttributes.addFlashAttribute("message", "Login successful!");
-                String role = user.getRole();
-                if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
-                    return "redirect:/studentHomePage";
-                } else {
-                    return "redirect:/librarianHomePage";
-                }
+                return "redirect:" + getRedirectUrlBasedOnRole(user.getRole());
+
         
             } else {
                 redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
                 return "redirect:/login";
             }
+        }
+    }
+    private String getRedirectUrlBasedOnRole(String role) {
+        if ("student".equalsIgnoreCase(role) || "teacher".equalsIgnoreCase(role)) {
+            return "/studentHome";
+        } else {
+            return "/librarianHome";
         }
     }
 }

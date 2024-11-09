@@ -35,7 +35,7 @@
                     <button onclick="window.location.href='/books'">Manage Books</button>
                     <button onclick="window.location.href='/books/allBooks'">View All Books</button>
                 </div>
-                <div>
+                <!-- <div>
                     <c:if test="${not empty errors}">
                         <div>
                             <c:forEach var="error" items="${errors.allErrors}">
@@ -43,7 +43,7 @@
                             </c:forEach>
                         </div>
                     </c:if>
-                </div>
+                </div> -->
                 <div>
                     <c:if test="${not empty error}">
                         <script>

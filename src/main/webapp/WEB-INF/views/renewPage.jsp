@@ -11,13 +11,13 @@
 <body class="library-page">
    
     <div class="header">
-        <button class="back-button" onclick="window.location.href='/studentHomePage'">
+        <button class="back-button" onclick="window.location.href='/studentHome'">
             &#8592;
         </button>
         <h1>Digital Library</h1>
         
         <div class="nav">
-            <a href="/studentHomePage">Home</a>
+            <a href="/studentHome">Home</a>
             <a href="/login">Sign In</a>/<a href = "/signup">Signup</a>
             <a href="/login">Logout</a>
         </div>
@@ -68,7 +68,7 @@
         </button>
     </c:if>
     </div>
-    <form id="RenewForm" action="submitRenewtable" method="post">
+    <form id="RenewForm" action="/services/renew" method="post">
         <input type="hidden" id="selectedBooks" name="selectedBooks" value="" />
     </form>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/script.js"></script>

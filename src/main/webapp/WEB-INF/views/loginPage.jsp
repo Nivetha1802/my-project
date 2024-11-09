@@ -14,7 +14,7 @@
         <h1>Digital Library</h1>
         <div class="login-container">
             <h2>Sign In</h2>
-            <form:form class="login-form-container" action="${pageContext.request.contextPath}/submitLogin" method="post" modelAttribute="loginuser">
+            <form:form class="login-form-container" action="/login" method="post" modelAttribute="loginuser">
                 <div class="form-group">
                     <form:errors path="*" cssClass="error" element="div"/>
                 </div>

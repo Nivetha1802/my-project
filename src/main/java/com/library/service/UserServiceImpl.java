@@ -3,7 +3,7 @@ package com.library.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import com.library.Dto.User;
+import com.library.Dto.UserDto;
 import com.library.entity.UserEntity;
 import com.library.repository.UserRepository;
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements BaseService<UserEntity, Integer>{
     }
 
     
-    public void saveUser(User user) {
+    public void saveUser(UserDto user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
         userEntity.setName(user.getName());

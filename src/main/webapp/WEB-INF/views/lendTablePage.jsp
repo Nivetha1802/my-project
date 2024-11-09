@@ -19,7 +19,7 @@
                 <h1>Digital Library</h1>
 
                 <div class="nav">
-                    <a href="/studentHomePage">Home</a>
+                    <a href="/studentHome">Home</a>
                     <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
                     <a href="/login">Logout</a>
                 </div>
@@ -28,7 +28,7 @@
 
                 <h1>Lend Books</h1>
                 <div class="search-container">
-                    <form class="search-bar" action="lendtable" method="get">
+                    <form class="search-bar" action="/services/lend" method="get">
                         <input type="text" id="query" name="query" value="${query}" placeholder="Search a book">
                         <button type="submit">&#128269;</button>
                     </form>
@@ -70,7 +70,7 @@
             </div>
             </c:if>
             
-            <form id="lendForm" action="${pageContext.request.contextPath}/submitlendtable" method="post">
+            <form id="lendForm" action="${pageContext.request.contextPath}/services/lend" method="post">
                 <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
             </form>
         </body>

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.library.Dto.LoginUser;
-import com.library.Dto.User;
+import com.library.Dto.UserDto;
 import com.library.controller.UserController;
 import com.library.entity.UserEntity;
 import com.library.service.UserServiceImpl;
@@ -60,19 +60,18 @@ public class UserControllerTest {
     @Test
     public void testGetStudentHomePage() {
         String viewName = userController.getStudentHomePage();
-        assertEquals("studentHomePage", viewName);
+        assertEquals("studentHome", viewName);
     }
 
     @Test
     public void testGetLibrarianHomePage() {
         String viewName = userController.getLibrarianHomePage();
-        assertEquals("librarianHomePage", viewName);
+        assertEquals("librarianHome", viewName);
     }
 
     @Test
     public void testShowSignupPage() {
-        User user = new User();
-        String viewName = userController.showSignupPage(user);
+        String viewName = userController.showSignupPage(model);
         assertEquals("signupPage", viewName);
     }
 
@@ -80,19 +79,19 @@ public class UserControllerTest {
     public void testSubmitRegistrationFormDetails_WithErrors() throws JsonMappingException, JsonProcessingException {
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        User user = new User();
+        UserDto user = new UserDto();
         String viewName = userController.create(user, bindingResult, redirectAttributes,
                 model, null, session);
 
         assertEquals("signupPage", viewName);
-        verify(userService, never()).saveUser(any(User.class));
+        verify(userService, never()).saveUser(any(UserDto.class));
     }
 
     @Test
     public void testSubmitRegistrationFormDetails_WithoutErrors() throws JsonMappingException, JsonProcessingException {
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        User user = new User();
+        UserDto user = new UserDto();
         user.setId(1);
         user.setRole("student");
 

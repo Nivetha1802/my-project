@@ -4,7 +4,7 @@ import javax.validation.constraints.*;
 import com.library.validation.PasswordMatches;
 
 @PasswordMatches
-public class User extends BaseDto<Integer>{
+public class UserDto extends BaseDto<Integer>{
     @NotEmpty(message = "Name is required")
     private String name;
 

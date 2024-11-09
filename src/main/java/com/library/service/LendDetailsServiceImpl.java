@@ -73,7 +73,7 @@ public class LendDetailsServiceImpl implements BaseService<LendDetails, Integer>
 
     
     public List<LendDetails> getLendDetailsByUserId(Integer id) {
-        List<LendDetails> lendDetailsList = lendDetailsRepository.findLendDetailsById(id);
+         List<LendDetails> lendDetailsList = lendDetailsRepository.findLendDetailsById(id);
         LocalDate actualReturnDate = LocalDate.now();
         for (LendDetails lendDetails : lendDetailsList) {
             lendDetails.calculateFine(actualReturnDate);

@@ -18,7 +18,7 @@
                 <h1>Digital Library</h1>
 
                 <div class="nav">
-                    <a href="/studentHomePage">Home</a>
+                    <a href="/studentHome">Home</a>
                     <a href="/login">Sign In</a>/<a href="/signup">Signup</a>
                     <a href="/login">Logout</a>
                 </div>
@@ -58,7 +58,7 @@
                     <button type="submit" onclick="submitLendDetails()">Lend Selected Books</button>
                 </c:if>
             </div>
-            <form id="lendDetForm" action="submitlenddetails" method="post">
+            <form id="lendDetForm" action="/services/lendDetails" method="post">
                 <input type="hidden" id="selectedBooks" name="selectedBooks" value="">
             </form>
             <script src="${pageContext.request.contextPath}/js/script.js"></script>

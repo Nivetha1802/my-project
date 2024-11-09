@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +25,7 @@ import com.library.service.LendDetailsServiceImpl;
 import com.library.service.UserServiceImpl;
 
 @Controller
+@RequestMapping("/services")
 public class LendController implements BaseController<LendDetails>{
 
     private final UserServiceImpl userService;
@@ -39,7 +41,7 @@ public class LendController implements BaseController<LendDetails>{
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("/lendtable")
+    @GetMapping("/lend")
     public String showLendtablePage(@RequestParam(value = "query", required = false) String query, Model model) {
         if (query != null && !query.isEmpty()) {
             List<GoogleBooks> books = googleBooksService.searchBook(query);
@@ -50,17 +52,17 @@ public class LendController implements BaseController<LendDetails>{
         return "lendTablePage";
     }
 
-    @PostMapping("/submitlendtable")
+    @PostMapping("/lend")
     public String submitLendTable(@RequestParam("selectedBooks") String selectedBooks, HttpSession session)
             throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
-            return "redirect:/lendtable";
+            return "redirect:/services/lend";
         }
         List<GoogleBooks> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<GoogleBooks>>() {
                 });
         session.setAttribute("selectedBooks", selectedBooksList);
-        return "redirect:/lendDetails";
+        return "redirect:/services/lendDetails";
     }
 
     @GetMapping("/lendDetails")
@@ -73,11 +75,11 @@ public class LendController implements BaseController<LendDetails>{
         return "lendDetailsPage";
     }
 
-    @PostMapping("/submitlenddetails")
+    @PostMapping("/lendDetails")
     public String create(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonMappingException, JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
-            return "redirect:/lendDetails";
+            return "redirect:/services/lendDetails";
         }
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<LendDetails>>() {
@@ -102,10 +104,10 @@ public class LendController implements BaseController<LendDetails>{
             lendDetailsService.processBookLendDetails(book, optionalUser);
         }
         redirectAttributes.addFlashAttribute("message", "Successfully Lent Books!");
-        return "redirect:/studentHomePage";
+        return "redirect:/studentHome";
     }
 
-    @GetMapping("/returntable")
+    @GetMapping("/return")
     public String showReturnBooksPage(Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId != null) {
@@ -115,11 +117,11 @@ public class LendController implements BaseController<LendDetails>{
         return "returnPage";
     }
 
-    @PostMapping("/submitReturnBooks")
+    @PostMapping("/return")
     public String delete(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam("selectedBooks") String selectedBooks, HttpSession session) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
-            return "redirect:/returntable";
+            return "redirect:/services/return";
         }
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<LendDetails>>() {
@@ -129,10 +131,10 @@ public class LendController implements BaseController<LendDetails>{
         }
         session.removeAttribute("selectedBooks");
         redirectAttributes.addFlashAttribute("message", "Successfully Returned Books!");
-        return "redirect:/studentHomePage";
+        return "redirect:/studentHome";
     }
 
-    @GetMapping("/renewtable")
+    @GetMapping("/renew")
     public String showRenewtablePage(Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId != null) {
@@ -142,11 +144,11 @@ public class LendController implements BaseController<LendDetails>{
         return "renewPage";
     }
 
-    @PostMapping("/submitRenewtable")
+    @PostMapping("/renew")
     public String update(@Valid LendDetails entity, BindingResult bindingResult, RedirectAttributes redirectAttributes,
             Model model, @RequestParam("selectedBooks") String selectedBooks) throws JsonProcessingException {
         if (selectedBooks == null || selectedBooks.isEmpty()) {
-            return "redirect:/renewtable";
+            return "redirect:/renew";
         }
         List<LendDetails> selectedBooksList = objectMapper.readValue(selectedBooks,
                 new TypeReference<List<LendDetails>>() {
@@ -155,10 +157,10 @@ public class LendController implements BaseController<LendDetails>{
             lendDetailsService.renewBook(book.getId());
         }
         redirectAttributes.addFlashAttribute("message", "Successfully Renewed Books!");
-        return "redirect:/studentHomePage";
+        return "redirect:/studentHome";
     }
 
-    @GetMapping("/fineDetails")
+    @GetMapping("/fine")
     public String showFineDetailsPage(Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId != null) {

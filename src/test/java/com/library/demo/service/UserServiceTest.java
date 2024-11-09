@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.library.Dto.User;
+import com.library.Dto.UserDto;
 import com.library.entity.UserEntity;
 import com.library.repository.UserRepository;
 import com.library.service.UserServiceImpl;
@@ -81,7 +81,7 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
         // Arrange
-        User user = new User();
+        UserDto user = new UserDto();
         user.setId(1);
         user.setName("John Doe");
         user.setRole("Admin");

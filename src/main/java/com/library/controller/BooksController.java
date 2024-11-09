@@ -53,7 +53,7 @@ public class BooksController implements BaseController<Books> {
         } else {
             booksService.create(addBook);
             redirectAttributes.addFlashAttribute("message", "Successfully Added Books");
-            return "redirect:/librarianHomePage";
+            return "redirect:/librarianHome";
         }
     }
 

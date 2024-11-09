@@ -13,7 +13,7 @@
         <h1>Digital Library</h1>
         <div class="signup-container">
             <h2>Sign Up</h2>
-            <form:form class="signup-form-container" action="${pageContext.request.contextPath}/submitRegistration" method="post" modelAttribute="user">
+            <form:form class="signup-form-container" action="${pageContext.request.contextPath}/register" method="post" modelAttribute="user">
                 <div class="form-group">
                     <form:errors path="*" cssClass="error" element="div"/>
                 </div>
